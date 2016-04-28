@@ -1,5 +1,5 @@
 # demoWeb
-a web framework base on Spring MVC
+一个基于SpringMVC的web框架
 1.0.5
 从web项目迁移成maven项目
 1.0.6
