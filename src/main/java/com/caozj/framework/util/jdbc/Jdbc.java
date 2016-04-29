@@ -309,8 +309,7 @@ public class Jdbc extends JdbcDaoSupport {
 
 	public long queryForLong(String sql) {
 		try {
-			@SuppressWarnings("deprecation")
-			long result = this.getJdbcTemplate().queryForLong(sql);
+			long result = this.getJdbcTemplate().queryForObject(sql, Long.class);
 			if (log) {
 				logger.info("result:" + result + " sql:" + sql);
 			}
@@ -323,8 +322,7 @@ public class Jdbc extends JdbcDaoSupport {
 	public long queryForLong(String sql, StatementParameter param) {
 		Object[] args = param.getArgs();
 		try {
-			@SuppressWarnings("deprecation")
-			long result = this.getJdbcTemplate().queryForLong(sql, args);
+			long result = this.getJdbcTemplate().queryForObject(sql, args, Long.class);
 			if (log) {
 				logger.info("result:" + result + " sql:" + this.getSQL(sql, param));
 			}
@@ -336,8 +334,7 @@ public class Jdbc extends JdbcDaoSupport {
 
 	public long queryForLong(String sql, Object... args) {
 		try {
-			@SuppressWarnings("deprecation")
-			long result = this.getJdbcTemplate().queryForLong(sql, args);
+			long result = this.getJdbcTemplate().queryForObject(sql, args, Long.class);
 			if (log) {
 				logger.info("result:" + result + " sql:" + this.getSQL(sql, args));
 			}
@@ -349,8 +346,7 @@ public class Jdbc extends JdbcDaoSupport {
 
 	public int queryForInt(String sql) {
 		try {
-			@SuppressWarnings("deprecation")
-			int result = this.getJdbcTemplate().queryForInt(sql);
+			int result = this.getJdbcTemplate().queryForObject(sql, Integer.class);
 			if (log) {
 				logger.info("result:" + result + " sql:" + sql);
 			}
@@ -363,8 +359,7 @@ public class Jdbc extends JdbcDaoSupport {
 	public int queryForInt(String sql, StatementParameter param) {
 		Object[] args = param.getArgs();
 		try {
-			@SuppressWarnings("deprecation")
-			int result = this.getJdbcTemplate().queryForInt(sql, args);
+			int result = this.getJdbcTemplate().queryForObject(sql, args, Integer.class);
 			if (log) {
 				logger.info("result:" + result + " sql:" + this.getSQL(sql, param));
 			}
@@ -376,8 +371,7 @@ public class Jdbc extends JdbcDaoSupport {
 
 	public int queryForInt(String sql, Object... args) {
 		try {
-			@SuppressWarnings("deprecation")
-			int result = this.getJdbcTemplate().queryForInt(sql, args);
+			int result = this.getJdbcTemplate().queryForObject(sql, args, Integer.class);
 			if (log) {
 				logger.info("result:" + result + " sql:" + this.getSQL(sql, args));
 			}

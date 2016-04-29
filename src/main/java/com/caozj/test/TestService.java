@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TestService {
 
-	private static final Log logger = LogFactory.getLog(TestController.class);
+	private static final Log logger = LogFactory.getLog(TestService.class);
 
 	@Cacheable(value = "default")
 	public int testCache4(String info) {

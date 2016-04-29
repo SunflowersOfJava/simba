@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.caozj.annotation.TimeAnnotation;
 import com.caozj.dubbo.provider.DubboServiceInterface;
 import com.caozj.framework.util.ApplicationContextUtil;
+import com.caozj.framework.util.jdbc.Jdbc;
 import com.caozj.framework.util.schedule.ScheduleUtil;
 
 @Controller
@@ -28,6 +29,9 @@ import com.caozj.framework.util.schedule.ScheduleUtil;
 public class TestController {
 
 	private static final Log logger = LogFactory.getLog(TestController.class);
+
+	@Autowired
+	private Jdbc jdbc;
 
 	@Autowired
 	private TestService testService;
@@ -155,6 +159,12 @@ public class TestController {
 	public String clear(String info, ModelMap model) {
 		testService.clear(info);
 		model.put("message", info);
+		return "message";
+	}
+
+	@RequestMapping
+	public String count(ModelMap model) {
+		model.put("message", jdbc.queryForLong("select count(*) from menu"));
 		return "message";
 	}
 

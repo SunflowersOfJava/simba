@@ -16,8 +16,10 @@
 	<!-- redis template definition -->
 	<bean id='redisTemplate' class='org.springframework.data.redis.core.RedisTemplate' p:connection-factory-ref='jedisConnectionFactory' />
 
+	<!-- 只需要修改cache-manager就可以切换缓存管理器 -->
 	<cache:annotation-driven mode="proxy" key-generator="customKeyGenerator" cache-manager="concurrentMapCacheManager" />
 
+	<!-- 同步Map缓存管理器 -->
 	<bean id="concurrentMapCacheManager" class="org.springframework.cache.support.SimpleCacheManager">
 		<property name="caches">
 			<set>
@@ -28,4 +30,9 @@
 		</property>
 	</bean>
 
+	<!-- redis缓存管理器 
+	<bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+		<property name="template" ref="redisTemplate" />
+	</bean>
+-->
 </beans>
