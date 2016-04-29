@@ -10,15 +10,15 @@
        http://www.springframework.org/schema/cache
        http://www.springframework.org/schema/cache/spring-cache.xsd">
 
-	<cache:annotation-driven mode="proxy" key-generator="customKeyGenerator" />
-
 	<!-- Jedis ConnectionFactory -->
 	<bean id='jedisConnectionFactory' class='org.springframework.data.redis.connection.jedis.JedisConnectionFactory' p:host-name='${redis.host}' p:port='${redis.port}' p:use-pool='true' />
 
 	<!-- redis template definition -->
 	<bean id='redisTemplate' class='org.springframework.data.redis.core.RedisTemplate' p:connection-factory-ref='jedisConnectionFactory' />
 
-	<bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+	<cache:annotation-driven mode="proxy" key-generator="customKeyGenerator" cache-manager="concurrentMapCacheManager" />
+
+	<bean id="concurrentMapCacheManager" class="org.springframework.cache.support.SimpleCacheManager">
 		<property name="caches">
 			<set>
 				<bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
