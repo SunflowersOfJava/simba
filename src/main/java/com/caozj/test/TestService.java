@@ -11,18 +11,36 @@ public class TestService {
 
 	private static final Log logger = LogFactory.getLog(TestController.class);
 
-	@Cacheable(value = "${cache.type}", key = "#info")
-	public String testCache(String info) {
+	@Cacheable(value = "default")
+	public int testCache4(String info) {
+		logger.info("receive==>" + info);
+		return 1;
+	}
+
+	@Cacheable(value = "default")
+	public int testCache3(String info) {
+		logger.info("receive==>" + info);
+		return 1;
+	}
+
+	@Cacheable(value = "default", key = "#root.method.name.toString().concat(#root.targetClass.toString()).concat(#p0)")
+	public String testCache2(String info) {
 		logger.info("receive==>" + info);
 		return "test:" + info;
 	}
 
-	@CacheEvict(value = "${cache.type}", allEntries = true)
+	@Cacheable(value = "default", key = "#root.method.name.toString().concat(#root.targetClass.toString()).concat(#p0)")
+	public int testCache(String info) {
+		logger.info("receive==>" + info);
+		return 1;
+	}
+
+	@CacheEvict(value = "default", allEntries = true)
 	public void clearCache() {
 
 	}
 
-	@CacheEvict(value = "${cache.type}", key = "#info")
+	@CacheEvict(value = "default")
 	public void clear(String info) {
 
 	}

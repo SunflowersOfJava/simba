@@ -124,6 +124,27 @@ public class TestController {
 	}
 
 	@RequestMapping
+	public String cache4(String info, ModelMap model) {
+		testService.testCache4(info);
+		model.put("message", info);
+		return "message";
+	}
+
+	@RequestMapping
+	public String cache3(String info, ModelMap model) {
+		testService.testCache3(info);
+		model.put("message", info);
+		return "message";
+	}
+
+	@RequestMapping
+	public String cache2(String info, ModelMap model) {
+		testService.testCache2(info);
+		model.put("message", info);
+		return "message";
+	}
+
+	@RequestMapping
 	public String clearCache(ModelMap model) {
 		testService.clearCache();
 		model.put("message", "clear successfully!!!");
