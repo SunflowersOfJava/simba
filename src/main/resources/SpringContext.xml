@@ -28,4 +28,5 @@
 	<import resource="classpath:/SpringWebSocket.xml" />
 	<!-- <import resource="classpath:/SpringDubbo.xml" /> -->
 	<!-- <import resource="classpath:/SpringMQ.xml" /> -->
+	<import resource="classpath:/SpringCache.xml" />
 </beans>

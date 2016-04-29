@@ -8,7 +8,10 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.quartz.SchedulerException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +26,11 @@ import com.caozj.framework.util.schedule.ScheduleUtil;
 @Controller
 @RequestMapping("/test")
 public class TestController {
+
+	private static final Log logger = LogFactory.getLog(TestController.class);
+
+	@Autowired
+	private TestService testService;
 
 	@Resource
 	private DubboServiceInterface dubboRemoteService;
@@ -107,4 +115,26 @@ public class TestController {
 		model.put("message", message);
 		return "message";
 	}
+
+	@RequestMapping
+	public String cache(String info, ModelMap model) {
+		testService.testCache(info);
+		model.put("message", info);
+		return "message";
+	}
+
+	@RequestMapping
+	public String clearCache(ModelMap model) {
+		testService.clearCache();
+		model.put("message", "clear successfully!!!");
+		return "message";
+	}
+
+	@RequestMapping
+	public String clear(String info, ModelMap model) {
+		testService.clear(info);
+		model.put("message", info);
+		return "message";
+	}
+
 }

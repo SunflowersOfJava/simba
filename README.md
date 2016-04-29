@@ -60,7 +60,8 @@ rabbitMQ集成
 集成Mybatis
 使用数据库连接池druid
 dubbo使用
-
+1.1.11
+集成Spring Cache
 
 
 
