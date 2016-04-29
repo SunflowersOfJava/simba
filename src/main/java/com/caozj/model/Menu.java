@@ -63,4 +63,19 @@ public class Menu extends ExtTreeNode {
 		this.url = url;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Menu [parentID=");
+		builder.append(parentID);
+		builder.append(", url=");
+		builder.append(url);
+		builder.append(", orderNo=");
+		builder.append(orderNo);
+		builder.append(", state=");
+		builder.append(state);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }
