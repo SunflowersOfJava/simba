@@ -62,6 +62,7 @@ rabbitMQ集成
 dubbo使用
 1.1.11
 集成Spring Cache,FastJson
+1.1.12
 
 
 
