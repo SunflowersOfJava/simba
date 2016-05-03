@@ -13,6 +13,26 @@ public class B implements Serializable {
 
 	private A a;
 
+	private En en;
+
+	private Date d;
+
+	public En getEn() {
+		return en;
+	}
+
+	public void setEn(En en) {
+		this.en = en;
+	}
+
+	public Date getD() {
+		return d;
+	}
+
+	public void setD(Date d) {
+		this.d = d;
+	}
+
 	public String getbName() {
 		return bName;
 	}
@@ -36,6 +56,10 @@ public class B implements Serializable {
 		builder.append(bName);
 		builder.append(", a=");
 		builder.append(a);
+		builder.append(", en=");
+		builder.append(en);
+		builder.append(", d=");
+		builder.append(d);
 		builder.append("]");
 		return builder.toString();
 	}
