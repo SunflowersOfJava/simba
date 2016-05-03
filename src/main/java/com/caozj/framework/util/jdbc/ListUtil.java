@@ -167,85 +167,6 @@ public class ListUtil {
 		return result;
 	}
 
-	// public static Map<Integer, String> toIntMap(List<Integer> keyList,
-	// List<String> valueList) {
-	// if (keyList.size() != valueList.size()) {
-	// throw new IllegalArgumentException("两个list参数不一致.");
-	// }
-	//
-	// String[] values = new String[valueList.size()];
-	// valueList.toArray(values);
-	// Map<Integer, String> map = new LinkedHashMap<Integer, String>();
-	//
-	// int index = 0;
-	// for (Integer key : keyList) {
-	// String value = values[index];
-	// map.put(key, value);
-	// index++;
-	// }
-	// return map;
-	// }
-
-	// public static Map<String, String> toMap(List<String> keyList,
-	// List<String> valueList) {
-	// if (keyList.size() != valueList.size()) {
-	// throw new IllegalArgumentException("两个list参数不一致.");
-	// }
-	//
-	// String[] values = new String[valueList.size()];
-	// valueList.toArray(values);
-	// Map<String, String> map = new LinkedHashMap<String, String>();
-	//
-	// int index = 0;
-	// for (String key : keyList) {
-	// String value = values[index];
-	// map.put(key, value);
-	//
-	// index++;
-	// }
-	// return map;
-	// }
-
-	// public static Map<Integer, String> toIntMap(Set<Integer> keyList,
-	// List<String> valueList) {
-	//
-	// if (keyList.size() != valueList.size()) {
-	// throw new IllegalArgumentException("两个list参数不一致.");
-	// }
-	//
-	// String[] values = new String[valueList.size()];
-	// valueList.toArray(values);
-	// Map<Integer, String> map = new LinkedHashMap<Integer, String>();
-	//
-	// int index = 0;
-	// for (Integer key : keyList) {
-	// String value = values[index];
-	// map.put(key, value);
-	//
-	// index++;
-	// }
-	// return map;
-	// }
-
-	// public static Map<String, String> toMap(Set<String> keyList, List<String>
-	// valueList) {
-	//
-	// if (keyList.size() != valueList.size()) {
-	// throw new IllegalArgumentException("两个list参数不一致.");
-	// }
-	// String[] values = new String[valueList.size()];
-	// valueList.toArray(values);
-	// Map<String, String> map = new LinkedHashMap<String, String>();
-	//
-	// int index = 0;
-	// for (String key : keyList) {
-	// String value = values[index];
-	// map.put(key, value);
-	// index++;
-	// }
-	// return map;
-	// }
-
 	public static String[] getIntKeys(String prefix, Set<Integer> idSet) {
 		String[] keys = new String[idSet.size()];
 		int index = 0;
@@ -304,10 +225,6 @@ public class ListUtil {
 			list.add(prefix + i);
 		}
 		return list;
-	}
-
-	public static void main(String[] args) {
-
 	}
 
 }

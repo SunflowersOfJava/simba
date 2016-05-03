@@ -13,6 +13,14 @@ public class A implements Serializable {
 
 	private Date birthday;
 
+	public A() {
+
+	}
+
+	public A(Date d) {
+		this.birthday = d;
+	}
+
 	public int getId() {
 		return id;
 	}
