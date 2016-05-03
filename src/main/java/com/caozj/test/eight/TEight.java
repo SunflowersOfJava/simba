@@ -19,6 +19,18 @@ public class TEight {
 		// testStream();
 		// testJoin();
 		// testMap();
+		testAList();
+	}
+
+	private static void testAList() {
+		int i = 100;
+		List<Integer> l = new ArrayList<>();
+		for (int k = 0; k < i; k++) {
+			l.add(k);
+		}
+//		l.stream().forEach((x)->{System.out.println(x);});
+		System.out.println("==========================================");
+		l.parallelStream().forEach((x)->{System.out.println(x);});
 	}
 
 	private static void testMap() {

@@ -168,4 +168,18 @@ public class TestController {
 		return "message";
 	}
 
+	@RequestMapping
+	public String redisCache(String info, ModelMap model) {
+		testService.testRedisCache(info);
+		model.put("message", info);
+		return "message";
+	}
+
+	@RequestMapping
+	public String clearRedisCache(ModelMap model) {
+		testService.clearRedisCache();
+		model.put("message", "clear redis successfully!!!");
+		return "message";
+	}
+
 }

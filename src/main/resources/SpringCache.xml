@@ -17,22 +17,22 @@
 	<bean id='redisTemplate' class='org.springframework.data.redis.core.RedisTemplate' p:connection-factory-ref='jedisConnectionFactory' />
 
 	<!-- 只需要修改cache-manager就可以切换缓存管理器 -->
-	<cache:annotation-driven mode="proxy" key-generator="customKeyGenerator" cache-manager="concurrentMapCacheManager" />
+	<cache:annotation-driven mode="proxy" key-generator="customKeyGenerator" cache-manager="simpleCacheManager" />
 
-	<!-- 同步Map缓存管理器 -->
-	<bean id="concurrentMapCacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+	<bean id="simpleCacheManager" class="org.springframework.cache.support.SimpleCacheManager">
 		<property name="caches">
 			<set>
+				<!-- 同步Map缓存 -->
 				<bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
 					<property name="name" value="default" />
+				</bean>
+				<!-- Redis緩存 -->
+				<bean class="com.caozj.cache.RedisCache">
+					<property name="redisTemplate" ref="redisTemplate" />
+					<property name="name" value="redis" />
 				</bean>
 			</set>
 		</property>
 	</bean>
 
-	<!-- redis缓存管理器 
-	<bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
-		<property name="template" ref="redisTemplate" />
-	</bean>
--->
 </beans>

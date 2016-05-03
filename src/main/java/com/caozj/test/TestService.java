@@ -45,4 +45,15 @@ public class TestService {
 
 	}
 
+	@Cacheable(value = "redis")
+	public int testRedisCache(String info) {
+		logger.info("redis receive==>" + info);
+		return 1;
+	}
+
+	@CacheEvict(value = "redis", allEntries = true)
+	public void clearRedisCache() {
+
+	}
+
 }
