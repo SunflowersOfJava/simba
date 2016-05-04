@@ -1,12 +1,16 @@
 package com.caozj.framework.model.ext;
 
+import java.io.Serializable;
+
 /**
  * ExtJs对应树节点对象
  * 
  * @author caozj
  * 
  */
-public class ExtTreeNode {
+public class ExtTreeNode implements Serializable {
+
+	private static final long serialVersionUID = -4855656076258762200L;
 
 	/**
 	 * 节点唯一 id

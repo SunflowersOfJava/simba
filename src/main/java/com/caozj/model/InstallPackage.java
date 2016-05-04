@@ -1,12 +1,16 @@
 package com.caozj.model;
 
+import java.io.Serializable;
+
 /**
  * 安装包
  * 
  * @author caozj
  * 
  */
-public class InstallPackage {
+public class InstallPackage implements Serializable {
+
+	private static final long serialVersionUID = -3187720427055051977L;
 
 	/**
 	 * 版本号

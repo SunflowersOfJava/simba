@@ -23,7 +23,7 @@ public class ApplicationContextUtil implements ApplicationContextAware {
 
 	private static ApplicationContext context;
 
-	private Log logger = LogFactory.getLog(this.getClass());
+	private static Log logger = LogFactory.getLog(ApplicationContextUtil.class);
 
 	@Override
 	public void setApplicationContext(ApplicationContext context) throws BeansException {
@@ -36,7 +36,13 @@ public class ApplicationContextUtil implements ApplicationContextAware {
 	}
 
 	public static Object getBean(String beanName) {
-		return context.getBean(beanName);
+		Object object = null;
+		try {
+			object = context.getBean(beanName);
+		} catch (NullPointerException e) {
+			logger.warn("Spring容器中找不到beanName:" + beanName);
+		}
+		return object;
 	}
 
 	/**
@@ -47,7 +53,13 @@ public class ApplicationContextUtil implements ApplicationContextAware {
 	 * @return
 	 */
 	public static <T> T getBean(Class<T> clazz) {
-		return getContext().getBean(clazz);
+		T object = null;
+		try {
+			object = getContext().getBean(clazz);
+		} catch (NullPointerException e) {
+			logger.warn("Spring容器中找不到class:" + clazz.getName());
+		}
+		return object;
 	}
 
 	/**

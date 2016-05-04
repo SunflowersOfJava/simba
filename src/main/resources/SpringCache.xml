@@ -11,7 +11,7 @@
        http://www.springframework.org/schema/cache/spring-cache.xsd">
 
 	<!-- Jedis ConnectionFactory -->
-	<bean id='jedisConnectionFactory' class='org.springframework.data.redis.connection.jedis.JedisConnectionFactory' p:host-name='${redis.host}' p:port='${redis.port}' p:use-pool='true' />
+	<bean id='jedisConnectionFactory' class='org.springframework.data.redis.connection.jedis.JedisConnectionFactory' p:host-name='${redis.host}' p:port='${redis.port}' p:use-pool='true' p:password='${redis.password}' />
 
 	<!-- redis template definition -->
 	<bean id='redisTemplate' class='org.springframework.data.redis.core.RedisTemplate' p:connection-factory-ref='jedisConnectionFactory' />

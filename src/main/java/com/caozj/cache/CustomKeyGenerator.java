@@ -8,7 +8,7 @@ import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.stereotype.Component;
 
 /**
- * 自定义的key生成策略
+ * 自定义的key生成策略(Spring Cache使用,针对方法级别的缓存)
  * 
  * @author caozj
  *

@@ -1,12 +1,16 @@
 package com.caozj.model;
 
+import java.io.Serializable;
+
 /**
  * 业务对象类
  * 
  * @author caozj
  * 
  */
-public class Buss {
+public class Buss implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 名称

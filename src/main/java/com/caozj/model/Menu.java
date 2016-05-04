@@ -1,5 +1,7 @@
 package com.caozj.model;
 
+import java.io.Serializable;
+
 import com.caozj.framework.model.ext.ExtTreeNode;
 
 /**
@@ -8,7 +10,9 @@ import com.caozj.framework.model.ext.ExtTreeNode;
  * @author caozj
  * 
  */
-public class Menu extends ExtTreeNode {
+public class Menu extends ExtTreeNode implements Serializable {
+
+	private static final long serialVersionUID = 962450806979152617L;
 
 	/**
 	 * 父菜单id

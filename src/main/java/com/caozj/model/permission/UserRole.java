@@ -1,12 +1,16 @@
 package com.caozj.model.permission;
 
+import java.io.Serializable;
+
 /**
  * 用户，角色 关系对象
  * 
  * @author caozj
  * 
  */
-public class UserRole {
+public class UserRole implements Serializable {
+
+	private static final long serialVersionUID = -2575785157914908256L;
 
 	/**
 	 * 用户账号

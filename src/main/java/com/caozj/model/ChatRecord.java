@@ -1,5 +1,6 @@
 package com.caozj.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +9,9 @@ import java.util.Date;
  * @author caozj
  * 
  */
-public class ChatRecord {
+public class ChatRecord implements Serializable {
+
+	private static final long serialVersionUID = 2441884895239962648L;
 
 	private int id;
 

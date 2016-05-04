@@ -8,6 +8,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
+import com.caozj.framework.util.common.PropertiesUtil;
+
 /**
  * 自定义PropertyPlaceholderConfigurer返回properties内容
  * 
@@ -18,9 +20,10 @@ public class CustomizedPropertyPlaceholderConfigurer extends PropertyPlaceholder
 
 	private static Map<String, String> ctxPropertiesMap;
 
+	private static final String defaultConfigPropertiesFile = "configs.properties";
+
 	@Override
-	protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess, Properties props)
-			throws BeansException {
+	protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess, Properties props) throws BeansException {
 		super.processProperties(beanFactoryToProcess, props);
 		ctxPropertiesMap = new HashMap<String, String>();
 		for (Object key : props.keySet()) {
@@ -31,6 +34,9 @@ public class CustomizedPropertyPlaceholderConfigurer extends PropertyPlaceholder
 	}
 
 	public static String getContextProperty(String name) {
+		if (ctxPropertiesMap == null) {
+			ctxPropertiesMap = PropertiesUtil.read(defaultConfigPropertiesFile);
+		}
 		return ctxPropertiesMap.get(name);
 	}
 
