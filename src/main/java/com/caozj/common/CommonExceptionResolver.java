@@ -50,8 +50,8 @@ public class CommonExceptionResolver implements HandlerExceptionResolver {
 	 */
 	private boolean isJsonException(HttpServletRequest request) {
 		boolean isJson = false;
-		if (request.getParameter("json") != null || request.getParameter("jsonp") != null
-				|| (request.getHeader("Accept") != null && request.getHeader("Accept").indexOf("json") > -1)) {
+		if (request.getParameter("json") != null || request.getParameter("jsonp") != null || (request.getHeader("Accept") != null && request.getHeader("Accept").indexOf("json") > -1
+				|| request.getRequestURI().endsWith(".json") || request.getRequestURI().endsWith(".jsonp"))) {
 			isJson = true;
 		}
 		return isJson;
