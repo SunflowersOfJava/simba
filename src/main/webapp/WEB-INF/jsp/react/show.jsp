@@ -10,6 +10,6 @@
 <body>
 	<div id="example"></div>
 	<div id="content"></div>
-	<script src="<%=request.getContextPath()%>/js/reactSource/firstDemo.js"></script>
+	<script src="<%=request.getContextPath()%>/js/reactBuild/firstDemo.js"></script>
 </body>
 </html>
