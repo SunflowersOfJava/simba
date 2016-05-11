@@ -66,7 +66,7 @@ Spring Cache增加redis缓存实现
 Mybatis使用二级缓存,增加redis实现
 增加reactJs
 增加Mybatis插件pageHelper,Mapper
-
+1.1.12
 
 
 
