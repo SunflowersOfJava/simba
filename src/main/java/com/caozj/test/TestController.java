@@ -182,4 +182,9 @@ public class TestController {
 		return "message";
 	}
 
+	@RequestMapping
+	public String react() {
+		return "react/show";
+	}
+
 }
