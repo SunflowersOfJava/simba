@@ -183,8 +183,13 @@ public class TestController {
 	}
 
 	@RequestMapping
-	public String react() {
+	public String react() { 
 		return "react/show";
+	}
+
+	@RequestMapping
+	public String reactRichText() {
+		return "react/reactRichText";
 	}
 
 }
