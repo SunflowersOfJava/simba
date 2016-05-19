@@ -7,13 +7,11 @@
 <%@ include file="../common/header.jsp"%>
 <%@ include file="../common/react.jsp"%>
 <%@ include file="../common/draft.jsp"%>
+<%@ include file="../common/antd.jsp"%>
 </head>
 <body>
-	<div id="example" style="width:800px;height:600px"></div>
-	<script src="<%=request.getContextPath()%>/js/reactSource/demoRichEditor.js" type="text/babel"></script>
-	<script type="text/babel">
-	
-
-	</script>
+	<div id="example" style="width:800px;"></div>
+	<script src="<%=request.getContextPath()%>/js/reactSource/richEditor.js" type="text/babel"></script>
+	<script src="<%=request.getContextPath()%>/js/reactSource/render.js" type="text/babel"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 const {Editor, EditorState, RichUtils} = Draft;
 
-class RichEditorExample extends React.Component {
+class ReactRichEditor extends React.Component {
 	  constructor(props) {
 	    super(props);
 	    this.state = {editorState: EditorState.createEmpty()};
@@ -71,8 +71,8 @@ class RichEditorExample extends React.Component {
 	            editorState={editorState}
 	            handleKeyCommand={this.handleKeyCommand}
 	            onChange={this.onChange}
-	            placeholder="Tell a story..."
-	            ref="editor"
+	            placeholder={this.props.placeholder}
+	            ref={this.props.id}
 	            spellCheck={true}
 	          />
 	        </div>
@@ -81,7 +81,7 @@ class RichEditorExample extends React.Component {
 	  }
 	}
 
-//Custom overrides for "code" style.
+// Custom overrides for "code" style.
 const styleMap = {
 CODE: {
  backgroundColor: 'rgba(0, 0, 0, 0.05)',
@@ -122,12 +122,12 @@ render() {
 }
 
 const BLOCK_TYPES = [
-{label: 'H1', style: 'header-one'},
-{label: 'H2', style: 'header-two'},
-{label: 'Blockquote', style: 'blockquote'},
-{label: 'UL', style: 'unordered-list-item'},
-{label: 'OL', style: 'ordered-list-item'},
-{label: 'Code Block', style: 'code-block'},
+{label: '标题1', style: 'header-one'},
+{label: '标题2', style: 'header-two'},
+{label: '引用', style: 'blockquote'},
+{label: '无序号排序', style: 'unordered-list-item'},
+{label: '有序号排序', style: 'ordered-list-item'},
+{label: '代码块', style: 'code-block'},
 ];
 
 const BlockStyleControls = (props) => {
@@ -153,10 +153,10 @@ return (
 };
 
 var INLINE_STYLES = [
-{label: 'Bold', style: 'BOLD'},
-{label: 'Italic', style: 'ITALIC'},
-{label: 'Underline', style: 'UNDERLINE'},
-{label: 'Monospace', style: 'CODE'},
+{label: '粗体', style: 'BOLD'},
+{label: '斜体', style: 'ITALIC'},
+{label: '下划线', style: 'UNDERLINE'},
+{label: '等宽字体', style: 'CODE'},
 ];
 
 const InlineStyleControls = (props) => {
@@ -174,7 +174,27 @@ return (
  </div>
 );
 };
-ReactDOM.render(
-		  <RichEditorExample />,
-		  document.getElementById('example')
+
+const {Switch ,Button,message } = antd;
+
+const DemoEditor = React.createClass({
+	submit : function(){
+		message.success("点击提交");
+	},
+	clear:function(){
+		message.info("点击清空");
+	},
+	render(){
+		return (
+				<div>
+					<ReactRichEditor placeholder={this.props.placeholder} id={this.props.id}/>
+					<Button type="primary" onClick={this.submit}>{this.props.submitButtonName}</Button>
+					<Button type="ghost" onClick={this.clear}>{this.props.cancelButtonName}</Button>
+				</div>
 		);
+	}
+});
+ReactDOM.render(
+  <DemoEditor placeholder="请输入文本" id="richEditor" submitButtonName="提交" cancelButtonName="清空"/>,
+  document.getElementById('example')
+);
