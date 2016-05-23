@@ -1,16 +1,39 @@
-const {Editor, EditorState, RichUtils} = Draft;
+const {Editor, EditorState,ContentState, RichUtils} = Draft;
+const {Switch ,Button,message } = antd;
 
 class ReactRichEditor extends React.Component {
 	  constructor(props) {
 	    super(props);
-	    this.state = {editorState: EditorState.createEmpty()};
-
-	    this.focus = () => this.refs.editor.focus();
+	    var editorId = props.id;
+	    if(!editorId){
+	    	editorId = "editor";
+	    }
+	    var defaultValue = props.defaultValue;
+	    var editorState = null;
+	    if(!defaultValue){
+	    	editorState = EditorState.createEmpty();
+	    }else{
+	    	editorState = EditorState.createWithContent(ContentState.createFromText(defaultValue));
+	    }
+	    this.state = {"editorState": editorState};
+	    this.focus = () => this.refs[editorId].focus();
 	    this.onChange = (editorState) => this.setState({editorState});
 
 	    this.handleKeyCommand = (command) => this._handleKeyCommand(command);
 	    this.toggleBlockType = (type) => this._toggleBlockType(type);
 	    this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
+	    this.getValue = () =>  this._getValue();
+	    this.clear = () => this._clear();
+	  }
+	  
+	  _getValue(){
+		  const {editorState} = this.state;
+		  var contentState = editorState.getCurrentContent();
+		  return contentState.getPlainText();
+	  }
+	  
+	  _clear(){
+		  const {editorState} = this.state;
 	  }
 
 	  _handleKeyCommand(command) {
@@ -175,26 +198,49 @@ return (
 );
 };
 
-const {Switch ,Button,message } = antd;
+
 
 const DemoEditor = React.createClass({
+	
+	getRichId : function(){
+		const {id} = this.props;
+		var richEditor = id + "_rich";
+		return richEditor;
+	},
+	
+	getValue : function(){
+		const {getValue} = this.refs[this.getRichId()];
+		var content = getValue();
+		return content;
+	},
+	
 	submit : function(){
-		message.success("点击提交");
+		var content = this.getValue();
+		const {sumbitFn} = this.props;
+		sumbitFn(content);
 	},
+	
 	clear:function(){
-		message.info("点击清空");
+		const {clear} = this.refs[this.getRichId()];
+		clear();
+		message.info("清空成功");
 	},
+	
 	render(){
 		return (
 				<div>
-					<ReactRichEditor placeholder={this.props.placeholder} id={this.props.id}/>
+					<ReactRichEditor placeholder={this.props.placeholder} id={this.props.id} defaultValue={this.props.defaultValue} ref={this.getRichId()}/>
 					<Button type="primary" onClick={this.submit}>{this.props.submitButtonName}</Button>
 					<Button type="ghost" onClick={this.clear}>{this.props.cancelButtonName}</Button>
 				</div>
 		);
 	}
+	
 });
+const submitFn = (content)=>{
+	message.success("提交内容：" + content);
+}
 ReactDOM.render(
-  <DemoEditor placeholder="请输入文本" id="richEditor" submitButtonName="提交" cancelButtonName="清空"/>,
+  <DemoEditor placeholder="请输入文本" id="editor" submitButtonName="提交" cancelButtonName="清空" defaultValue="我是你大哥o!!!" sumbitFn={submitFn}/>,
   document.getElementById('example')
 );
