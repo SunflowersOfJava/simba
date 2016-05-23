@@ -23,7 +23,14 @@ class ReactRichEditor extends React.Component {
 	    this.toggleBlockType = (type) => this._toggleBlockType(type);
 	    this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
 	    this.getValue = () =>  this._getValue();
+	    this.getPlainText = () => this._getPlainText();
 	    this.clear = () => this._clear();
+	  }
+	  
+	  _getPlainText(){
+		  const {editorState} = this.state;
+		  var contentState = editorState.getCurrentContent();
+		  return contentState.getPlainText();
 	  }
 	  
 	  _getValue(){
@@ -31,7 +38,7 @@ class ReactRichEditor extends React.Component {
 		  var contentState = editorState.getCurrentContent();
 		  return contentState.getPlainText();
 	  }
-	  
+
 	  _clear(){
 		  const {editorState} = this.state;
 	  }
