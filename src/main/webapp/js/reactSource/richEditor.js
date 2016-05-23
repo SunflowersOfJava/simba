@@ -40,7 +40,8 @@ class ReactRichEditor extends React.Component {
 	  }
 
 	  _clear(){
-		  const {editorState} = this.state;
+		  const editorState = EditorState.createEmpty();
+		  this.setState({editorState});
 	  }
 
 	  _handleKeyCommand(command) {
