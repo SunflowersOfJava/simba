@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import ${packageName}.dao.${className}Dao;
 import ${packageName}.framework.util.jdbc.Jdbc;
 import ${packageName}.framework.util.jdbc.Pager;
+import com.caozj.framework.util.jdbc.StatementParameter;
 import ${packageName}.model.${className};
 
 /**
@@ -65,5 +66,68 @@ public class ${className}DaoImpl implements ${className}Dao {
 		String sql = "select * from " + table + " where id = ? ";
 		return jdbc.query(sql, ${className}.class, id);
 	}
+	
+	@Override
+	public ${className} getBy(String field, Object value) {
+		String sql = "select * from " + table + " where " + field + " = ? ";
+		return jdbc.query(sql, ${className}.class, value);
+	}
+
+	@Override
+	public ${className} getByAnd(String field1, Object value1, String field2, Object value2) {
+		String sql = "select * from " + table + " where " + field1 + " = ? and " + field2 + " = ? ";
+		return jdbc.query(sql, ${className}.class, value1, value2);
+	}
+
+	@Override
+	public ${className} getByOr(String field1, Object value1, String field2, Object value2) {
+		String sql = "select * from " + table + " where " + field1 + " = ? or " + field2 + " = ? ";
+		return jdbc.query(sql, ${className}.class, value1, value2);
+	}
+
+	@Override
+	public List<${className}> listBy(String field, Object value) {
+		String sql = "select * from " + table + " where " + field + " = ? ";
+		return jdbc.queryForList(sql, ${className}.class, value);
+	}
+
+	@Override
+	public List<${className}> listByAnd(String field1, Object value1, String field2, Object value2) {
+		String sql = "select * from " + table + " where " + field1 + " = ? and " + field2 + " = ? ";
+		return jdbc.queryForList(sql, ${className}.class, value1, value2);
+	}
+
+	@Override
+	public List<${className}> listByOr(String field1, Object value1, String field2, Object value2) {
+		String sql = "select * from " + table + " where " + field1 + " = ? or " + field2 + " = ? ";
+		return jdbc.queryForList(sql, ${className}.class, value1, value2);
+	}
+
+	@Override
+	public List<${className}> pageBy(String field, Object value, Pager page) {
+		String sql = "select * from " + table + " where " + field + " = ? ";
+		StatementParameter param = new StatementParameter();
+		param.set(value);
+		return jdbc.queryForPage(sql, ${className}.class, page, param);
+	}
+
+	@Override
+	public List<${className}> pageByAnd(String field1, Object value1, String field2, Object value2, Pager page) {
+		String sql = "select * from " + table + " where " + field1 + " = ? and " + field2 + " = ? ";
+		StatementParameter param = new StatementParameter();
+		param.set(value1);
+		param.set(value2);
+		return jdbc.queryForPage(sql, ${className}.class, page, param);
+	}
+
+	@Override
+	public List<${className}> pageByOr(String field1, Object value1, String field2, Object value2, Pager page) {
+		String sql = "select * from " + table + " where " + field1 + " = ? or " + field2 + " = ? ";
+		StatementParameter param = new StatementParameter();
+		param.set(value1);
+		param.set(value2);
+		return jdbc.queryForPage(sql, ${className}.class, page, param);
+	}
+	
 
 }

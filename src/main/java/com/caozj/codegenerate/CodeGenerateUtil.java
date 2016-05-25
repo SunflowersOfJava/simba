@@ -118,18 +118,31 @@ public class CodeGenerateUtil {
 		String serviceContent = getService(param, type);
 		String serviceImplContent = getServiceImpl(param, type);
 		String daoContent = getDao(param, type);
-		FileUtils.writeStringToFile(new File(dir.getAbsoluteFile() + "/controller/" + className + "Controller.java"), controllerContent, ConstantData.DEFAULT_CHARSET);
-		FileUtils.writeStringToFile(new File(dir.getAbsoluteFile() + "/service/" + className + "Service.java"), serviceContent, ConstantData.DEFAULT_CHARSET);
-		FileUtils.writeStringToFile(new File(dir.getAbsoluteFile() + "/service/impl/" + className + "ServiceImpl.java"), serviceImplContent, ConstantData.DEFAULT_CHARSET);
+		String controllerFile = dir.getAbsoluteFile() + "/controller/" + className + "Controller.java";
+		FileUtils.writeStringToFile(new File(controllerFile), controllerContent, ConstantData.DEFAULT_CHARSET);
+		logger.info("生成" + controllerFile);
+		String serviceFile = dir.getAbsoluteFile() + "/service/" + className + "Service.java";
+		FileUtils.writeStringToFile(new File(serviceFile), serviceContent, ConstantData.DEFAULT_CHARSET);
+		logger.info("生成" + serviceFile);
+		String serviceImplFile = dir.getAbsoluteFile() + "/service/impl/" + className + "ServiceImpl.java";
+		FileUtils.writeStringToFile(new File(serviceImplFile), serviceImplContent, ConstantData.DEFAULT_CHARSET);
+		logger.info("生成" + serviceImplFile);
 		if (type == CODETYPE.JDBC) {
 			String daoImplContent = getDaoImpl(param, type);
-			FileUtils.writeStringToFile(new File(dir.getAbsoluteFile() + "/dao/" + className + "Dao.java"), daoContent, ConstantData.DEFAULT_CHARSET);
-			FileUtils.writeStringToFile(new File(dir.getAbsoluteFile() + "/dao/impl/" + className + "DaoImpl.java"), daoImplContent, ConstantData.DEFAULT_CHARSET);
+			String daoFile = dir.getAbsoluteFile() + "/dao/" + className + "Dao.java";
+			FileUtils.writeStringToFile(new File(daoFile), daoContent, ConstantData.DEFAULT_CHARSET);
+			logger.info("生成" + daoFile);
+			String daoImplFile = dir.getAbsoluteFile() + "/dao/impl/" + className + "DaoImpl.java";
+			FileUtils.writeStringToFile(new File(daoImplFile), daoImplContent, ConstantData.DEFAULT_CHARSET);
+			logger.info("生成" + daoImplFile);
 		} else if (type == CODETYPE.MYBATIS) {
-			FileUtils.writeStringToFile(new File(dir.getAbsoluteFile() + "/mybatisDao/" + className + "Mapper.java"), daoContent, ConstantData.DEFAULT_CHARSET);
+			String mybatisDaoFile = dir.getAbsoluteFile() + "/mybatisDao/" + className + "Mapper.java";
+			FileUtils.writeStringToFile(new File(mybatisDaoFile), daoContent, ConstantData.DEFAULT_CHARSET);
+			logger.info("生成" + mybatisDaoFile);
 			String mybatisDaoXmlContent = getMybatisDaoXml(param, type);
-			FileUtils.writeStringToFile(new File(ServerUtil.getResourcesDir().getAbsolutePath() + "/" + mybatisXmlDir + "/" + StringUtil.getFirstLower(className) + ".xml"), mybatisDaoXmlContent,
-					ConstantData.DEFAULT_CHARSET);
+			String mybatisXmlFile = ServerUtil.getResourcesDir().getAbsolutePath() + "/" + mybatisXmlDir + "/" + StringUtil.getFirstLower(className) + ".xml";
+			FileUtils.writeStringToFile(new File(mybatisXmlFile), mybatisDaoXmlContent, ConstantData.DEFAULT_CHARSET);
+			logger.info("生成" + mybatisXmlFile);
 		}
 	}
 

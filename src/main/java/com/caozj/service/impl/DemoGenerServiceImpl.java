@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import com.caozj.dao.DemoGenerDao;
 import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.model.DemoGener;
@@ -58,14 +59,14 @@ public class DemoGenerServiceImpl implements DemoGenerService {
 	public void update(DemoGener demoGener) {
 		demoGenerDao.update(demoGener);
 	}
-
+	
 	@Override
 	public void batchDelete(List<Integer> idList) {
 		for (Integer id : idList) {
 			this.delete(id);
 		}
 	}
-
+	
 	@Override
 	public DemoGener getBy(String field, Object value) {
 		return demoGenerDao.getBy(field, value);

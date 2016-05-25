@@ -15,7 +15,7 @@ import com.caozj.model.DemoGener;
  * 
  * 
  * @author caozj
- * 
+ *  
  */
 @Repository
 public class DemoGenerDaoImpl implements DemoGenerDao {
@@ -28,13 +28,13 @@ public class DemoGenerDaoImpl implements DemoGenerDao {
 	@Override
 	public void add(DemoGener demoGener) {
 		String sql = "insert into " + table + "( name, age, num, d, f) values(?,?,?,?,?)";
-		jdbc.updateForBoolean(sql, demoGener.getName(), demoGener.getAge(), demoGener.getNum(), demoGener.getD(), demoGener.getF());
+		jdbc.updateForBoolean(sql, demoGener.getName(),demoGener.getAge(),demoGener.getNum(),demoGener.getD(),demoGener.getF());
 	}
 
 	@Override
 	public void update(DemoGener demoGener) {
 		String sql = "update " + table + " set  name = ? , age = ? , num = ? , d = ? , f = ?  where id = ?  ";
-		jdbc.updateForBoolean(sql, demoGener.getName(), demoGener.getAge(), demoGener.getNum(), demoGener.getD(), demoGener.getF(), demoGener.getId());
+		jdbc.updateForBoolean(sql,demoGener.getName(),demoGener.getAge(),demoGener.getNum(),demoGener.getD(),demoGener.getF(), demoGener.getId());
 	}
 
 	@Override
@@ -50,15 +50,15 @@ public class DemoGenerDaoImpl implements DemoGenerDao {
 	}
 
 	@Override
-	public List<DemoGener> listAll() {
+	public List<DemoGener> listAll(){
 		String sql = "select * from " + table;
 		return jdbc.queryForList(sql, DemoGener.class);
 	}
 
 	@Override
-	public int count() {
+	public int count(){
 		String sql = "select count(*) from " + table;
-		return jdbc.queryForInt(sql);
+		return jdbc.queryForInt(sql); 
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class DemoGenerDaoImpl implements DemoGenerDao {
 		String sql = "select * from " + table + " where id = ? ";
 		return jdbc.query(sql, DemoGener.class, id);
 	}
-
+	
 	@Override
 	public DemoGener getBy(String field, Object value) {
 		String sql = "select * from " + table + " where " + field + " = ? ";
@@ -128,5 +128,6 @@ public class DemoGenerDaoImpl implements DemoGenerDao {
 		param.set(value2);
 		return jdbc.queryForPage(sql, DemoGener.class, page, param);
 	}
+	
 
 }

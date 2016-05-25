@@ -1,4 +1,4 @@
-package com.caozj.service;
+package  com.caozj.service;
 
 import java.util.List;
 
@@ -22,11 +22,11 @@ public interface DemoGenerService {
 	List<DemoGener> listAll();
 
 	int count();
-
+	
 	List<DemoGener> page(Pager page);
 
 	DemoGener get(int id);
-
+	
 	void batchDelete(List<Integer> idList);
 
 	DemoGener getBy(String field, Object value);
@@ -46,5 +46,4 @@ public interface DemoGenerService {
 	List<DemoGener> pageByAnd(String field1, Object value1, String field2, Object value2, Pager page);
 
 	List<DemoGener> pageByOr(String field1, Object value1, String field2, Object value2, Pager page);
-
 }

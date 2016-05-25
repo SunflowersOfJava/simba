@@ -66,4 +66,49 @@ public class ${className}ServiceImpl implements ${className}Service {
 			this.delete(id);
 		}
 	}
+	
+	@Override
+	public ${className} getBy(String field, Object value) {
+		return ${firstLower}Dao.getBy(field, value);
+	}
+
+	@Override
+	public ${className} getByAnd(String field1, Object value1, String field2, Object value2) {
+		return ${firstLower}Dao.getByAnd(field1, value1, field2, value2);
+	}
+
+	@Override
+	public ${className} getByOr(String field1, Object value1, String field2, Object value2) {
+		return ${firstLower}Dao.getByOr(field1, value1, field2, value2);
+	}
+
+	@Override
+	public List<${className}> listBy(String field, Object value) {
+		return ${firstLower}Dao.listBy(field, value);
+	}
+
+	@Override
+	public List<${className}> listByAnd(String field1, Object value1, String field2, Object value2) {
+		return ${firstLower}Dao.listByAnd(field1, value1, field2, value2);
+	}
+
+	@Override
+	public List<${className}> listByOr(String field1, Object value1, String field2, Object value2) {
+		return ${firstLower}Dao.listByOr(field1, value1, field2, value2);
+	}
+
+	@Override
+	public List<${className}> pageBy(String field, Object value, Pager page) {
+		return ${firstLower}Dao.pageBy(field, value, page);
+	}
+
+	@Override
+	public List<${className}> pageByAnd(String field1, Object value1, String field2, Object value2, Pager page) {
+		return ${firstLower}Dao.pageByAnd(field1, value1, field2, value2, page);
+	}
+
+	@Override
+	public List<${className}> pageByOr(String field1, Object value1, String field2, Object value2, Pager page) {
+		return ${firstLower}Dao.pageByOr(field1, value1, field2, value2, page);
+	}
 }
