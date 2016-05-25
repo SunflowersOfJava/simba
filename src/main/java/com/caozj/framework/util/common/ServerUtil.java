@@ -61,9 +61,28 @@ public class ServerUtil {
 		}
 		return src;
 	}
+	
+	/**
+	 * 获取资源resources目录
+	 * 
+	 * @return
+	 */
+	public static File getResourcesDir() {
+		String webRoot = getWebRoot();
+		File resources = null;
+		String mavenFile = new File(webRoot).getParent() + "/resources";
+		if (new File(mavenFile).exists()) {
+			resources = new File(mavenFile);
+		} else {
+			String webFile = new File(webRoot).getParent() + "/src";
+			resources = new File(webFile);
+		}
+		return resources;
+	}
 
 	public static void main(String[] args) {
 		System.out.println(getWebRoot());
 		System.out.println(getSrcDir().getAbsolutePath());
+		System.out.println(getResourcesDir().getAbsolutePath());
 	}
 }

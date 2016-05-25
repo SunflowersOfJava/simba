@@ -20,7 +20,7 @@ public class CustomizedPropertyPlaceholderConfigurer extends PropertyPlaceholder
 
 	private static Map<String, String> ctxPropertiesMap;
 
-	private static final String defaultConfigPropertiesFile = "configs.properties";
+	private static final String defaultConfigPropertiesFile = "/configs.properties";
 
 	@Override
 	protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess, Properties props) throws BeansException {

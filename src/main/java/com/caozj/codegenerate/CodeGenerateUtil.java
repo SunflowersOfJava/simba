@@ -9,15 +9,18 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
+import com.caozj.common.CustomizedPropertyPlaceholderConfigurer;
 import com.caozj.framework.util.common.ReflectUtil;
 import com.caozj.framework.util.common.ServerUtil;
 import com.caozj.framework.util.common.StringUtil;
-import com.caozj.framework.util.velocity.VelocityUtil;
+import com.caozj.framework.util.freemarker.FreemarkerUtil;
 import com.caozj.model.constant.ConstantData;
+
+import freemarker.core.ParseException;
+import freemarker.template.MalformedTemplateNameException;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateNotFoundException;
 
 /**
  * 代码生成器工具类
@@ -25,16 +28,25 @@ import com.caozj.model.constant.ConstantData;
  * @author caozj
  *
  */
-@Component
 public class CodeGenerateUtil {
 
 	private static final Log logger = LogFactory.getLog(CodeGenerateUtil.class);
 
-	@Autowired
-	private VelocityUtil velocityUtil;
+	private static final String mybatisXmlDir = "mybatis";
 
-	@Value("${code.generate.package}")
-	private String packageName;
+	private String packageName = CustomizedPropertyPlaceholderConfigurer.getContextProperty("code.generate.package");
+
+	private static class CodeGenerateUtilHolder {
+		private static CodeGenerateUtil instance = new CodeGenerateUtil();
+	}
+
+	private CodeGenerateUtil() {
+
+	}
+
+	public static CodeGenerateUtil getInstance() {
+		return CodeGenerateUtilHolder.instance;
+	}
 
 	/**
 	 * 按照class对象生成代码
@@ -44,13 +56,14 @@ public class CodeGenerateUtil {
 	 * @param dir
 	 *            代码输入目录
 	 * @throws IOException
+	 * @throws TemplateException
 	 */
-	public void codeGenerate(Class<?> c, File dir) throws IOException {
-		logger.info("生成代码" + c.getName() + "开始");
-		initPath(dir);
+	public void codeGenerate(Class<?> c, File dir, CODETYPE type) throws IOException, TemplateException {
+		logger.info("生成代码" + c.getName() + "开始,类型为" + type.getFolderName());
+		initPath(dir, type);
 		Map<String, Object> param = buildParam(c);
-		generateClassFile(dir, c.getSimpleName(), param);
-		logger.info("生成代码" + c.getName() + "结束");
+		generateClassFile(dir, c.getSimpleName(), param, type);
+		logger.info("生成代码" + c.getName() + "结束,类型为" + type.getFolderName());
 	}
 
 	/**
@@ -98,53 +111,71 @@ public class CodeGenerateUtil {
 	 * @param className
 	 * @param param
 	 * @throws IOException
+	 * @throws TemplateException
 	 */
-	private void generateClassFile(File dir, String className, Map<String, Object> param) throws IOException {
-		String controllerContent = getController(param);
-		String serviceContent = getService(param);
-		String serviceImplContent = getServiceImpl(param);
-		String daoContent = getDao(param);
-		String daoImplContent = getDaoImpl(param);
+	private void generateClassFile(File dir, String className, Map<String, Object> param, CODETYPE type) throws IOException, TemplateException {
+		String controllerContent = getController(param, type);
+		String serviceContent = getService(param, type);
+		String serviceImplContent = getServiceImpl(param, type);
+		String daoContent = getDao(param, type);
 		FileUtils.writeStringToFile(new File(dir.getAbsoluteFile() + "/controller/" + className + "Controller.java"), controllerContent, ConstantData.DEFAULT_CHARSET);
 		FileUtils.writeStringToFile(new File(dir.getAbsoluteFile() + "/service/" + className + "Service.java"), serviceContent, ConstantData.DEFAULT_CHARSET);
 		FileUtils.writeStringToFile(new File(dir.getAbsoluteFile() + "/service/impl/" + className + "ServiceImpl.java"), serviceImplContent, ConstantData.DEFAULT_CHARSET);
-		FileUtils.writeStringToFile(new File(dir.getAbsoluteFile() + "/dao/" + className + "Dao.java"), daoContent, ConstantData.DEFAULT_CHARSET);
-		FileUtils.writeStringToFile(new File(dir.getAbsoluteFile() + "/dao/impl/" + className + "DaoImpl.java"), daoImplContent, ConstantData.DEFAULT_CHARSET);
+		if (type == CODETYPE.JDBC) {
+			String daoImplContent = getDaoImpl(param, type);
+			FileUtils.writeStringToFile(new File(dir.getAbsoluteFile() + "/dao/" + className + "Dao.java"), daoContent, ConstantData.DEFAULT_CHARSET);
+			FileUtils.writeStringToFile(new File(dir.getAbsoluteFile() + "/dao/impl/" + className + "DaoImpl.java"), daoImplContent, ConstantData.DEFAULT_CHARSET);
+		} else if (type == CODETYPE.MYBATIS) {
+			FileUtils.writeStringToFile(new File(dir.getAbsoluteFile() + "/mybatisDao/" + className + "Mapper.java"), daoContent, ConstantData.DEFAULT_CHARSET);
+			String mybatisDaoXmlContent = getMybatisDaoXml(param, type);
+			FileUtils.writeStringToFile(new File(ServerUtil.getResourcesDir().getAbsolutePath() + "/" + mybatisXmlDir + "/" + StringUtil.getFirstLower(className) + ".xml"), mybatisDaoXmlContent,
+					ConstantData.DEFAULT_CHARSET);
+		}
 	}
 
-	private String getController(Map<String, Object> param) {
-		return velocityUtil.toString("codegenerate/controller.vm", param);
+	private String getMybatisDaoXml(Map<String, Object> param, CODETYPE type) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
+		return FreemarkerUtil.parse("codegenerate/" + type.getFolderName() + "/mybatisXml.ftl", param);
 	}
 
-	private String getService(Map<String, Object> param) {
-		return velocityUtil.toString("codegenerate/service.vm", param);
+	private String getController(Map<String, Object> param, CODETYPE type) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
+		return FreemarkerUtil.parse("codegenerate/" + type.getFolderName() + "/controller.ftl", param);
 	}
 
-	private String getServiceImpl(Map<String, Object> param) {
-		return velocityUtil.toString("codegenerate/serviceImpl.vm", param);
+	private String getService(Map<String, Object> param, CODETYPE type) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
+		return FreemarkerUtil.parse("codegenerate/" + type.getFolderName() + "/service.ftl", param);
 	}
 
-	private String getDao(Map<String, Object> param) {
-		return velocityUtil.toString("codegenerate/dao.vm", param);
+	private String getServiceImpl(Map<String, Object> param, CODETYPE type) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
+		return FreemarkerUtil.parse("codegenerate/" + type.getFolderName() + "/serviceImpl.ftl", param);
 	}
 
-	private String getDaoImpl(Map<String, Object> param) {
-		return velocityUtil.toString("codegenerate/daoImpl4Mysql.vm", param);
+	private String getDao(Map<String, Object> param, CODETYPE type) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
+		return FreemarkerUtil.parse("codegenerate/" + type.getFolderName() + "/dao.ftl", param);
+	}
+
+	private String getDaoImpl(Map<String, Object> param, CODETYPE type) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
+		return FreemarkerUtil.parse("codegenerate/" + type.getFolderName() + "/daoImpl4Mysql.ftl", param);
 	}
 
 	/**
 	 * 创建好所有需要的路径
 	 */
-	private void initPath(File dir) {
+	private void initPath(File dir, CODETYPE type) {
 		String root = dir.getAbsolutePath();
-		String dao = root + "/dao";
-		String daoImpl = dao + "/impl";
 		String service = root + "/service";
 		String serviceImpl = service + "/impl";
 		String controller = root + "/controller";
-		new File(daoImpl).mkdirs();
 		new File(serviceImpl).mkdirs();
 		new File(controller).mkdirs();
+		if (type == CODETYPE.JDBC) {
+			String dao = root + "/dao";
+			String daoImpl = dao + "/impl";
+			new File(daoImpl).mkdirs();
+		} else if (type == CODETYPE.MYBATIS) {
+			String dao = root + "/mybatisDao";
+			new File(dao).mkdirs();
+			new File(ServerUtil.getResourcesDir().getAbsolutePath() + "/" + mybatisXmlDir).mkdirs();
+		}
 	}
 
 	/**
@@ -155,10 +186,11 @@ public class CodeGenerateUtil {
 	 * @param dir
 	 *            代码输入目录
 	 * @throws IOException
+	 * @throws TemplateException
 	 */
-	public void codeGenerate(Class<?>[] cs, File dir) throws IOException {
+	public void codeGenerate(Class<?>[] cs, File dir, CODETYPE type) throws IOException, TemplateException {
 		for (Class<?> c : cs) {
-			codeGenerate(c, dir);
+			codeGenerate(c, dir, type);
 		}
 	}
 
@@ -168,9 +200,10 @@ public class CodeGenerateUtil {
 	 * @param c
 	 *            class对象
 	 * @throws IOException
+	 * @throws TemplateException
 	 */
-	public void codeGenerate(Class<?> c) throws IOException {
-		codeGenerate(c, new File(ServerUtil.getSrcDir().getAbsolutePath() + "/" + getPackagePath()));
+	public void codeGenerate(Class<?> c, CODETYPE type) throws IOException, TemplateException {
+		codeGenerate(c, new File(ServerUtil.getSrcDir().getAbsolutePath() + "/" + getPackagePath()), type);
 	}
 
 	/**
@@ -179,9 +212,10 @@ public class CodeGenerateUtil {
 	 * @param cs
 	 *            class对象数组
 	 * @throws IOException
+	 * @throws TemplateException
 	 */
-	public void codeGenerate(Class<?>[] cs) throws IOException {
-		codeGenerate(cs, new File(ServerUtil.getSrcDir().getAbsolutePath() + "/" + getPackagePath()));
+	public void codeGenerate(Class<?>[] cs, CODETYPE type) throws IOException, TemplateException {
+		codeGenerate(cs, new File(ServerUtil.getSrcDir().getAbsolutePath() + "/" + getPackagePath()), type);
 	}
 
 	private String getPackagePath() {

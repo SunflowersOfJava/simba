@@ -36,7 +36,7 @@ class ReactRichEditor extends React.Component {
 	  _getValue(){
 		  const {editorState} = this.state;
 		  var contentState = editorState.getCurrentContent();
-		  return contentState.getPlainText();
+		  return this._getPlainText();
 	  }
 
 	  _clear(){
@@ -249,6 +249,6 @@ const submitFn = (content)=>{
 	message.success("提交内容：" + content);
 }
 ReactDOM.render(
-  <DemoEditor placeholder="请输入文本" id="editor" submitButtonName="提交" cancelButtonName="清空" defaultValue="我是你大哥o!!!" sumbitFn={submitFn}/>,
+  <DemoEditor placeholder="请输入文本" id="editor" submitButtonName="提交" cancelButtonName="清空" defaultValue="<h1>我是你大哥o!!!</h1><br/>第二行了" sumbitFn={submitFn}/>,
   document.getElementById('example')
 );
