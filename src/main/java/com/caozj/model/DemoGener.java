@@ -67,4 +67,23 @@ public class DemoGener implements Serializable {
 		this.f = f;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("DemoGener [id=");
+		builder.append(id);
+		builder.append(", name=");
+		builder.append(name);
+		builder.append(", age=");
+		builder.append(age);
+		builder.append(", num=");
+		builder.append(num);
+		builder.append(", d=");
+		builder.append(d);
+		builder.append(", f=");
+		builder.append(f);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }
