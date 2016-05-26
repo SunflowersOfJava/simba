@@ -36,7 +36,7 @@ class ReactRichEditor extends React.Component {
 	  _getValue(){
 		  const {editorState} = this.state;
 		  var contentState = editorState.getCurrentContent();
-		  return this._getPlainText();
+		  return stateToHTML(contentState);
 	  }
 
 	  _clear(){

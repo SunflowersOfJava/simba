@@ -26,9 +26,9 @@ import com.caozj.framework.util.schedule.ScheduleUtil;
 
 @Controller
 @RequestMapping("/test")
-public class TestController {
+public class TController {
 
-	private static final Log logger = LogFactory.getLog(TestController.class);
+	private static final Log logger = LogFactory.getLog(TController.class);
 
 	@Autowired
 	private Jdbc jdbc;
@@ -92,7 +92,7 @@ public class TestController {
 		return "test/slider";
 	}
 
-	@RequestMapping
+	@RequestMapping("/showMove.do")
 	public String showMove() {
 		return "test/move";
 	}
