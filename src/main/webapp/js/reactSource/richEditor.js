@@ -1,6 +1,7 @@
 const {Editor, EditorState,ContentState, RichUtils} = Draft;
 const {Switch ,Button,message } = antd;
 
+
 class ReactRichEditor extends React.Component {
 	  constructor(props) {
 	    super(props);
@@ -36,7 +37,7 @@ class ReactRichEditor extends React.Component {
 	  _getValue(){
 		  const {editorState} = this.state;
 		  var contentState = editorState.getCurrentContent();
-		  return stateToHTML(contentState);
+		  return this._getPlainText(contentState);
 	  }
 
 	  _clear(){
