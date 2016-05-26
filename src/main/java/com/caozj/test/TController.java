@@ -191,5 +191,10 @@ public class TController {
 	public String reactRichText() {
 		return "react/reactRichText";
 	}
+	
+	@RequestMapping
+	public String reactUEditor() {
+		return "react/ueditor";
+	}
 
 }
