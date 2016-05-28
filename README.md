@@ -1,5 +1,8 @@
 # demoWeb
 一个基于SpringMVC的web框架
+如果大家对框架改进有任何意见，麻烦可以在下载资源页进行留言，或者发送email到我的邮箱loceme.student@163.com
+或者大家有什么功能已经开发好了，愿意加到我的框架中，共享给大家一起学习，也可以随时联系我，我会在收到信息之后，尽快回复，谢谢。
+以下是每个版本的日志
 1.0.5
 从web项目迁移成maven项目
 1.0.6
@@ -28,12 +31,10 @@ zookeeper工具类优化 增加工具类
 ftp服务端和客户端工具类，配置文件maven和web项目路径统一
 1.1.0
 soapui工具类(web版本) properties等工具类
-
 1.1.1
 工具类数据校验 jsp自定义标签 Spring自定义注解 默认requestMapping
 1.1.2
 代码生成器
-
 1.1.3
 首页修改 dateformat.js 时间参数转换 SpringMVC配置文件集中 快递参数接口 
 1.1.4
