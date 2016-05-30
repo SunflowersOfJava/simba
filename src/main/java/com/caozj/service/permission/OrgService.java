@@ -1,4 +1,4 @@
-package  com.caozj.service.permission;
+package com.caozj.service.permission;
 
 import java.util.List;
 
@@ -22,11 +22,11 @@ public interface OrgService {
 	List<Org> listAll();
 
 	int count();
-	
+
 	List<Org> page(Pager page);
 
 	Org get(int id);
-	
+
 	void batchDelete(List<Integer> idList);
 
 	Org getBy(String field, Object value);
@@ -46,4 +46,9 @@ public interface OrgService {
 	List<Org> pageByAnd(String field1, Object value1, String field2, Object value2, Pager page);
 
 	List<Org> pageByOr(String field1, Object value1, String field2, Object value2, Pager page);
+
+	/**
+	 * 检查机构扩展属性，如果没有则创建
+	 */
+	void checkAndCreateOrgExt();
 }

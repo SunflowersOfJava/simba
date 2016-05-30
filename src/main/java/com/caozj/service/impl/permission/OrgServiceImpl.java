@@ -2,13 +2,17 @@ package com.caozj.service.impl.permission;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.caozj.dao.permission.OrgDao;
+import com.caozj.dao.permission.OrgExtDao;
 import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.model.permission.Org;
+import com.caozj.model.permission.OrgExtDesc;
 import com.caozj.service.permission.OrgService;
 
 /**
@@ -23,6 +27,12 @@ public class OrgServiceImpl implements OrgService {
 
 	@Autowired
 	private OrgDao orgDao;
+
+	@Autowired
+	private OrgExtDao orgExtDao;
+
+	@Value("${org.ext}")
+	private String orgExt;
 
 	@Override
 	public void add(Org org) {
@@ -58,14 +68,14 @@ public class OrgServiceImpl implements OrgService {
 	public void update(Org org) {
 		orgDao.update(org);
 	}
-	
+
 	@Override
 	public void batchDelete(List<Integer> idList) {
 		for (Integer id : idList) {
 			this.delete(id);
 		}
 	}
-	
+
 	@Override
 	public Org getBy(String field, Object value) {
 		return orgDao.getBy(field, value);
@@ -109,5 +119,23 @@ public class OrgServiceImpl implements OrgService {
 	@Override
 	public List<Org> pageByOr(String field1, Object value1, String field2, Object value2, Pager page) {
 		return orgDao.pageByOr(field1, value1, field2, value2, page);
+	}
+
+	@Override
+	public void checkAndCreateOrgExt() {
+		if (StringUtils.isBlank(orgExt)) {
+			return;
+		}
+		List<String> existColumns = orgExtDao.showAllColumns();
+		String[] ext = orgExt.trim().split(",");
+		for (String column : ext) {
+			String[] kv = column.split(":");
+			String key = kv[0];
+			String value = kv[1];
+			OrgExtDesc.put(key, value);
+			if (!existColumns.contains(key)) {
+				orgExtDao.addColumn(key);
+			}
+		}
 	}
 }

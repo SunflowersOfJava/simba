@@ -11,11 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.caozj.dao.permission.RoleDao;
 import com.caozj.dao.permission.UserDao;
+import com.caozj.dao.permission.UserExtDao;
 import com.caozj.dao.permission.UserRoleDao;
 import com.caozj.framework.util.common.EncryptUtil;
 import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.model.permission.Role;
 import com.caozj.model.permission.User;
+import com.caozj.model.permission.UserExtDesc;
 import com.caozj.model.permission.UserRole;
 import com.caozj.service.permission.UserService;
 
@@ -32,6 +34,9 @@ public class UserServiceImpl implements UserService {
 	@Value("${key}")
 	private String key;
 
+	@Value("${user.ext}")
+	private String userExt;
+
 	@Value("${default.pwd}")
 	private String defaultPwd;
 
@@ -43,6 +48,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private RoleDao roleDao;
+
+	@Autowired
+	private UserExtDao userExtDao;
 
 	@Override
 	public void add(User user) {
@@ -141,5 +149,23 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void update(User user) {
 		userDao.update(user);
+	}
+
+	@Override
+	public void checkAndCreateUserExt() {
+		if (StringUtils.isBlank(userExt)) {
+			return;
+		}
+		List<String> existColumns = userExtDao.showAllColumns();
+		String[] ext = userExt.trim().split(",");
+		for (String column : ext) {
+			String[] kv = column.split(":");
+			String key = kv[0];
+			String value = kv[1];
+			UserExtDesc.put(key, value);
+			if (!existColumns.contains(key)) {
+				userExtDao.addColumn(key);
+			}
+		}
 	}
 }

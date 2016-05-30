@@ -71,4 +71,9 @@ public interface UserService {
 
 	List<Role> listRoleByAccount(String account);
 
+	/**
+	 * 检查用户扩展属性，如果没有则创建
+	 */
+	void checkAndCreateUserExt();
+
 }
