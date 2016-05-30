@@ -1,7 +1,6 @@
 package com.caozj.test;
 
 import java.io.IOException;
-import java.util.List;
 
 import com.caozj.framework.util.socket.SocketClientUtil;
 import com.caozj.framework.util.socket.SocketServerUtil;
@@ -42,12 +41,12 @@ public class TestSocket {
 				}
 			}).start();
 		}
-//		List<String> result = SocketServerUtil.getResp(port);
-//		for (String content : result) {
-//			System.out.println("server receive:" + content);
-//		}
-//		SocketServerUtil.removeAll(port);
-//		SocketServerUtil.stop(port);
-		
+		// List<String> result = SocketServerUtil.getResp(port);
+		// for (String content : result) {
+		// System.out.println("server receive:" + content);
+		// }
+		// SocketServerUtil.removeAll(port);
+		// SocketServerUtil.stop(port);
+
 	}
 }

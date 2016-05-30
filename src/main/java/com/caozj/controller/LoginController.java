@@ -18,7 +18,6 @@ import com.caozj.framework.util.common.EncryptUtil;
 import com.caozj.model.permission.Permission;
 import com.caozj.model.permission.Role;
 import com.caozj.model.permission.User;
-import com.caozj.service.permission.PermissionService;
 import com.caozj.service.permission.RoleService;
 import com.caozj.service.permission.UserService;
 
@@ -46,9 +45,6 @@ public class LoginController {
 
 	@Autowired
 	private RoleService roleService;
-
-	@Autowired
-	private PermissionService permissionService;
 
 	/**
 	 * 进入登陆界面
