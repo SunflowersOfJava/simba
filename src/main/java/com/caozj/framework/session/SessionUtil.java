@@ -11,9 +11,12 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 
 import com.caozj.framework.util.common.PathUtil;
+import com.caozj.model.permission.Org;
+import com.caozj.model.permission.OrgExt;
 import com.caozj.model.permission.Permission;
 import com.caozj.model.permission.Role;
 import com.caozj.model.permission.User;
+import com.caozj.model.permission.UserExt;
 
 /**
  * Session工具类
@@ -26,11 +29,20 @@ public class SessionUtil {
 	// 存在session里的用户对象的key
 	public static final String userKey = "sessUser";
 
+	// 存在session里的用户扩展对象的key
+	public static final String userExtKey = "sessUserExt";
+
 	// 存在session里的角色对象的key
 	public static final String roleKey = "sessRole";
 
 	// 存在session里的权限对象的key
 	public static final String permissionKey = "sessPermission";
+
+	// 存在session里的机构对象的key
+	public static final String orgKey = "sessOrg";
+
+	// 存在session里的机构扩展对象的key
+	public static final String orgExtKey = "sessOrgExt";
 
 	// 存在session里的 用户有权限访问的所有的url地址的key
 	public static final String permissionUrlKey = "sessPermissionUrls";
@@ -47,12 +59,38 @@ public class SessionUtil {
 		return isAdmin != null && isAdmin;
 	}
 
+	@SuppressWarnings("unchecked")
+	public static List<Org> getOrgs(HttpSession session) {
+		return (List<Org>) session.getAttribute(orgKey);
+	}
+
+	public static void setOrgs(HttpSession session, List<Org> orgs) {
+		session.setAttribute(orgKey, orgs);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<OrgExt> getOrgExts(HttpSession session) {
+		return (List<OrgExt>) session.getAttribute(orgExtKey);
+	}
+
+	public static void setOrgExts(HttpSession session, List<OrgExt> exts) {
+		session.setAttribute(orgExtKey, exts);
+	}
+
 	public static User getUser(HttpSession session) {
 		return (User) session.getAttribute(userKey);
 	}
 
 	public static void setUser(HttpSession session, User user) {
 		session.setAttribute(userKey, user);
+	}
+
+	public static UserExt getUserExt(HttpSession session) {
+		return (UserExt) session.getAttribute(userExtKey);
+	}
+
+	public static void setUserExt(HttpSession session, UserExt userExt) {
+		session.setAttribute(userExtKey, userExt);
 	}
 
 	@SuppressWarnings("unchecked")

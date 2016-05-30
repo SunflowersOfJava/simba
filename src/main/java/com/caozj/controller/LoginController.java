@@ -15,9 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.caozj.framework.session.SessionUtil;
 import com.caozj.framework.util.common.EncryptUtil;
+import com.caozj.model.permission.Org;
+import com.caozj.model.permission.OrgExt;
 import com.caozj.model.permission.Permission;
 import com.caozj.model.permission.Role;
 import com.caozj.model.permission.User;
+import com.caozj.model.permission.UserExt;
+import com.caozj.service.permission.OrgService;
 import com.caozj.service.permission.RoleService;
 import com.caozj.service.permission.UserService;
 
@@ -45,6 +49,9 @@ public class LoginController {
 
 	@Autowired
 	private RoleService roleService;
+
+	@Autowired
+	private OrgService orgService;
 
 	/**
 	 * 进入登陆界面
@@ -123,15 +130,21 @@ public class LoginController {
 			return false;
 		}
 		User user = userService.get(userName);
+		UserExt userExt = userService.getUserExt(userName);
 		List<Role> roleList = userService.listRoleByAccount(userName);
 		List<Permission> permissionList = new ArrayList<Permission>();
 		for (Role role : roleList) {
 			List<Permission> list = roleService.listByRole(role.getName());
 			permissionList.addAll(list);
 		}
+		List<Org> orgList = userService.listOrgByUser(userName);
+		List<OrgExt> orgExtList = userService.listOrgExtByUser(userName);
 		SessionUtil.setUser(session, user);
+		SessionUtil.setUserExt(session, userExt);
 		SessionUtil.setRoles(session, roleList);
 		SessionUtil.setPermissions(session, permissionList);
+		SessionUtil.setOrgs(session, orgList);
+		SessionUtil.setOrgExts(session, orgExtList);
 		return true;
 	}
 

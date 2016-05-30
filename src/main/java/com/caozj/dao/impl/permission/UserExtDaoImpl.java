@@ -1,5 +1,6 @@
 package com.caozj.dao.impl.permission;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.caozj.dao.permission.UserExtDao;
 import com.caozj.framework.util.jdbc.Jdbc;
+import com.caozj.model.permission.UserExt;
 
 /**
  * 
@@ -32,6 +34,15 @@ public class UserExtDaoImpl implements UserExtDao {
 	public void addColumn(String column) {
 		String sql = "ALTER TABLE " + table + " ADD " + column + " varchar(256)";
 		jdbc.updateForBoolean(sql);
+	}
+
+	@Override
+	public UserExt get(String userAccount) {
+		String sql = "select * from "+ table+" where userAccount = ? ";
+		HashMap ext = 	jdbc.query(sql, HashMap.class, userAccount);
+		UserExt userExt = new UserExt();
+		
+		return userExt;
 	}
 
 }

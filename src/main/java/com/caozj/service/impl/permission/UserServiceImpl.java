@@ -9,14 +9,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.caozj.dao.permission.OrgDao;
+import com.caozj.dao.permission.OrgExtDao;
 import com.caozj.dao.permission.RoleDao;
 import com.caozj.dao.permission.UserDao;
 import com.caozj.dao.permission.UserExtDao;
+import com.caozj.dao.permission.UserOrgDao;
 import com.caozj.dao.permission.UserRoleDao;
 import com.caozj.framework.util.common.EncryptUtil;
 import com.caozj.framework.util.jdbc.Pager;
+import com.caozj.model.permission.Org;
+import com.caozj.model.permission.OrgExt;
 import com.caozj.model.permission.Role;
 import com.caozj.model.permission.User;
+import com.caozj.model.permission.UserExt;
 import com.caozj.model.permission.UserExtDesc;
 import com.caozj.model.permission.UserRole;
 import com.caozj.service.permission.UserService;
@@ -51,6 +57,15 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserExtDao userExtDao;
+
+	@Autowired
+	private OrgDao orgDao;
+
+	@Autowired
+	private OrgExtDao orgExtDao;
+
+	@Autowired
+	private UserOrgDao userOrgDao;
 
 	@Override
 	public void add(User user) {
@@ -167,5 +182,20 @@ public class UserServiceImpl implements UserService {
 				userExtDao.addColumn(key);
 			}
 		}
+	}
+
+	@Override
+	public UserExt getUserExt(String userAccount) {
+		return userExtDao.get(userAccount);
+	}
+
+	@Override
+	public List<Org> listOrgByUser(String userAccount) {
+		return null;
+	}
+
+	@Override
+	public List<OrgExt> listOrgExtByUser(String userAccount) {
+		return null;
 	}
 }

@@ -3,8 +3,11 @@ package com.caozj.service.permission;
 import java.util.List;
 
 import com.caozj.framework.util.jdbc.Pager;
+import com.caozj.model.permission.Org;
+import com.caozj.model.permission.OrgExt;
 import com.caozj.model.permission.Role;
 import com.caozj.model.permission.User;
+import com.caozj.model.permission.UserExt;
 
 /**
  * 用户service(传进方法里的密码全部为明文密码)
@@ -75,5 +78,11 @@ public interface UserService {
 	 * 检查用户扩展属性，如果没有则创建
 	 */
 	void checkAndCreateUserExt();
+
+	UserExt getUserExt(String userAccount);
+
+	List<Org> listOrgByUser(String userAccount);
+
+	List<OrgExt> listOrgExtByUser(String userAccount);
 
 }
