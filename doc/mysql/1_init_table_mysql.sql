@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016/3/1 17:41:45                            */
+/* Created on:     2016-05-30  星期一 15:19:29                     */
 /*==============================================================*/
 
 
@@ -12,13 +12,25 @@ drop table if exists installPackage;
 
 drop table if exists menu;
 
+drop table if exists org;
+
+drop table if exists orgExt;
+
 drop table if exists permission;
+
+drop table if exists registryTable;
+
+drop table if exists registryType;
 
 drop table if exists role;
 
 drop table if exists rolePermission;
 
 drop table if exists systemUser;
+
+drop table if exists userExt;
+
+drop table if exists userOrg;
 
 drop table if exists userRole;
 
@@ -77,6 +89,29 @@ create table menu
 alter table menu comment '菜单';
 
 /*==============================================================*/
+/* Table: org                                                   */
+/*==============================================================*/
+create table org
+(
+   id                   int not null auto_increment comment '机构ID',
+   name                 varchar(128) not null comment '名称',
+   primary key (id)
+);
+
+alter table org comment '机构';
+
+/*==============================================================*/
+/* Table: orgExt                                                */
+/*==============================================================*/
+create table orgExt
+(
+   id                   int not null comment '机构ID',
+   primary key (id)
+);
+
+alter table orgExt comment '机构扩展';
+
+/*==============================================================*/
 /* Table: permission                                            */
 /*==============================================================*/
 create table permission
@@ -86,6 +121,34 @@ create table permission
    url                  varchar(512) not null,
    primary key (name)
 );
+
+/*==============================================================*/
+/* Table: registryTable                                         */
+/*==============================================================*/
+create table registryTable
+(
+   id                   int not null auto_increment,
+   code                 varchar(64) not null comment '编码',
+   value                varchar(128) not null comment '值',
+   typeID               int not null comment '类型ID',
+   description          varchar(128) comment '描述',
+   primary key (id)
+);
+
+alter table registryTable comment '注册表';
+
+/*==============================================================*/
+/* Table: registryType                                          */
+/*==============================================================*/
+create table registryType
+(
+   id                   int not null auto_increment,
+   name                 varchar(128) not null comment '名称',
+   parentID             int not null comment '父ID',
+   primary key (id)
+);
+
+alter table registryType comment '注册类型';
 
 /*==============================================================*/
 /* Table: role                                                  */
@@ -117,6 +180,30 @@ create table systemUser
    pwd                  varchar(256) not null,
    primary key (account)
 );
+
+/*==============================================================*/
+/* Table: userExt                                               */
+/*==============================================================*/
+create table userExt
+(
+   userAccount          varchar(64) not null comment '用户账号',
+   primary key (userAccount)
+);
+
+alter table userExt comment '用户扩展';
+
+/*==============================================================*/
+/* Table: userOrg                                               */
+/*==============================================================*/
+create table userOrg
+(
+   id                   int not null auto_increment,
+   userAccount          varchar(64) not null comment '用户账号',
+   orgID                int not null comment '机构ID',
+   primary key (id)
+);
+
+alter table userOrg comment '用户机构';
 
 /*==============================================================*/
 /* Table: userRole                                              */
