@@ -1,5 +1,5 @@
 # demoWeb
-一个基于SpringMVC的web框架
+一个基于SpringMVC的web框架,初始化脚本在doc目录中，直接运行Jetty类的main方法，即可启动web服务
 如果大家对框架改进有任何意见，麻烦可以在下载资源页进行留言，或者发送email到我的邮箱loceme.student@163.com
 或者大家有什么功能已经开发好了，愿意加到我的框架中，共享给大家一起学习，也可以随时联系我，我会在收到信息之后，尽快回复，谢谢。
 以下是每个版本的日志
@@ -75,4 +75,4 @@ Mybatis使用二级缓存,增加redis实现
 react集成ueditor在线编辑器
 增加spring-integration
 增加activiti
-用户扩展
+通过配置自动扩展用户属性

@@ -19,9 +19,13 @@ public interface UserService {
 
 	void add(User user);
 
+	void add(User user, UserExt userExt);
+
 	void delete(String account);
 
 	void update(User user);
+
+	void update(User user, UserExt userExt);
 
 	void updateName(String account, String name);
 

@@ -77,6 +77,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void delete(String account) {
 		userDao.delete(account);
+		userExtDao.delete(account);
 		userRoleDao.deleteByUserAccount(account);
 	}
 
@@ -210,5 +211,17 @@ public class UserServiceImpl implements UserService {
 			orgExtList.add(orgExt);
 		});
 		return orgExtList;
+	}
+
+	@Override
+	public void add(User user, UserExt userExt) {
+		this.add(user);
+		userExtDao.add(userExt);
+	}
+
+	@Override
+	public void update(User user, UserExt userExt) {
+		this.updateName(user.getAccount(), user.getName());
+		userExtDao.update(userExt);
 	}
 }

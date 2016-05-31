@@ -24,6 +24,7 @@ import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.model.constant.ConstantData;
 import com.caozj.model.permission.Role;
 import com.caozj.model.permission.User;
+import com.caozj.model.permission.UserExt;
 import com.caozj.model.permission.UserExtDesc;
 import com.caozj.service.permission.RoleService;
 import com.caozj.service.permission.UserService;
@@ -72,13 +73,35 @@ public class UserController {
 	}
 
 	@RequestMapping("/toAdd.do")
-	public String toAdd() {
+	public String toAdd(ModelMap model) {
+		Map<String, String> desc = UserExtDesc.getAllDesc();
+		List<Map<String, String>> descs = new ArrayList<>(desc.size());
+		desc.forEach((key, value) -> {
+			Map<String, String> m = new HashMap<>(2);
+			m.put("key", key);
+			m.put("name", value);
+			descs.add(m);
+		});
+		model.put("descs", descs);
 		return "permission/addUser";
 	}
 
 	@RequestMapping("/add.do")
-	public String add(User user, ModelMap model) {
-		userService.add(user);
+	public String add(HttpServletRequest request, ModelMap model) {
+		User user = new User();
+		UserExt userExt = new UserExt();
+		Map<String, String> extMap = new HashMap<>();
+		userExt.setExtMap(extMap);
+		String name = request.getParameter("name");
+		String account = request.getParameter("account");
+		user.setAccount(account);
+		user.setName(name);
+		userExt.setUserAccount(account);
+		Map<String, String> descMap = UserExtDesc.getAllDesc();
+		descMap.keySet().forEach((key) -> {
+			extMap.put(key, request.getParameter(key));
+		});
+		userService.add(user, userExt);
 		model.put("message", new JsonResult().toJson());
 		return "message";
 	}
@@ -97,14 +120,38 @@ public class UserController {
 		} else {
 			user = loginUser;
 		}
+		UserExt userExt = userService.getUserExt(user.getAccount());
+		Map<String, String> desc = UserExtDesc.getAllDesc();
+		List<Map<String, String>> descs = new ArrayList<>(desc.size());
+		desc.forEach((key, value) -> {
+			Map<String, String> m = new HashMap<>(2);
+			m.put("key", key);
+			m.put("name", value);
+			m.put("value", userExt.getExtMap().get(key));
+			descs.add(m);
+		});
+		model.put("descs", descs);
 		model.put("self", self);
 		model.put("user", user);
 		return "permission/updateUser";
 	}
 
 	@RequestMapping("/update.do")
-	public String update(User user, ModelMap model) {
-		userService.updateName(user.getAccount(), user.getName());
+	public String update(HttpServletRequest request, ModelMap model) {
+		User user = new User();
+		UserExt userExt = new UserExt();
+		Map<String, String> extMap = new HashMap<>();
+		userExt.setExtMap(extMap);
+		String name = request.getParameter("name");
+		String account = request.getParameter("account");
+		user.setAccount(account);
+		user.setName(name);
+		userExt.setUserAccount(account);
+		Map<String, String> descMap = UserExtDesc.getAllDesc();
+		descMap.keySet().forEach((key) -> {
+			extMap.put(key, request.getParameter(key));
+		});
+		userService.update(user, userExt);
 		model.put("message", new JsonResult().toJson());
 		return "message";
 	}

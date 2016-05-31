@@ -17,4 +17,10 @@ public interface UserExtDao {
 	void addColumn(String column);
 
 	UserExt get(String userAccount);
+
+	void delete(String account);
+
+	void add(UserExt userExt);
+
+	void update(UserExt userExt);
 }
