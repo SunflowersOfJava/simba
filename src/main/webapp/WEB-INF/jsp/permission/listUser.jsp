@@ -16,23 +16,39 @@
 			var url = contextPath + "/user/listDataOfExt.do";
 			var pageSize = 10;
 			var fields = [ {
-				name : "account",
+				name : "user.account",
 				type : "string"
 			}, {
-				name : "name",
+				name : "user.name",
 				type : "string"
-			} ];
+			}
+			<c:forEach var="key" items="${keys}">
+			,{
+				name : "userExt.extMap.${key}",
+				type : "string"
+			}
+			</c:forEach>
+			];
 			var cmModels = [ {
 				header : '账号',
-				dataIndex : 'account',
+				dataIndex : 'user.account',
 				width : 100,
 				sortable : true
 			}, {
 				header : '用户名',
-				dataIndex : 'name',
+				dataIndex : 'user.name',
 				width : 100,
 				sortable : true
-			}, {
+			}
+			<c:forEach var="desc" items="${descs}">
+			,{
+				header : '${desc.value}',
+				dataIndex : 'userExt.extMap.${desc.key}',
+				width : 100,
+				sortable : true
+			}
+			</c:forEach>
+			, {
 				header : "操作",
 				renderer : renderOper
 			} ];

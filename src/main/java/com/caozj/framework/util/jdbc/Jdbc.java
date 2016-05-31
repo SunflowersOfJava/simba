@@ -175,6 +175,33 @@ public class Jdbc extends JdbcDaoSupport {
 		}
 	}
 
+	public List<Map<String, Object>> queryForMaps(String sql, Object... args) {
+		try {
+			List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(sql, args);
+			return list;
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+
+	public Map<String, Object> queryForMap(String sql) {
+		try {
+			Map<String, Object> map = this.getJdbcTemplate().queryForMap(sql);
+			return map;
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+
+	public Map<String, Object> queryForMap(String sql, Object... args) {
+		try {
+			Map<String, Object> map = this.getJdbcTemplate().queryForMap(sql, args);
+			return map;
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+
 	public <T> List<T> queryForList(String sql, Class<T> elementType) {
 		try {
 			List<T> list = this.getJdbcTemplate().query(sql, new BeanPropertyRowMapper<T>(elementType));

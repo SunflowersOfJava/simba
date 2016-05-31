@@ -2,6 +2,7 @@ package com.caozj.dao.impl.permission;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -38,10 +39,17 @@ public class UserExtDaoImpl implements UserExtDao {
 
 	@Override
 	public UserExt get(String userAccount) {
-		String sql = "select * from "+ table+" where userAccount = ? ";
-		HashMap ext = 	jdbc.query(sql, HashMap.class, userAccount);
+		String sql = "select * from " + table + " where userAccount = ? ";
+		Map<String, Object> ext = jdbc.queryForMap(sql, userAccount);
 		UserExt userExt = new UserExt();
-		
+		userExt.setUserAccount(userAccount);
+		Map<String, String> extMap = new HashMap<>();
+		userExt.setExtMap(extMap);
+		if (ext != null && ext.size() > 0) {
+			ext.forEach((key, value) -> {
+				extMap.put(key, value + "");
+			});
+		}
 		return userExt;
 	}
 

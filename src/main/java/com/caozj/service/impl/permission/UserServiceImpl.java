@@ -24,6 +24,7 @@ import com.caozj.model.permission.Role;
 import com.caozj.model.permission.User;
 import com.caozj.model.permission.UserExt;
 import com.caozj.model.permission.UserExtDesc;
+import com.caozj.model.permission.UserOrg;
 import com.caozj.model.permission.UserRole;
 import com.caozj.service.permission.UserService;
 
@@ -191,11 +192,23 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<Org> listOrgByUser(String userAccount) {
-		return null;
+		List<UserOrg> userOrgList = userOrgDao.listBy("userAccount", userAccount);
+		List<Org> orgList = new ArrayList<>(userOrgList.size());
+		userOrgList.forEach((userOrg) -> {
+			Org org = orgDao.get(userOrg.getOrgID());
+			orgList.add(org);
+		});
+		return orgList;
 	}
 
 	@Override
 	public List<OrgExt> listOrgExtByUser(String userAccount) {
-		return null;
+		List<UserOrg> userOrgList = userOrgDao.listBy("userAccount", userAccount);
+		List<OrgExt> orgExtList = new ArrayList<>(userOrgList.size());
+		userOrgList.forEach((userOrg) -> {
+			OrgExt orgExt = orgExtDao.get(userOrg.getOrgID());
+			orgExtList.add(orgExt);
+		});
+		return orgExtList;
 	}
 }

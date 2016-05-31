@@ -2,8 +2,11 @@ package com.caozj.controller.permission;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.caozj.controller.vo.UserVo;
 import com.caozj.framework.model.ext.ExtPageGrid;
 import com.caozj.framework.model.json.JsonResult;
 import com.caozj.framework.session.SessionUtil;
@@ -20,6 +24,7 @@ import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.model.constant.ConstantData;
 import com.caozj.model.permission.Role;
 import com.caozj.model.permission.User;
+import com.caozj.model.permission.UserExtDesc;
 import com.caozj.service.permission.RoleService;
 import com.caozj.service.permission.UserService;
 
@@ -35,6 +40,18 @@ public class UserController {
 
 	@RequestMapping("/list.do")
 	public String list(ModelMap model) {
+		Map<String, String> desc = UserExtDesc.getAllDesc();
+		List<String> keys = new ArrayList<>(desc.size());
+		List<Map<String, String>> descs = new ArrayList<>(desc.size());
+		desc.forEach((key, value) -> {
+			keys.add(key);
+			Map<String, String> m = new HashMap<>(2);
+			m.put("key", key);
+			m.put("value", value);
+			descs.add(m);
+		});
+		model.put("keys", keys);
+		model.put("descs", descs);
 		return "permission/listUser";
 	}
 
@@ -42,7 +59,14 @@ public class UserController {
 	public String listDataOfExt(ModelMap model, int start, int limit) {
 		Pager page = new Pager(start, limit);
 		List<User> list = userService.page(page);
-		String message = new JsonResult(new ExtPageGrid(list, page.getTotalCount())).toJson();
+		List<UserVo> voList = new ArrayList<>(list.size());
+		list.forEach((user) -> {
+			UserVo vo = new UserVo();
+			vo.setUser(user);
+			vo.setUserExt(userService.getUserExt(user.getAccount()));
+			voList.add(vo);
+		});
+		String message = new JsonResult(new ExtPageGrid(voList, page.getTotalCount())).toJson();
 		model.put("message", message);
 		return "message";
 	}
