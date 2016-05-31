@@ -48,7 +48,7 @@ var User = {
 	},
 
 	"batchDelete" : function() {
-		var selectedAccounts = ExtGridUtil.getValue("checkbox", null, "userList", "account");
+		var selectedAccounts = ExtGridUtil.getValue("checkbox", null, "userList", "user.account");
 		if (selectedAccounts == "") {
 			$.messager.alert("系统提示", "请选择要删除的用户", 'warning');
 			return false;

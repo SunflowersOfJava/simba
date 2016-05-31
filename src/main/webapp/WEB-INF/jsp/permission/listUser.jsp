@@ -72,13 +72,13 @@
 		});
 
 		function renderOper(value, cellmeta, record, rowIndex, columnIndex, store) {
-			var html = "<a href=\"javascript:void(0)\" onclick=\"User.toUpdate('" + record.data["account"] + "')\">修改</a>";
+			var html = "<a href=\"javascript:void(0)\" onclick=\"User.toUpdate('" + record.data["user.account"] + "')\">修改</a>";
 			html += "&nbsp;&nbsp;";
-			html += "<a href=\"javascript:void(0)\" onclick=\"User.deleteAccount('" + record.data["account"] + "')\">删除</a>";
+			html += "<a href=\"javascript:void(0)\" onclick=\"User.deleteAccount('" + record.data["user.account"] + "')\">删除</a>";
 			html += "&nbsp;&nbsp;";
-			html += "<a href=\"javascript:void(0)\" onclick=\"User.resetPwd('" + record.data["account"] + "')\">重置密码</a>";
+			html += "<a href=\"javascript:void(0)\" onclick=\"User.resetPwd('" + record.data["user.account"] + "')\">重置密码</a>";
 			html += "&nbsp;&nbsp;";
-			html += "<a href=\"javascript:void(0)\" onclick=\"User.toAssignRole('" + record.data["account"] + "')\">分配角色</a>";
+			html += "<a href=\"javascript:void(0)\" onclick=\"User.toAssignRole('" + record.data["user.account"] + "')\">分配角色</a>";
 			return html;
 		}
 	</script>
