@@ -76,3 +76,4 @@ react集成ueditor在线编辑器
 增加spring-integration
 增加activiti
 通过配置自动扩展用户属性
+1.1.14
