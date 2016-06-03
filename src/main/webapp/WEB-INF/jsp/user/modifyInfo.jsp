@@ -21,6 +21,12 @@
 						<td>用户名:</td>
 						<td><input class="easyui-textbox" type="text" id="name" name="name" data-options="required:true" value="${user.name }"></input></td>
 					</tr>
+					<c:forEach var="ext" items="${descs}">
+						<tr>
+							<td>${ext.name}:</td>
+							<td><input class="easyui-textbox" type="text" id="${ext.key}" name="${ext.key}" value="${ext.value}"></input></td>
+						</tr>
+					</c:forEach>
 				</table>
 			</form>
 			<div style="text-align:center;padding:5px">

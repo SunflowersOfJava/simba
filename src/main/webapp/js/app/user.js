@@ -178,7 +178,7 @@ var User = {
 	},
 
 	"toModifyInfo" : function() {
-		ExtWindowUtil.openWinWithIframe(contextPath + "/user/toModifyInfo.do", "修改个人信息", "modifyInfoWin", 400, 170, true);
+		ExtWindowUtil.openWinWithIframe(contextPath + "/user/toModifyInfo.do", "修改个人信息", "modifyInfoWin", 400, 250, true);
 	},
 
 	"modifyInfo" : function() {

@@ -20,6 +20,6 @@
 	<context:component-scan base-package="com.caozj.codegenerate" />
 	<context:component-scan base-package="com.caozj.dubbo" />
 	<context:component-scan base-package="com.caozj.cache" />
-	
+	<context:component-scan base-package="com.caozj.activiti" />
 	
 </beans>

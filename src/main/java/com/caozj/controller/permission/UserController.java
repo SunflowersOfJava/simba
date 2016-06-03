@@ -193,15 +193,35 @@ public class UserController {
 	@RequestMapping("/toModifyInfo.do")
 	public String toModifyInfo(HttpServletRequest request, ModelMap model) {
 		User loginUser = SessionUtil.getUser(request.getSession());
+		UserExt userExt = userService.getUserExt(loginUser.getAccount());
+		Map<String, String> desc = UserExtDesc.getAllDesc();
+		List<Map<String, String>> descs = new ArrayList<>(desc.size());
+		desc.forEach((key, value) -> {
+			Map<String, String> m = new HashMap<>(2);
+			m.put("key", key);
+			m.put("name", value);
+			m.put("value", userExt.getExtMap().get(key));
+			descs.add(m);
+		});
+		model.put("descs", descs);
 		model.put("user", loginUser);
 		return "user/modifyInfo";
 	}
 
 	@RequestMapping("/modifyInfo.do")
-	public String modifyInfo(User user, HttpServletRequest request, ModelMap model) {
+	public String modifyInfo(HttpServletRequest request, ModelMap model) {
 		User loginUser = SessionUtil.getUser(request.getSession());
-		loginUser.setName(user.getName());
-		userService.update(loginUser);
+		UserExt userExt = new UserExt();
+		Map<String, String> extMap = new HashMap<>();
+		userExt.setExtMap(extMap);
+		String name = request.getParameter("name");
+		loginUser.setName(name);
+		userExt.setUserAccount(loginUser.getAccount());
+		Map<String, String> descMap = UserExtDesc.getAllDesc();
+		descMap.keySet().forEach((key) -> {
+			extMap.put(key, request.getParameter(key));
+		});
+		userService.update(loginUser, userExt);
 		model.put("message", new JsonResult().toJson());
 		return "message";
 	}
