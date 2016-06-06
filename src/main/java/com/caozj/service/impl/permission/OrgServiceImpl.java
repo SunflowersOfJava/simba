@@ -35,8 +35,8 @@ public class OrgServiceImpl implements OrgService {
 	private String orgExt;
 
 	@Override
-	public void add(Org org) {
-		orgDao.add(org);
+	public int add(Org org) {
+		return orgDao.add(org);
 	}
 
 	@Override

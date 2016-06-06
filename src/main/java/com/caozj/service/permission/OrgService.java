@@ -13,7 +13,7 @@ import com.caozj.model.permission.Org;
  */
 public interface OrgService {
 
-	void add(Org org);
+	int add(Org org);
 
 	void update(Org org);
 

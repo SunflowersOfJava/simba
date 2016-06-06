@@ -5,10 +5,13 @@ import java.net.URISyntaxException;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.caozj.service.CacheService;
+import com.caozj.dao.permission.OrgDao;
+import com.caozj.model.permission.Org;
 
 /**
  * 测试使用
@@ -19,12 +22,15 @@ import com.caozj.service.CacheService;
 @Service
 public class TestInitService {
 
+	private static final Log logger = LogFactory.getLog(TestInitService.class);
+
 	@Autowired
-	private CacheService redisByteService;
+	private OrgDao orgDao;
 
 	@PostConstruct
 	private void init() throws IOException, URISyntaxException {
-		// RedisServerUtil.start(6379);
-		// redisByteService.set("mytest", "hello world!!!");
+		Org org = new Org();
+		org.setName("org");
+		logger.info("================================new org and its id is " + orgDao.add(org));
 	}
 }

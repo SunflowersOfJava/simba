@@ -27,6 +27,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import com.mysql.jdbc.Statement;
+
 /**
  * jdbc操作数据库类(使用Spring的JdbcTemplate实现)
  * 
@@ -506,7 +508,7 @@ public class Jdbc extends JdbcDaoSupport {
 		PreparedStatementCreator psc = new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-				PreparedStatement ps = con.prepareStatement(sql);
+				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				for (int i = 0; i < param.size(); i++) {
 					ps.setObject(i + 1, param.getObject(i));
 				}
@@ -526,7 +528,7 @@ public class Jdbc extends JdbcDaoSupport {
 		PreparedStatementCreator psc = new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-				PreparedStatement ps = con.prepareStatement(sql);
+				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				for (int i = 0; i < args.length; i++) {
 					ps.setObject(i + 1, args[i]);
 				}

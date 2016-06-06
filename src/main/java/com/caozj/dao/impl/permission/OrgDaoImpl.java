@@ -2,6 +2,7 @@ package com.caozj.dao.impl.permission;
 
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +16,7 @@ import com.caozj.model.permission.Org;
  * 
  * 
  * @author caozj
- *  
+ * 
  */
 @Repository
 public class OrgDaoImpl implements OrgDao {
@@ -26,15 +27,15 @@ public class OrgDaoImpl implements OrgDao {
 	private static final String table = "org";
 
 	@Override
-	public void add(Org org) {
+	public int add(Org org) {
 		String sql = "insert into " + table + "( name) values(?)";
-		jdbc.updateForBoolean(sql, org.getName());
+		return NumberUtils.toInt(jdbc.updateForGeneratedKey(sql, org.getName()) + "");
 	}
 
 	@Override
 	public void update(Org org) {
 		String sql = "update " + table + " set  name = ?  where id = ?  ";
-		jdbc.updateForBoolean(sql,org.getName(), org.getId());
+		jdbc.updateForBoolean(sql, org.getName(), org.getId());
 	}
 
 	@Override
@@ -50,15 +51,15 @@ public class OrgDaoImpl implements OrgDao {
 	}
 
 	@Override
-	public List<Org> listAll(){
+	public List<Org> listAll() {
 		String sql = "select * from " + table;
 		return jdbc.queryForList(sql, Org.class);
 	}
 
 	@Override
-	public int count(){
+	public int count() {
 		String sql = "select count(*) from " + table;
-		return jdbc.queryForInt(sql); 
+		return jdbc.queryForInt(sql);
 	}
 
 	@Override
@@ -66,7 +67,7 @@ public class OrgDaoImpl implements OrgDao {
 		String sql = "select * from " + table + " where id = ? ";
 		return jdbc.query(sql, Org.class, id);
 	}
-	
+
 	@Override
 	public Org getBy(String field, Object value) {
 		String sql = "select * from " + table + " where " + field + " = ? ";
@@ -128,6 +129,5 @@ public class OrgDaoImpl implements OrgDao {
 		param.set(value2);
 		return jdbc.queryForPage(sql, Org.class, page, param);
 	}
-	
 
 }
