@@ -15,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.caozj.controller.form.EasyUIPageForm;
+import com.caozj.controller.vo.OrgVo;
 import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.model.ext.ExtPageGrid;
 import com.caozj.framework.model.json.JsonResult;
@@ -36,6 +37,18 @@ public class OrgController {
 
 	@RequestMapping("/list.do")
 	public String list(ModelMap model) {
+		Map<String, String> desc = OrgExtDesc.getAllDesc();
+		List<String> keys = new ArrayList<>(desc.size());
+		List<Map<String, String>> descs = new ArrayList<>(desc.size());
+		desc.forEach((key, value) -> {
+			keys.add(key);
+			Map<String, String> m = new HashMap<>(2);
+			m.put("key", key);
+			m.put("value", value);
+			descs.add(m);
+		});
+		model.put("keys", keys);
+		model.put("descs", descs);
 		return "permission/listOrg";
 	}
 
@@ -69,6 +82,24 @@ public class OrgController {
 		return "message";
 	}
 
+	@RequestMapping
+	public String listChildrenFullOrg(Integer id, ModelMap model) {
+		int parentID = ConstantData.TREE_ROOT_ID;
+		if (id != null) {
+			parentID = id;
+		}
+		List<Org> orgList = orgService.listBy("parentID", parentID);
+		List<OrgVo> voList = new ArrayList<>(orgList.size());
+		orgList.forEach((org) -> {
+			OrgVo vo = new OrgVo();
+			vo.setOrg(org);
+			vo.setOrgExt(orgService.getOrgExt(org.getId()));
+			voList.add(vo);
+		});
+		model.put("message", FastJsonUtil.toJson(voList));
+		return "message";
+	}
+
 	private Org buildRootOrg() {
 		Org root = new Org();
 		root.setId(ConstantData.TREE_ROOT_ID);
@@ -97,7 +128,7 @@ public class OrgController {
 	}
 
 	@RequestMapping("/toAdd.do")
-	public String toAdd(ModelMap model) {
+	public String toAdd(Integer parentID, ModelMap model) {
 		Map<String, String> desc = OrgExtDesc.getAllDesc();
 		List<Map<String, Object>> descs = new ArrayList<>(desc.size());
 		desc.forEach((key, value) -> {
@@ -107,6 +138,11 @@ public class OrgController {
 			m.put("required", key.endsWith("_r"));
 			descs.add(m);
 		});
+		if (parentID == null) {
+			parentID = ConstantData.TREE_ROOT_ID;
+		}
+		model.put("parentID", parentID);
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
 		model.put("descs", descs);
 		return "permission/addOrg";
 	}
@@ -141,6 +177,7 @@ public class OrgController {
 		});
 		model.put("descs", descs);
 		model.put("org", org);
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
 		return "permission/updateOrg";
 	}
 

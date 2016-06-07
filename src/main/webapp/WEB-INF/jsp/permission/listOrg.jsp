@@ -3,38 +3,38 @@
 <!DOCTYPE html >
 <html>
 <head>
-<title>菜单管理</title>
+<title>机构管理</title>
 <%@ include file="../common/header.jsp"%>
 <%@ include file="../common/easyui.jsp"%>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/app/menu.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/app/org.js"></script>
 </head>
 <body class="easyui-layout" id="layout">
 	<input type="hidden" id="parentID" name="parentID" />
-	<div data-options="region:'west',split:true" title="菜单树" style="width:180px;">
-		<ul class="easyui-tree" id="menuTree"></ul>
+	<div data-options="region:'west',split:true" title="机构树" style="width: 180px;">
+		<ul class="easyui-tree" id="orgTree"></ul>
 	</div>
-	<div data-options="region:'center',title:'菜单树--子菜单'">
-		<table id="menuTable"></table>
-		<div id="menuToolbar">
-			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="Menu.toAdd();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0);" class="easyui-linkbutton"
-				onclick="Menu.batchDelete();" data-options="iconCls:'icon-remove'">删除</a>
+	<div data-options="region:'center',title:'机构树--子机构'">
+		<table id="orgTable"></table>
+		<div id="orgToolbar">
+			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="Org.toAdd();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0);" class="easyui-linkbutton"
+				onclick="Org.batchDelete();" data-options="iconCls:'icon-remove'">删除</a>
 		</div>
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$("#menuTree").tree({
-				url : contextPath + "/menu/listChildrenMenu.do?dealMenu=false&showRoot=true",
+			$("#orgTree").tree({
+				url : contextPath + "/org/listChildrenOrg.do?showRoot=true",
 				method : "post",
 				animate : true,
 				onClick : function(node) {
-					Menu.selectMenu(node);
+					Org.selectOrg(node);
 				}
 			});
-			$("#menuTable").datagrid({
-				url : contextPath + "/menu/listChildrenMenu.do?dealMenu=false",
+			$("#orgTable").datagrid({
+				url : contextPath + "/org/listChildrenFullOrg.do",
 				method : "post",
 				animate : true,
-				toolbar : "#menuToolbar",
+				toolbar : "#orgToolbar",
 				singleSelect : false,
 				idField : "id",
 				loadMsg : "正在加载数据，请耐心等待...",
@@ -47,15 +47,19 @@
 					field : "ck",
 					checkbox : true
 				}, {
-					field : 'text',
+					field : 'org.text',
 					title : '名称',
 					width : 150
-				}, {
-					field : 'url',
-					title : 'URL地址',
-					width : 400
-				}, {
-					field : 'orderNo',
+				}
+				<c:forEach var="desc" items="${descs}">
+				, {
+					field : 'orgExt.extMap.${desc.key}',
+					title : '${desc.value}',
+					width : 100
+				}
+				</c:forEach>
+				, {
+					field : 'org.orderNo',
 					title : '排序号',
 					width : 100
 				}, {
@@ -63,9 +67,9 @@
 					field : "oper",
 					width : 120,
 					formatter : function(value, row, index) {
-						var html = "<a href=\"javascript:void(0);\" onclick=\"Menu.toUpdate('" + row["id"] + "')\">修改</a>";
+						var html = "<a href=\"javascript:void(0);\" onclick=\"Org.toUpdate('" + row["org.id"] + "')\">修改</a>";
 						html += "&nbsp;&nbsp;";
-						html += "<a href=\"javascript:void(0);\" onclick=\"Menu.deleteMenu('" + row["id"] + "')\">删除</a>";
+						html += "<a href=\"javascript:void(0);\" onclick=\"Org.deleteOrg('" + row["org.id"] + "')\">删除</a>";
 						return html;
 					}
 				} ] ]
