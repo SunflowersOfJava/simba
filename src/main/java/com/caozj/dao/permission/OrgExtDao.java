@@ -17,4 +17,8 @@ public interface OrgExtDao {
 	void addColumn(String column);
 
 	OrgExt get(int orgID);
+
+	void add(OrgExt orgExt);
+
+	void update(OrgExt orgExt);
 }

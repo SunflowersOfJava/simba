@@ -130,4 +130,10 @@ public class OrgDaoImpl implements OrgDao {
 		return jdbc.queryForPage(sql, Org.class, page, param);
 	}
 
+	@Override
+	public int countBy(String field, Object value) {
+		String sql = "select count(*) from " + table + " where " + field + " = ? ";
+		return jdbc.queryForInt(sql, value);
+	}
+
 }

@@ -23,6 +23,8 @@ public interface OrgDao {
 
 	int count();
 
+	int countBy(String field, Object value);
+
 	List<Org> page(Pager page);
 
 	Org get(int id);

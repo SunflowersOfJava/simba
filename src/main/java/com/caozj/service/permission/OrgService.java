@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.model.permission.Org;
+import com.caozj.model.permission.OrgExt;
 
 /**
  *
@@ -48,4 +49,12 @@ public interface OrgService {
 	List<Org> pageByOr(String field1, Object value1, String field2, Object value2, Pager page);
 
 	public void checkAndCreateOrgExt();
+
+	List<Org> listChildren(int parentID);
+
+	void add(Org org, OrgExt orgExt);
+
+	OrgExt getOrgExt(int id);
+
+	void update(Org org, OrgExt orgExt);
 }

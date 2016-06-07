@@ -12,6 +12,7 @@ import com.caozj.dao.permission.OrgDao;
 import com.caozj.dao.permission.OrgExtDao;
 import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.model.permission.Org;
+import com.caozj.model.permission.OrgExt;
 import com.caozj.model.permission.OrgExtDesc;
 import com.caozj.service.permission.OrgService;
 
@@ -137,5 +138,40 @@ public class OrgServiceImpl implements OrgService {
 				orgExtDao.addColumn(key);
 			}
 		}
+	}
+
+	@Override
+	public List<Org> listChildren(int parentID) {
+		List<Org> children = orgDao.listBy("parentID", parentID);
+		children.forEach((org) -> {
+			int childrenCount = orgDao.countBy("parentID", org.getId());
+			if (childrenCount > 0) {
+				org.setLeaf(false);
+				org.setState("closed");
+			} else {
+				org.setLeaf(true);
+				org.setState("open");
+			}
+		});
+		return children;
+	}
+
+	@Override
+	public void add(Org org, OrgExt orgExt) {
+		int id = orgDao.add(org);
+		org.setId(id);
+		orgExt.setId(id);
+		orgExtDao.add(orgExt);
+	}
+
+	@Override
+	public OrgExt getOrgExt(int id) {
+		return orgExtDao.get(id);
+	}
+
+	@Override
+	public void update(Org org, OrgExt orgExt) {
+		orgDao.update(org);
+		orgExtDao.update(orgExt);
 	}
 }

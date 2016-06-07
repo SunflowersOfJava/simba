@@ -1,13 +1,16 @@
 package com.caozj.dao.impl.permission;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.caozj.dao.permission.OrgExtDao;
 import com.caozj.framework.util.jdbc.Jdbc;
+import com.caozj.framework.util.jdbc.StatementParameter;
 import com.caozj.model.permission.OrgExt;
+import com.caozj.model.permission.OrgExtDesc;
 
 /**
  * 
@@ -39,5 +42,42 @@ public class OrgExtDaoImpl implements OrgExtDao {
 	public OrgExt get(int orgID) {
 		String sql = "select * from " + table + " where id = ? ";
 		return jdbc.query(sql, OrgExt.class, orgID);
+	}
+
+	@Override
+	public void add(OrgExt orgExt) {
+		String sql = "insert into " + table + "(id";
+		Map<String, String> extMap = orgExt.getExtMap();
+		String columns = "";
+		String params = "values(?";
+		Map<String, String> descMap = OrgExtDesc.getAllDesc();
+		StatementParameter param = new StatementParameter();
+		param.setInt(orgExt.getId());
+		for (String key : descMap.keySet()) {
+			columns += "," + key;
+			param.set(extMap.get(key));
+			params += ",?";
+		}
+		sql = sql + columns + ")" + params + ")";
+		jdbc.updateForBoolean(sql, param);
+	}
+
+	@Override
+	public void update(OrgExt orgExt) {
+		Map<String, String> descMap = OrgExtDesc.getAllDesc();
+		if (descMap.size() == 0) {
+			return;
+		}
+		String sql = "update " + table + " set ";
+		Map<String, String> extMap = orgExt.getExtMap();
+		StatementParameter param = new StatementParameter();
+		for (String key : descMap.keySet()) {
+			sql += key + " = ?,";
+			param.set(extMap.get(key));
+		}
+		sql = sql.substring(0, sql.length() - 1);
+		sql += " where id = ? ";
+		param.setInt(orgExt.getId());
+		jdbc.updateForBoolean(sql, param);
 	}
 }

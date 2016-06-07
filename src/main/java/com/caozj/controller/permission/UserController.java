@@ -88,16 +88,11 @@ public class UserController {
 	}
 
 	@RequestMapping("/add.do")
-	public String add(HttpServletRequest request, ModelMap model) {
-		User user = new User();
+	public String add(User user, HttpServletRequest request, ModelMap model) {
 		UserExt userExt = new UserExt();
 		Map<String, String> extMap = new HashMap<>();
 		userExt.setExtMap(extMap);
-		String name = request.getParameter("name");
-		String account = request.getParameter("account");
-		user.setAccount(account);
-		user.setName(name);
-		userExt.setUserAccount(account);
+		userExt.setUserAccount(user.getAccount());
 		Map<String, String> descMap = UserExtDesc.getAllDesc();
 		descMap.keySet().forEach((key) -> {
 			extMap.put(key, request.getParameter(key));
@@ -139,16 +134,11 @@ public class UserController {
 	}
 
 	@RequestMapping("/update.do")
-	public String update(HttpServletRequest request, ModelMap model) {
-		User user = new User();
+	public String update(User user, HttpServletRequest request, ModelMap model) {
 		UserExt userExt = new UserExt();
 		Map<String, String> extMap = new HashMap<>();
 		userExt.setExtMap(extMap);
-		String name = request.getParameter("name");
-		String account = request.getParameter("account");
-		user.setAccount(account);
-		user.setName(name);
-		userExt.setUserAccount(account);
+		userExt.setUserAccount(user.getAccount());
 		Map<String, String> descMap = UserExtDesc.getAllDesc();
 		descMap.keySet().forEach((key) -> {
 			extMap.put(key, request.getParameter(key));
@@ -202,7 +192,7 @@ public class UserController {
 			Map<String, Object> m = new HashMap<>(2);
 			m.put("key", key);
 			m.put("name", value);
-			m.put("value",  StringUtils.defaultString(userExt.getExtMap().get(key)));
+			m.put("value", StringUtils.defaultString(userExt.getExtMap().get(key)));
 			m.put("required", key.endsWith("_r"));
 			descs.add(m);
 		});

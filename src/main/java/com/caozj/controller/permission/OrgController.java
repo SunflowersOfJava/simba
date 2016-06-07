@@ -1,8 +1,14 @@
 package com.caozj.controller.permission;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,9 +18,13 @@ import com.caozj.controller.form.EasyUIPageForm;
 import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.model.ext.ExtPageGrid;
 import com.caozj.framework.model.json.JsonResult;
+import com.caozj.framework.util.common.FastJsonUtil;
 import com.caozj.framework.util.common.JsonUtil;
 import com.caozj.framework.util.jdbc.Pager;
+import com.caozj.model.constant.ConstantData;
 import com.caozj.model.permission.Org;
+import com.caozj.model.permission.OrgExt;
+import com.caozj.model.permission.OrgExtDesc;
 import com.caozj.service.permission.OrgService;
 
 @Controller
@@ -26,7 +36,46 @@ public class OrgController {
 
 	@RequestMapping("/list.do")
 	public String list(ModelMap model) {
-		return "org/list";
+		return "permission/listOrg";
+	}
+
+	/**
+	 * 获取子机构数据
+	 * 
+	 * @param node
+	 *            ext会使用这个参数来传递父节点id
+	 * @param id
+	 *            easyui会使用这个参数来传递父节点id
+	 * @param showRoot
+	 *            是否显示根节点
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/listChildrenOrg.do")
+	public String listChildrenOrg(Integer node, Integer id, Boolean showRoot, ModelMap model, HttpServletRequest request) {
+		int parentID = ConstantData.TREE_ROOT_ID;
+		if (node != null) {
+			parentID = node;
+		} else if (id != null) {
+			parentID = id;
+		} else if (showRoot != null && showRoot) {
+			Org root = buildRootOrg();
+			model.put("message", JsonUtil.toJson(Arrays.asList(root)));
+			return "message";
+		}
+		List<Org> list = orgService.listChildren(parentID);
+		model.put("message", FastJsonUtil.toJson(list));
+		return "message";
+	}
+
+	private Org buildRootOrg() {
+		Org root = new Org();
+		root.setId(ConstantData.TREE_ROOT_ID);
+		root.setText("机构树");
+		root.setLeaf(false);
+		root.setState("closed");
+		return root;
 	}
 
 	@RequestMapping("/listDataOfExt.do")
@@ -48,13 +97,30 @@ public class OrgController {
 	}
 
 	@RequestMapping("/toAdd.do")
-	public String toAdd() {
-		return "org/add";
+	public String toAdd(ModelMap model) {
+		Map<String, String> desc = OrgExtDesc.getAllDesc();
+		List<Map<String, Object>> descs = new ArrayList<>(desc.size());
+		desc.forEach((key, value) -> {
+			Map<String, Object> m = new HashMap<>(2);
+			m.put("key", key);
+			m.put("name", value);
+			m.put("required", key.endsWith("_r"));
+			descs.add(m);
+		});
+		model.put("descs", descs);
+		return "permission/addOrg";
 	}
 
 	@RequestMapping("/add.do")
-	public String add(Org org, ModelMap model) {
-		orgService.add(org);
+	public String add(Org org, HttpServletRequest request, ModelMap model) {
+		OrgExt orgExt = new OrgExt();
+		Map<String, String> extMap = new HashMap<>();
+		orgExt.setExtMap(extMap);
+		Map<String, String> descMap = OrgExtDesc.getAllDesc();
+		descMap.keySet().forEach((key) -> {
+			extMap.put(key, request.getParameter(key));
+		});
+		orgService.add(org, orgExt);
 		model.put("message", new JsonResult().toJson());
 		return "message";
 	}
@@ -62,13 +128,33 @@ public class OrgController {
 	@RequestMapping("/toUpdate.do")
 	public String toUpdate(int id, ModelMap model) {
 		Org org = orgService.get(id);
+		OrgExt orgExt = orgService.getOrgExt(id);
+		Map<String, String> desc = OrgExtDesc.getAllDesc();
+		List<Map<String, Object>> descs = new ArrayList<>(desc.size());
+		desc.forEach((key, value) -> {
+			Map<String, Object> m = new HashMap<>(2);
+			m.put("key", key);
+			m.put("name", value);
+			m.put("value", StringUtils.defaultString(orgExt.getExtMap().get(key)));
+			m.put("required", key.endsWith("_r"));
+			descs.add(m);
+		});
+		model.put("descs", descs);
 		model.put("org", org);
-		return "org/update";
+		return "permission/updateOrg";
 	}
 
 	@RequestMapping("/update.do")
-	public String update(Org org, ModelMap model) {
-		orgService.update(org);
+	public String update(Org org, HttpServletRequest request, ModelMap model) {
+		OrgExt orgExt = new OrgExt();
+		Map<String, String> extMap = new HashMap<>();
+		orgExt.setExtMap(extMap);
+		orgExt.setId(org.getId());
+		Map<String, String> descMap = OrgExtDesc.getAllDesc();
+		descMap.keySet().forEach((key) -> {
+			extMap.put(key, request.getParameter(key));
+		});
+		orgService.update(org, orgExt);
 		model.put("message", JsonUtil.successJson());
 		return "message";
 	}
@@ -92,7 +178,7 @@ public class OrgController {
 	public String show(int id, ModelMap model) {
 		Org org = orgService.get(id);
 		model.put("org", org);
-		return "org/show";
+		return "permission/showOrg";
 	}
 
 	@RequestMapping("/get.do")
