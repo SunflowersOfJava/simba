@@ -47,8 +47,5 @@ public interface OrgService {
 
 	List<Org> pageByOr(String field1, Object value1, String field2, Object value2, Pager page);
 
-	/**
-	 * 检查机构扩展属性，如果没有则创建
-	 */
-	void checkAndCreateOrgExt();
+	public void checkAndCreateOrgExt();
 }

@@ -37,10 +37,10 @@ public class OrgController {
 		model.put("message", message);
 		return "message";
 	}
-	
+
 	@RequestMapping("/listDataOfEasyUI.do")
 	public String listDataOfEasyUI(ModelMap model, EasyUIPageForm form) {
-		Pager page = new Pager((form.getPage()-1) * form.getRows(), form.getRows());
+		Pager page = new Pager((form.getPage() - 1) * form.getRows(), form.getRows());
 		List<Org> list = orgService.page(page);
 		String message = JsonUtil.toJson(new PageGrid(page.getTotalCount(), list));
 		model.put("message", message);
@@ -80,7 +80,7 @@ public class OrgController {
 		model.put("message", new JsonResult().toJson());
 		return "message";
 	}
-	
+
 	@RequestMapping("/delete.do")
 	public String delete(int id, ModelMap model) {
 		orgService.delete(id);
@@ -94,7 +94,7 @@ public class OrgController {
 		model.put("org", org);
 		return "org/show";
 	}
-	
+
 	@RequestMapping("/get.do")
 	public String get(int id, ModelMap model) {
 		Org org = orgService.get(id);

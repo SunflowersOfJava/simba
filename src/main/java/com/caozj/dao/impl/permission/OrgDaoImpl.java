@@ -28,14 +28,14 @@ public class OrgDaoImpl implements OrgDao {
 
 	@Override
 	public int add(Org org) {
-		String sql = "insert into " + table + "( name) values(?)";
-		return NumberUtils.toInt(jdbc.updateForGeneratedKey(sql, org.getName()) + "");
+		String sql = "insert into " + table + "( name, parentID) values(?,?)";
+		return NumberUtils.toInt(jdbc.updateForGeneratedKey(sql, org.getName(), org.getParentID()) + "");
 	}
 
 	@Override
 	public void update(Org org) {
-		String sql = "update " + table + " set  name = ?  where id = ?  ";
-		jdbc.updateForBoolean(sql, org.getName(), org.getId());
+		String sql = "update " + table + " set  name = ? , parentID = ?  where id = ?  ";
+		jdbc.updateForBoolean(sql, org.getName(), org.getParentID(), org.getId());
 	}
 
 	@Override

@@ -16,6 +16,16 @@ public class Org implements Serializable {
 
 	private String name;
 
+	private int parentID;
+
+	public int getParentID() {
+		return parentID;
+	}
+
+	public void setParentID(int parentID) {
+		this.parentID = parentID;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -39,6 +49,8 @@ public class Org implements Serializable {
 		builder.append(id);
 		builder.append(", name=");
 		builder.append(name);
+		builder.append(", parentID=");
+		builder.append(parentID);
 		builder.append("]");
 		return builder.toString();
 	}

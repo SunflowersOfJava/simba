@@ -22,11 +22,11 @@ public interface OrgDao {
 	List<Org> listAll();
 
 	int count();
-	
+
 	List<Org> page(Pager page);
 
 	Org get(int id);
-	
+
 	Org getBy(String field, Object value);
 
 	Org getByAnd(String field1, Object value1, String field2, Object value2);

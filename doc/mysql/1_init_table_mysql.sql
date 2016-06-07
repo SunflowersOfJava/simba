@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016-05-30  星期一 15:19:29                     */
+/* Created on:     2016-06-07  星期二 14:25:34                     */
 /*==============================================================*/
 
 
@@ -95,6 +95,7 @@ create table org
 (
    id                   int not null auto_increment comment '机构ID',
    name                 varchar(128) not null comment '名称',
+   parentID             int not null comment '父机构ID',
    primary key (id)
 );
 
