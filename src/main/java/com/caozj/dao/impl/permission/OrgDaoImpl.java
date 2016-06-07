@@ -28,14 +28,14 @@ public class OrgDaoImpl implements OrgDao {
 
 	@Override
 	public int add(Org org) {
-		String sql = "insert into " + table + "( name, parentID) values(?,?)";
-		return NumberUtils.toInt(jdbc.updateForGeneratedKey(sql, org.getName(), org.getParentID()) + "");
+		String sql = "insert into " + table + "( text, parentID,orderNo) values(?,?,?)";
+		return NumberUtils.toInt(jdbc.updateForGeneratedKey(sql, org.getText(), org.getParentID(), org.getOrderNo()) + "");
 	}
 
 	@Override
 	public void update(Org org) {
-		String sql = "update " + table + " set  name = ? , parentID = ?  where id = ?  ";
-		jdbc.updateForBoolean(sql, org.getName(), org.getParentID(), org.getId());
+		String sql = "update " + table + " set  text = ? , parentID = ? ,orderNo = ?  where id = ?  ";
+		jdbc.updateForBoolean(sql, org.getText(), org.getParentID(), org.getOrderNo(), org.getId());
 	}
 
 	@Override
@@ -46,13 +46,13 @@ public class OrgDaoImpl implements OrgDao {
 
 	@Override
 	public List<Org> page(Pager page) {
-		String sql = "select * from " + table;
+		String sql = "select * from " + table + " order by orderNo";
 		return jdbc.queryForPage(sql, Org.class, page);
 	}
 
 	@Override
 	public List<Org> listAll() {
-		String sql = "select * from " + table;
+		String sql = "select * from " + table + " order by orderNo";
 		return jdbc.queryForList(sql, Org.class);
 	}
 
@@ -88,25 +88,25 @@ public class OrgDaoImpl implements OrgDao {
 
 	@Override
 	public List<Org> listBy(String field, Object value) {
-		String sql = "select * from " + table + " where " + field + " = ? ";
+		String sql = "select * from " + table + " where " + field + " = ? order by orderNo";
 		return jdbc.queryForList(sql, Org.class, value);
 	}
 
 	@Override
 	public List<Org> listByAnd(String field1, Object value1, String field2, Object value2) {
-		String sql = "select * from " + table + " where " + field1 + " = ? and " + field2 + " = ? ";
+		String sql = "select * from " + table + " where " + field1 + " = ? and " + field2 + " = ? order by orderNo";
 		return jdbc.queryForList(sql, Org.class, value1, value2);
 	}
 
 	@Override
 	public List<Org> listByOr(String field1, Object value1, String field2, Object value2) {
-		String sql = "select * from " + table + " where " + field1 + " = ? or " + field2 + " = ? ";
+		String sql = "select * from " + table + " where " + field1 + " = ? or " + field2 + " = ? order by orderNo";
 		return jdbc.queryForList(sql, Org.class, value1, value2);
 	}
 
 	@Override
 	public List<Org> pageBy(String field, Object value, Pager page) {
-		String sql = "select * from " + table + " where " + field + " = ? ";
+		String sql = "select * from " + table + " where " + field + " = ? order by orderNo";
 		StatementParameter param = new StatementParameter();
 		param.set(value);
 		return jdbc.queryForPage(sql, Org.class, page, param);
@@ -114,7 +114,7 @@ public class OrgDaoImpl implements OrgDao {
 
 	@Override
 	public List<Org> pageByAnd(String field1, Object value1, String field2, Object value2, Pager page) {
-		String sql = "select * from " + table + " where " + field1 + " = ? and " + field2 + " = ? ";
+		String sql = "select * from " + table + " where " + field1 + " = ? and " + field2 + " = ? order by orderNo";
 		StatementParameter param = new StatementParameter();
 		param.set(value1);
 		param.set(value2);
@@ -123,7 +123,7 @@ public class OrgDaoImpl implements OrgDao {
 
 	@Override
 	public List<Org> pageByOr(String field1, Object value1, String field2, Object value2, Pager page) {
-		String sql = "select * from " + table + " where " + field1 + " = ? or " + field2 + " = ? ";
+		String sql = "select * from " + table + " where " + field1 + " = ? or " + field2 + " = ? order by orderNo";
 		StatementParameter param = new StatementParameter();
 		param.set(value1);
 		param.set(value2);
