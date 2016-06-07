@@ -75,11 +75,12 @@ public class UserController {
 	@RequestMapping("/toAdd.do")
 	public String toAdd(ModelMap model) {
 		Map<String, String> desc = UserExtDesc.getAllDesc();
-		List<Map<String, String>> descs = new ArrayList<>(desc.size());
+		List<Map<String, Object>> descs = new ArrayList<>(desc.size());
 		desc.forEach((key, value) -> {
-			Map<String, String> m = new HashMap<>(2);
+			Map<String, Object> m = new HashMap<>(2);
 			m.put("key", key);
 			m.put("name", value);
+			m.put("required", key.endsWith("_r"));
 			descs.add(m);
 		});
 		model.put("descs", descs);
@@ -122,12 +123,13 @@ public class UserController {
 		}
 		UserExt userExt = userService.getUserExt(user.getAccount());
 		Map<String, String> desc = UserExtDesc.getAllDesc();
-		List<Map<String, String>> descs = new ArrayList<>(desc.size());
+		List<Map<String, Object>> descs = new ArrayList<>(desc.size());
 		desc.forEach((key, value) -> {
-			Map<String, String> m = new HashMap<>(2);
+			Map<String, Object> m = new HashMap<>(2);
 			m.put("key", key);
 			m.put("name", value);
-			m.put("value", userExt.getExtMap().get(key));
+			m.put("value", StringUtils.defaultString(userExt.getExtMap().get(key)));
+			m.put("required", key.endsWith("_r"));
 			descs.add(m);
 		});
 		model.put("descs", descs);
@@ -195,12 +197,13 @@ public class UserController {
 		User loginUser = SessionUtil.getUser(request.getSession());
 		UserExt userExt = userService.getUserExt(loginUser.getAccount());
 		Map<String, String> desc = UserExtDesc.getAllDesc();
-		List<Map<String, String>> descs = new ArrayList<>(desc.size());
+		List<Map<String, Object>> descs = new ArrayList<>(desc.size());
 		desc.forEach((key, value) -> {
-			Map<String, String> m = new HashMap<>(2);
+			Map<String, Object> m = new HashMap<>(2);
 			m.put("key", key);
 			m.put("name", value);
-			m.put("value", userExt.getExtMap().get(key));
+			m.put("value",  StringUtils.defaultString(userExt.getExtMap().get(key)));
+			m.put("required", key.endsWith("_r"));
 			descs.add(m);
 		});
 		model.put("descs", descs);

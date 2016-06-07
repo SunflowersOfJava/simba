@@ -25,7 +25,7 @@
 					<c:forEach var="ext" items="${descs}">
 						<tr>
 							<td>${ext.name}:</td>
-							<td><input class="easyui-textbox" type="text" id="${ext.key}" name="${ext.key}"></input></td>
+							<td><input class="easyui-textbox" type="text" id="${ext.key}" name="${ext.key}" <c:if test="${ext.required}">data-options="required:true"</c:if>></input></td>
 						</tr>
 					</c:forEach>
 				</table>
