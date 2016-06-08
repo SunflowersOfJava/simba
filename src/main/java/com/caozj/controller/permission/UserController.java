@@ -16,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.caozj.controller.form.EasyUIPageForm;
+import com.caozj.controller.form.UserSearchForm;
 import com.caozj.controller.vo.UserVo;
 import com.caozj.framework.model.ext.ExtPageGrid;
 import com.caozj.framework.model.json.JsonResult;
@@ -53,7 +55,14 @@ public class UserController {
 		});
 		model.put("keys", keys);
 		model.put("descs", descs);
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
 		return "permission/listUser";
+	}
+
+	@RequestMapping
+	public String listFull(UserSearchForm form, EasyUIPageForm page, String forSimple, ModelMap model) {
+
+		return "message";
 	}
 
 	@RequestMapping("/listDataOfExt.do")

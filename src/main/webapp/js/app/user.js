@@ -4,6 +4,24 @@ var User = {
 		window.self.location.href = contextPath + "/login/logout.do";
 	},
 
+	"selectOrg" : function(node) {
+		var id = node.id;
+		$("#parentID").val(id);
+		$("#userTable").datagrid("load", {
+			orgID : id
+		});
+		var name = node.text + "--用户列表";
+		$(".layout-panel-center .panel-title").html(name);
+	},
+
+	"search" : function() {
+
+	},
+
+	"toAssignOrg" : function(account) {
+
+	},
+
 	"toAdd" : function() {
 		window.self.location.href = contextPath + "/user/toAdd.do";
 	},

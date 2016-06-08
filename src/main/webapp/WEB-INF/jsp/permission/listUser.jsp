@@ -5,82 +5,85 @@
 <head>
 <title>用户管理</title>
 <%@ include file="../common/header.jsp"%>
-<%@ include file="../common/ext.jsp"%>
 <%@ include file="../common/easyui.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/app/user.js"></script>
 </head>
-<body>
-	<div id="list"></div>
+<body class="easyui-layout" id="layout">
+	<input type="hidden" id="parentID" name="parentID" value="${rootID}" />
+	<div data-options="region:'west',split:true" title="机构树" style="width: 180px;">
+		<ul class="easyui-tree" id="orgTree"></ul>
+	</div>
+	<div data-options="region:'center',title:'用户列表'">
+		<table id="userTable"></table>
+		<div id="userToolbar">
+			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="User.toAdd();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0);" class="easyui-linkbutton"
+				onclick="User.batchDelete();" data-options="iconCls:'icon-remove'">删除</a> <label>账号:</label> <input type="text" id="account" name="account" class="easyui-textbox" prompt="请输入您要查询的账号" /> <a
+				href="javascript:void(0);" class="easyui-linkbutton" onclick="User.search();" data-options="iconCls:'icon-search'">全局查询</a>
+		</div>
+	</div>
 	<script type="text/javascript">
-		Ext.onReady(function() {
-			var url = contextPath + "/user/listDataOfExt.do";
-			var pageSize = 10;
-			var fields = [ {
-				name : "user.account",
-				type : "string"
-			}, {
-				name : "user.name",
-				type : "string"
-			}
-			<c:forEach var="key" items="${keys}">
-			,{
-				name : "userExt.extMap.${key}",
-				type : "string"
-			}
-			</c:forEach>
-			];
-			var cmModels = [ {
-				header : '账号',
-				dataIndex : 'user.account',
-				width : 100,
-				sortable : true
-			}, {
-				header : '用户名',
-				dataIndex : 'user.name',
-				width : 100,
-				sortable : true
-			}
-			<c:forEach var="desc" items="${descs}">
-			,{
-				header : '${desc.value}',
-				dataIndex : 'userExt.extMap.${desc.key}',
-				width : 100,
-				sortable : true
-			}
-			</c:forEach>
-			, {
-				header : "操作",
-				renderer : renderOper
-			} ];
-			var type = "checkbox";
-			var id = "userList";
-			var field = "account";
-			var tbar = [ {
-				xtype : 'button',
-				text : '新增',
-				handler : function() {
-					User.toAdd();
+		$(document).ready(function() {
+			$("#orgTree").tree({
+				url : contextPath + "/org/listChildrenOrg.do?showRoot=true",
+				method : "post",
+				animate : true,
+				onClick : function(node) {
+					User.selectOrg(node);
 				}
-			}, '-', {
-				xtype : 'button',
-				text : '删除',
-				handler : function() {
-					User.batchDelete();
+			});
+			$("#userTable").datagrid({
+				url : contextPath + "/user/listFull.do?forSimple=true",
+				method : "post",
+				animate : true,
+				toolbar : "#userToolbar",
+				singleSelect : false,
+				idField : "account",
+				loadMsg : "正在加载数据，请耐心等待...",
+				rownumbers : true,
+				pagination : true,
+				queryParams : {
+					orgID : $("#parentID").val(),
+					account : ""
+				},
+				columns : [ [ {
+					title : "全选",
+					field : "ck",
+					checkbox : true
+				}, {
+					field : 'account',
+					title : '账号',
+					width : 150
+				}, {
+					field : 'name',
+					title : '用户名',
+					width : 150
 				}
-			} ];
-			ExtGridUtil.loadPageGrid(url, pageSize, fields, cmModels, '用户信息', "list", tbar, 0, id, type, field);
+				<c:forEach var="desc" items="${descs}">
+				, {
+					field : '${desc.key}',
+					title : '${desc.value}',
+					width : 100
+				}
+				</c:forEach>
+				, {
+					title : "操作",
+					field : "oper",
+					width : 120,
+					formatter : function(value, row, index) {
+						var html = "<a href=\"javascript:void(0)\" onclick=\"User.toUpdate('" + row["account"] + "')\">修改</a>";
+						html += "&nbsp;&nbsp;";
+						html += "<a href=\"javascript:void(0)\" onclick=\"User.deleteAccount('" + row["account"]  + "')\">删除</a>";
+						html += "&nbsp;&nbsp;";
+						html += "<a href=\"javascript:void(0)\" onclick=\"User.resetPwd('" + row["account"]  + "')\">重置密码</a>";
+						html += "&nbsp;&nbsp;";
+						html += "<a href=\"javascript:void(0)\" onclick=\"User.toAssignRole('" + row["account"]  + "')\">分配角色</a>";
+						html += "&nbsp;&nbsp;";
+						html += "<a href=\"javascript:void(0)\" onclick=\"User.toAssignOrg('" + row["account"]  + "')\">分配机构</a>";
+						return html;
+					}
+				} ] ]
+			});
 		});
-
-		function renderOper(value, cellmeta, record, rowIndex, columnIndex, store) {
-			var html = "<a href=\"javascript:void(0)\" onclick=\"User.toUpdate('" + record.data["user.account"] + "')\">修改</a>";
-			html += "&nbsp;&nbsp;";
-			html += "<a href=\"javascript:void(0)\" onclick=\"User.deleteAccount('" + record.data["user.account"] + "')\">删除</a>";
-			html += "&nbsp;&nbsp;";
-			html += "<a href=\"javascript:void(0)\" onclick=\"User.resetPwd('" + record.data["user.account"] + "')\">重置密码</a>";
-			html += "&nbsp;&nbsp;";
-			html += "<a href=\"javascript:void(0)\" onclick=\"User.toAssignRole('" + record.data["user.account"] + "')\">分配角色</a>";
-			return html;
-		}
 	</script>
 </body>
 </html>
