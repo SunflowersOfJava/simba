@@ -1,5 +1,6 @@
 package com.caozj.dao.impl.permission;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +42,17 @@ public class OrgExtDaoImpl implements OrgExtDao {
 	@Override
 	public OrgExt get(int orgID) {
 		String sql = "select * from " + table + " where id = ? ";
-		return jdbc.query(sql, OrgExt.class, orgID);
+		Map<String, Object> ext = jdbc.queryForMap(sql, orgID);
+		OrgExt orgExt = new OrgExt();
+		orgExt.setId(orgID);
+		Map<String, String> extMap = new HashMap<>();
+		orgExt.setExtMap(extMap);
+		if (ext != null && ext.size() > 0) {
+			ext.forEach((key, value) -> {
+				extMap.put(key, value + "");
+			});
+		}
+		return orgExt;
 	}
 
 	@Override

@@ -9,7 +9,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/app/org.js"></script>
 </head>
 <body class="easyui-layout" id="layout">
-	<input type="hidden" id="parentID" name="parentID" />
+	<input type="hidden" id="parentID" name="parentID" value="${rootID}" />
 	<div data-options="region:'west',split:true" title="机构树" style="width: 180px;">
 		<ul class="easyui-tree" id="orgTree"></ul>
 	</div>
@@ -31,7 +31,7 @@
 				}
 			});
 			$("#orgTable").datagrid({
-				url : contextPath + "/org/listChildrenFullOrg.do",
+				url : contextPath + "/org/listChildrenFullOrg.do?forSimple=true",
 				method : "post",
 				animate : true,
 				toolbar : "#orgToolbar",
@@ -47,19 +47,19 @@
 					field : "ck",
 					checkbox : true
 				}, {
-					field : 'org.text',
+					field : 'text',
 					title : '名称',
 					width : 150
 				}
 				<c:forEach var="desc" items="${descs}">
 				, {
-					field : 'orgExt.extMap.${desc.key}',
+					field : '${desc.key}',
 					title : '${desc.value}',
 					width : 100
 				}
 				</c:forEach>
 				, {
-					field : 'org.orderNo',
+					field : 'orderNo',
 					title : '排序号',
 					width : 100
 				}, {
@@ -67,9 +67,9 @@
 					field : "oper",
 					width : 120,
 					formatter : function(value, row, index) {
-						var html = "<a href=\"javascript:void(0);\" onclick=\"Org.toUpdate('" + row["org.id"] + "')\">修改</a>";
+						var html = "<a href=\"javascript:void(0);\" onclick=\"Org.toUpdate('" + row["id"] + "')\">修改</a>";
 						html += "&nbsp;&nbsp;";
-						html += "<a href=\"javascript:void(0);\" onclick=\"Org.deleteOrg('" + row["org.id"] + "')\">删除</a>";
+						html += "<a href=\"javascript:void(0);\" onclick=\"Org.deleteOrg('" + row["id"] + "')\">删除</a>";
 						return html;
 					}
 				} ] ]

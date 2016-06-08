@@ -12,7 +12,8 @@
 	<div style="margin: 20px 0;"></div>
 	<div class="easyui-panel" title="修改机构" style="width: 500px">
 		<div style="padding: 10px 60px 20px 60px">
-			<form id="userForm" method="post">
+			<form id="orgForm" method="post">
+				<input type="hidden" id="id" name="id" value="${org.id}"/>
 				<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
 					<tr>
 						<td>名称:</td>

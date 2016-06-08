@@ -49,6 +49,7 @@ public class OrgController {
 		});
 		model.put("keys", keys);
 		model.put("descs", descs);
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
 		return "permission/listOrg";
 	}
 
@@ -83,7 +84,7 @@ public class OrgController {
 	}
 
 	@RequestMapping
-	public String listChildrenFullOrg(Integer id, ModelMap model) {
+	public String listChildrenFullOrg(Integer id, String forSimple, ModelMap model) {
 		int parentID = ConstantData.TREE_ROOT_ID;
 		if (id != null) {
 			parentID = id;
@@ -96,7 +97,21 @@ public class OrgController {
 			vo.setOrgExt(orgService.getOrgExt(org.getId()));
 			voList.add(vo);
 		});
-		model.put("message", FastJsonUtil.toJson(voList));
+		if ("true".equals(forSimple)) {
+			List<Map<String, Object>> mapList = new ArrayList<>(orgList.size());
+			voList.forEach((vo) -> {
+				Map<String, Object> map = new HashMap<>();
+				map.put("id", vo.getOrg().getId());
+				map.put("orderNo", vo.getOrg().getOrderNo());
+				map.put("parentID", vo.getOrg().getParentID());
+				map.put("text", vo.getOrg().getText());
+				map.putAll(vo.getOrgExt().getExtMap());
+				mapList.add(map);
+			});
+			model.put("message", FastJsonUtil.toJson(mapList));
+		} else {
+			model.put("message", FastJsonUtil.toJson(voList));
+		}
 		return "message";
 	}
 

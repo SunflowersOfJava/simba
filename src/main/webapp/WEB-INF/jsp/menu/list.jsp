@@ -9,7 +9,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/app/menu.js"></script>
 </head>
 <body class="easyui-layout" id="layout">
-	<input type="hidden" id="parentID" name="parentID" />
+	<input type="hidden" id="parentID" name="parentID" value="${rootID}"/>
 	<div data-options="region:'west',split:true" title="菜单树" style="width:180px;">
 		<ul class="easyui-tree" id="menuTree"></ul>
 	</div>

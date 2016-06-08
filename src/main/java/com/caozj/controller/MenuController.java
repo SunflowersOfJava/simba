@@ -34,7 +34,8 @@ public class MenuController {
 	private MenuService menuService;
 
 	@RequestMapping("/list.do")
-	public String list() {
+	public String list(ModelMap model) {
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
 		return "menu/list";
 	}
 

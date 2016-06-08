@@ -20,7 +20,7 @@ var Org = {
 			dataType : "json",
 			async : true,
 			data : {
-				id : idArray.join(",")
+				ids : idArray.join(",")
 			},
 			success : function(data) {
 				if (data.code == 200) {
@@ -68,6 +68,7 @@ var Org = {
 					$("#orgTable").datagrid("load", {
 						id : $("#parentID").val()
 					});
+					debugger;
 					var parentNode = $("#orgTree").tree("find", $("#parentID").val());
 					$("#orgTree").tree("reload", parentNode.target);
 					$.messager.alert("系统提示", "删除成功", 'info');
