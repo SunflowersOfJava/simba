@@ -2,7 +2,7 @@
 一个基于SpringMVC的web框架,初始化脚本在doc目录中，ppt有基本的使用介绍。
 直接运行Jetty类的main方法，即可启动web服务
 登陆系统的入口: 
-http://ip:port/demo/login/toLogin.do 
+http://localhost:8080/demo/login/toLogin.do 
 账号密码是admin admin123 
 所有的配置都在configs.properties里
 系统默认把登陆拦截和权限拦截关闭了，需要打开的可以在SpringMVC.xml文件中修改
