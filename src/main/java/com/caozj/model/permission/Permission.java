@@ -26,6 +26,18 @@ public class Permission implements Serializable {
 	 * 对应的url地址(多个url用英文逗号隔开)
 	 */
 	private String url;
+	
+	private String parentName;
+	
+	
+
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
+	}
 
 	public String getName() {
 		return name;
@@ -60,6 +72,8 @@ public class Permission implements Serializable {
 		builder.append(description);
 		builder.append(", url=");
 		builder.append(url);
+		builder.append(", parentName=");
+		builder.append(parentName);
 		builder.append("]");
 		return builder.toString();
 	}

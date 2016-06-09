@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016-06-07  星期二 14:58:09                     */
+/* Created on:     2016/6/9 星期四 17:57:23                        */
 /*==============================================================*/
 
 
@@ -120,7 +120,8 @@ create table permission
 (
    name                 varchar(64) not null,
    description          varchar(64),
-   url                  varchar(512) not null,
+   url                  varchar(512),
+   parentName           varchar(64) not null,
    primary key (name)
 );
 
