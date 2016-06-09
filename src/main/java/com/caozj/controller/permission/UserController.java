@@ -281,16 +281,5 @@ public class UserController {
 		return "message";
 	}
 
-	@RequestMapping
-	public String toAssignOrg(String account, ModelMap model) {
-
-		return "permission/assignOrg";
-	}
-
-	@RequestMapping
-	public String assignOrg(String account) {
-
-		return "message";
-	}
 
 }

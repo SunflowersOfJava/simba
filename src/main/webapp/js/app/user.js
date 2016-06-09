@@ -22,10 +22,6 @@ var User = {
 		$(".layout-panel-center .panel-title").html(name);
 	},
 
-	"toAssignOrg" : function(account) {
-		window.self.location.href = contextPath + "/user/toAssignOrg.do?account=" + account;
-	},
-
 	"toAdd" : function() {
 		window.self.location.href = contextPath + "/user/toAdd.do?orgID=" + $("#parentID").val();
 	},

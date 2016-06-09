@@ -77,8 +77,6 @@
 						html += "<a href=\"javascript:void(0)\" onclick=\"User.resetPwd('" + row["account"]  + "')\">重置密码</a>";
 						html += "&nbsp;&nbsp;";
 						html += "<a href=\"javascript:void(0)\" onclick=\"User.toAssignRole('" + row["account"]  + "')\">分配角色</a>";
-						html += "&nbsp;&nbsp;";
-						html += "<a href=\"javascript:void(0)\" onclick=\"User.toAssignOrg('" + row["account"]  + "')\">分配机构</a>";
 						return html;
 					}
 				} ] ]
