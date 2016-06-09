@@ -1,24 +1,49 @@
-package com.caozj.service.permission;
+package  com.caozj.service.permission;
 
 import java.util.List;
 
 import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.model.permission.Permission;
 
+/**
+ *
+ * 
+ * @author caozj
+ * 
+ */
 public interface PermissionService {
 
 	void add(Permission permission);
 
 	void update(Permission permission);
 
-	void delete(String name);
-
-	void batchDelete(List<String> names);
+	void delete(int id);
 
 	List<Permission> listAll();
 
+	int count();
+	
 	List<Permission> page(Pager page);
 
-	Permission get(String name);
+	Permission get(int id);
+	
+	void batchDelete(List<Integer> idList);
 
+	Permission getBy(String field, Object value);
+
+	Permission getByAnd(String field1, Object value1, String field2, Object value2);
+
+	Permission getByOr(String field1, Object value1, String field2, Object value2);
+
+	List<Permission> listBy(String field, Object value);
+
+	List<Permission> listByAnd(String field1, Object value1, String field2, Object value2);
+
+	List<Permission> listByOr(String field1, Object value1, String field2, Object value2);
+
+	List<Permission> pageBy(String field, Object value, Pager page);
+
+	List<Permission> pageByAnd(String field1, Object value1, String field2, Object value2, Pager page);
+
+	List<Permission> pageByOr(String field1, Object value1, String field2, Object value2, Pager page);
 }

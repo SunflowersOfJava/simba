@@ -2,57 +2,35 @@ package com.caozj.model.permission;
 
 import java.io.Serializable;
 
-/**
- * 权限
- * 
- * @author caozj
- * 
- */
-public class Permission implements Serializable {
+public class Permission implements Serializable{
 
-	private static final long serialVersionUID = 7482598198211538944L;
-
+	private static final long serialVersionUID = 4619631216312892345L;
+	
+	private int id;
+	
+	private String text;
+	
 	/**
-	 * 名称
-	 */
-	private String name;
-
-	/**
-	 * 描述
-	 */
-	private String description;
-
-	/**
-	 * 对应的url地址(多个url用英文逗号隔开)
+	 * 权限代表的url，多个用,隔开
 	 */
 	private String url;
 	
-	private String parentName;
-	
-	
+	private int parentID;
 
-	public String getParentName() {
-		return parentName;
+	public int getId() {
+		return id;
 	}
 
-	public void setParentName(String parentName) {
-		this.parentName = parentName;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getText() {
+		return text;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	public String getUrl() {
@@ -63,19 +41,29 @@ public class Permission implements Serializable {
 		this.url = url;
 	}
 
+	public int getParentID() {
+		return parentID;
+	}
+
+	public void setParentID(int parentID) {
+		this.parentID = parentID;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Permission [name=");
-		builder.append(name);
-		builder.append(", description=");
-		builder.append(description);
+		builder.append("Permission [id=");
+		builder.append(id);
+		builder.append(", text=");
+		builder.append(text);
 		builder.append(", url=");
 		builder.append(url);
-		builder.append(", parentName=");
-		builder.append(parentName);
+		builder.append(", parentID=");
+		builder.append(parentID);
 		builder.append("]");
 		return builder.toString();
 	}
+	
+	
 
 }

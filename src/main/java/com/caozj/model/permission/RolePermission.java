@@ -2,32 +2,22 @@ package com.caozj.model.permission;
 
 import java.io.Serializable;
 
-/**
- * 角色，权限 关系对象
- * 
- * @author caozj
- * 
- */
-public class RolePermission implements Serializable {
+public class RolePermission implements Serializable{
 
-	private static final long serialVersionUID = 4530863660913627681L;
-
-	/**
-	 * 角色名称
-	 */
+	private static final long serialVersionUID = -6978350619480118473L;
+	
+	private int id;
+	
 	private String roleName;
+	
+	private int permissionID;
 
-	/**
-	 * 权限名称
-	 */
-	private String permissionName;
-
-	public RolePermission() {
+	public int getId() {
+		return id;
 	}
 
-	public RolePermission(String roleName, String permissionName) {
-		this.roleName = roleName;
-		this.permissionName = permissionName;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getRoleName() {
@@ -38,23 +28,27 @@ public class RolePermission implements Serializable {
 		this.roleName = roleName;
 	}
 
-	public String getPermissionName() {
-		return permissionName;
+	public int getPermissionID() {
+		return permissionID;
 	}
 
-	public void setPermissionName(String permissionName) {
-		this.permissionName = permissionName;
+	public void setPermissionID(int permissionID) {
+		this.permissionID = permissionID;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("RolePermission [roleName=");
+		builder.append("RolePermission [id=");
+		builder.append(id);
+		builder.append(", roleName=");
 		builder.append(roleName);
-		builder.append(", permissionName=");
-		builder.append(permissionName);
+		builder.append(", permissionID=");
+		builder.append(permissionID);
 		builder.append("]");
 		return builder.toString();
 	}
+	
+	
 
 }

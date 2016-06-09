@@ -1,4 +1,4 @@
-package com.caozj.dao.permission;
+package  com.caozj.service.permission;
 
 import java.util.List;
 
@@ -6,12 +6,12 @@ import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.model.permission.RolePermission;
 
 /**
- * 
+ *
  * 
  * @author caozj
  * 
  */
-public interface RolePermissionDao {
+public interface RolePermissionService {
 
 	void add(RolePermission rolePermission);
 
@@ -27,6 +27,8 @@ public interface RolePermissionDao {
 
 	RolePermission get(int id);
 	
+	void batchDelete(List<Integer> idList);
+
 	RolePermission getBy(String field, Object value);
 
 	RolePermission getByAnd(String field1, Object value1, String field2, Object value2);
@@ -44,5 +46,4 @@ public interface RolePermissionDao {
 	List<RolePermission> pageByAnd(String field1, Object value1, String field2, Object value2, Pager page);
 
 	List<RolePermission> pageByOr(String field1, Object value1, String field2, Object value2, Pager page);
-
 }

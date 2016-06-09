@@ -11,7 +11,13 @@ import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.framework.util.jdbc.StatementParameter;
 import com.caozj.model.permission.Permission;
 
-@Repository("permissionDao")
+/**
+ * 
+ * 
+ * @author caozj
+ *  
+ */
+@Repository
 public class PermissionDaoImpl implements PermissionDao {
 
 	@Autowired
@@ -21,35 +27,20 @@ public class PermissionDaoImpl implements PermissionDao {
 
 	@Override
 	public void add(Permission permission) {
-		String sql = "insert into " + table + "(name,description,url) values(?,?,?)";
-		StatementParameter param = new StatementParameter();
-		param.setString(permission.getName());
-		param.setString(permission.getDescription());
-		param.setString(permission.getUrl());
-		jdbc.updateForBoolean(sql, param);
+		String sql = "insert into " + table + "( text, url, parentID) values(?,?,?)";
+		jdbc.updateForBoolean(sql, permission.getText(),permission.getUrl(),permission.getParentID());
 	}
 
 	@Override
 	public void update(Permission permission) {
-		String sql = "update " + table + " set description = ? , url = ? where name = ?";
-		StatementParameter param = new StatementParameter();
-		param.setString(permission.getDescription());
-		param.setString(permission.getUrl());
-		param.setString(permission.getName());
-		jdbc.updateForBoolean(sql, param);
-
+		String sql = "update " + table + " set  text = ? , url = ? , parentID = ?  where id = ?  ";
+		jdbc.updateForBoolean(sql,permission.getText(),permission.getUrl(),permission.getParentID(), permission.getId());
 	}
 
 	@Override
-	public void delete(String name) {
-		String sql = "delete from " + table + " where name = ?";
-		jdbc.updateForBoolean(sql, name);
-	}
-
-	@Override
-	public List<Permission> listAll() {
-		String sql = "select * from " + table;
-		return jdbc.queryForList(sql, Permission.class);
+	public void delete(int id) {
+		String sql = "delete from " + table + " where id = ? ";
+		jdbc.updateForBoolean(sql, id);
 	}
 
 	@Override
@@ -59,9 +50,84 @@ public class PermissionDaoImpl implements PermissionDao {
 	}
 
 	@Override
-	public Permission get(String name) {
-		String sql = "select * from " + table + " where name = ?";
-		return jdbc.query(sql, Permission.class, name);
+	public List<Permission> listAll(){
+		String sql = "select * from " + table;
+		return jdbc.queryForList(sql, Permission.class);
 	}
+
+	@Override
+	public int count(){
+		String sql = "select count(*) from " + table;
+		return jdbc.queryForInt(sql); 
+	}
+
+	@Override
+	public Permission get(int id) {
+		String sql = "select * from " + table + " where id = ? ";
+		return jdbc.query(sql, Permission.class, id);
+	}
+	
+	@Override
+	public Permission getBy(String field, Object value) {
+		String sql = "select * from " + table + " where " + field + " = ? ";
+		return jdbc.query(sql, Permission.class, value);
+	}
+
+	@Override
+	public Permission getByAnd(String field1, Object value1, String field2, Object value2) {
+		String sql = "select * from " + table + " where " + field1 + " = ? and " + field2 + " = ? ";
+		return jdbc.query(sql, Permission.class, value1, value2);
+	}
+
+	@Override
+	public Permission getByOr(String field1, Object value1, String field2, Object value2) {
+		String sql = "select * from " + table + " where " + field1 + " = ? or " + field2 + " = ? ";
+		return jdbc.query(sql, Permission.class, value1, value2);
+	}
+
+	@Override
+	public List<Permission> listBy(String field, Object value) {
+		String sql = "select * from " + table + " where " + field + " = ? ";
+		return jdbc.queryForList(sql, Permission.class, value);
+	}
+
+	@Override
+	public List<Permission> listByAnd(String field1, Object value1, String field2, Object value2) {
+		String sql = "select * from " + table + " where " + field1 + " = ? and " + field2 + " = ? ";
+		return jdbc.queryForList(sql, Permission.class, value1, value2);
+	}
+
+	@Override
+	public List<Permission> listByOr(String field1, Object value1, String field2, Object value2) {
+		String sql = "select * from " + table + " where " + field1 + " = ? or " + field2 + " = ? ";
+		return jdbc.queryForList(sql, Permission.class, value1, value2);
+	}
+
+	@Override
+	public List<Permission> pageBy(String field, Object value, Pager page) {
+		String sql = "select * from " + table + " where " + field + " = ? ";
+		StatementParameter param = new StatementParameter();
+		param.set(value);
+		return jdbc.queryForPage(sql, Permission.class, page, param);
+	}
+
+	@Override
+	public List<Permission> pageByAnd(String field1, Object value1, String field2, Object value2, Pager page) {
+		String sql = "select * from " + table + " where " + field1 + " = ? and " + field2 + " = ? ";
+		StatementParameter param = new StatementParameter();
+		param.set(value1);
+		param.set(value2);
+		return jdbc.queryForPage(sql, Permission.class, page, param);
+	}
+
+	@Override
+	public List<Permission> pageByOr(String field1, Object value1, String field2, Object value2, Pager page) {
+		String sql = "select * from " + table + " where " + field1 + " = ? or " + field2 + " = ? ";
+		StatementParameter param = new StatementParameter();
+		param.set(value1);
+		param.set(value2);
+		return jdbc.queryForPage(sql, Permission.class, page, param);
+	}
+	
 
 }

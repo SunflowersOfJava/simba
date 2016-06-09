@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016/6/9 星期四 17:57:23                        */
+/* Created on:     2016/6/9 星期四 18:27:04                        */
 /*==============================================================*/
 
 
@@ -118,11 +118,11 @@ alter table orgExt comment '机构扩展';
 /*==============================================================*/
 create table permission
 (
-   name                 varchar(64) not null,
-   description          varchar(64),
+   id                   int not null auto_increment,
+   text                 varchar(64) not null,
    url                  varchar(512),
-   parentName           varchar(64) not null,
-   primary key (name)
+   parentID             int not null,
+   primary key (id)
 );
 
 /*==============================================================*/
@@ -168,9 +168,10 @@ create table role
 /*==============================================================*/
 create table rolePermission
 (
+   id                   int not null auto_increment,
    roleName             varchar(64) not null,
-   permissionName       varchar(64) not null,
-   primary key (roleName, permissionName)
+   permissionID         int not null,
+   primary key (id)
 );
 
 /*==============================================================*/
