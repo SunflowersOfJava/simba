@@ -111,7 +111,7 @@ public class UserController {
 	}
 
 	@RequestMapping("/toAdd.do")
-	public String toAdd(int parentID, ModelMap model) {
+	public String toAdd(Integer orgID, ModelMap model) {
 		Map<String, String> desc = UserExtDesc.getAllDesc();
 		List<Map<String, Object>> descs = new ArrayList<>(desc.size());
 		desc.forEach((key, value) -> {
@@ -122,12 +122,13 @@ public class UserController {
 			descs.add(m);
 		});
 		model.put("descs", descs);
-		model.put("parentID", parentID);
+		model.put("orgID", orgID);
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
 		return "permission/addUser";
 	}
 
 	@RequestMapping("/add.do")
-	public String add(User user, HttpServletRequest request, ModelMap model) {
+	public String add(User user,Integer[] orgID, HttpServletRequest request, ModelMap model) {
 		UserExt userExt = new UserExt();
 		Map<String, String> extMap = new HashMap<>();
 		userExt.setExtMap(extMap);
@@ -137,7 +138,12 @@ public class UserController {
 			extMap.put(key, request.getParameter(key));
 		});
 		List<UserOrg> userOrgList = new ArrayList<UserOrg>();
-
+		for(Integer org  : orgID){
+			UserOrg userOrg = new UserOrg();
+			userOrg.setOrgID(org);
+			userOrg.setUserAccount(user.getAccount());
+			userOrgList.add(userOrg);
+		}
 		userService.add(user, userExt, userOrgList);
 		model.put("message", new JsonResult().toJson());
 		return "message";
@@ -168,14 +174,21 @@ public class UserController {
 			m.put("required", key.endsWith("_r"));
 			descs.add(m);
 		});
+		List<UserOrg> userOrgList = userOrgService.listBy("userAccount", account);
+		List<Integer> orgIDs = new ArrayList<Integer>(userOrgList.size());
+		userOrgList.forEach((userOrg)->{
+			orgIDs.add(userOrg.getOrgID());
+		});
 		model.put("descs", descs);
 		model.put("self", self);
 		model.put("user", user);
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
+		model.put("orgIDs", FastJsonUtil.toJson(orgIDs));
 		return "permission/updateUser";
 	}
 
 	@RequestMapping("/update.do")
-	public String update(User user, HttpServletRequest request, ModelMap model) {
+	public String update(User user,Integer[] orgID,  HttpServletRequest request, ModelMap model) {
 		UserExt userExt = new UserExt();
 		Map<String, String> extMap = new HashMap<>();
 		userExt.setExtMap(extMap);
@@ -185,6 +198,12 @@ public class UserController {
 			extMap.put(key, request.getParameter(key));
 		});
 		List<UserOrg> userOrgList = new ArrayList<UserOrg>();
+		for(Integer org  : orgID){
+			UserOrg userOrg = new UserOrg();
+			userOrg.setOrgID(org);
+			userOrg.setUserAccount(user.getAccount());
+			userOrgList.add(userOrg);
+		}
 		userService.update(user, userExt, userOrgList);
 		model.put("message", new JsonResult().toJson());
 		return "message";

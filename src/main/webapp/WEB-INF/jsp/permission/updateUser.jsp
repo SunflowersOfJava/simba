@@ -28,6 +28,10 @@
 							<td><input class="easyui-textbox" type="text" id="${ext.key}" name="${ext.key}" value="${ext.value}" <c:if test="${ext.required}">data-options="required:true"</c:if>></input></td>
 						</tr>
 					</c:forEach>
+					<tr>
+						<td>所属机构:</td>
+						<td><select id="orgID" name="orgID" style="width: 200px;"></select></td>
+					</tr>
 				</table>
 			</form>
 			<div style="text-align: center; padding: 5px">
@@ -35,7 +39,33 @@
 					onclick="User.toList();" data-options="iconCls:'icon-cancel'">取消</a>
 			</div>
 		</div>
-
 	</div>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		var orgIDs = ${orgIDs};
+		var orgID = orgIDs[0];
+		$("#orgID").combotree({
+			url : contextPath + "/org/listChildrenOrg.do?showRoot=true",
+			required : true,
+			checkbox:true,
+			cascadeCheck:false,
+			multiple:true,
+			onLoadSuccess : function(node, data) {
+				if (orgID == 0) {
+					return true;
+				}
+				var orgTreeSelect = $("#orgID").combotree("tree");
+				var root = orgTreeSelect.tree("find", ${rootID});
+				orgTreeSelect.tree("expandAll", root.target);
+				var orgNode = orgTreeSelect.tree("find", orgID);
+				if (!orgNode) {
+					return true;
+				}
+				orgTreeSelect.tree("scrollTo", orgNode.target);
+				$("#orgID").combotree("setValues", orgIDs);
+			}
+		});
+	});
+	</script>
 </body>
 </html>

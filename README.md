@@ -1,5 +1,5 @@
 # demoWeb
-一个基于SpringMVC的web框架,初始化脚本在doc目录中，ppt有基本的使用介绍。
+一个基于SpringMVC的web框架,初始化脚本在doc目录中，ppt有基本的使用介绍，由于时间关系并未包含所有的功能介绍。
 直接运行Jetty类的main方法，即可启动web服务
 登陆系统的入口: 
 http://localhost:8080/demo/login/toLogin.do 
@@ -8,6 +8,7 @@ http://localhost:8080/demo/login/toLogin.do
 系统默认把登陆拦截和权限拦截关闭了，需要打开的可以在SpringMVC.xml文件中修改
 如果大家对框架改进有任何意见，麻烦可以在下载资源页进行留言，或者发送email到我的邮箱loceme.student@163.com
 或者大家有什么功能已经开发好了，愿意加到我的框架中，共享给大家一起学习，也可以随时联系我，我会在收到信息之后，尽快回复，谢谢。
+如果大家在使用中，发现bug，可以通过邮件截图+描述发送给我，我会在之后的版本修改并发布，如果您修改了bug，也可以把修改的源码发给我，谢谢。
 以下是每个版本的日志
 1.0.5
 从web项目迁移成maven项目

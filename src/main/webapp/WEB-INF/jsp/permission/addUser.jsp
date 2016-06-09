@@ -30,7 +30,7 @@
 					</c:forEach>
 					<tr>
 						<td>所属机构:</td>
-						<td></td>
+						<td><select id="orgID" name="orgID" style="width: 200px;"></select></td>
 					</tr>
 				</table>
 			</form>
@@ -42,8 +42,32 @@
 	</div>
 	<script type="text/javascript">
 	$(document).ready(function(){
-		var orgID = ${parentID};
-		
+		var orgID = ${orgID};
+		$("#orgID").combotree({
+			url : contextPath + "/org/listChildrenOrg.do?showRoot=true",
+			required : true,
+			checkbox:true,
+			cascadeCheck:false,
+			multiple:true,
+			onLoadSuccess : function(node, data) {
+				if (orgID == 0) {
+					return true;
+				}
+				var orgTreeSelect = $("#orgID").combotree("tree");
+				var orgNode = orgTreeSelect.tree("find", orgID);
+				if (!orgNode) {
+					var root = orgTreeSelect.tree("find", ${rootID});
+					orgTreeSelect.tree("expandAll", root.target);
+					orgNode = orgTreeSelect.tree("find", orgID);
+				}
+				if (!orgNode) {
+					return true;
+				}
+				orgTreeSelect.tree("scrollTo", orgNode.target);
+				$("#orgID").combotree("setValue", orgID);
+				orgID = 0;
+			}
+		});
 	});
 	</script>
 </body>

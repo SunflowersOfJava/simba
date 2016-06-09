@@ -129,21 +129,22 @@ body {
 	<div class="contentWraper">
 		<div class="content">
 			<div class="picBg"></div>
+			<form action="<%=request.getContextPath()%>/login/login.do" method="post">
 			<div class="inputBox">
-				<form action="<%=request.getContextPath()%>/login/login.do" method="post">
 					<div class="account">
 						<span>账 号</span><input type="text" id="userName" name="userName" value="${userName }" />
 					</div>
 					<div class="password">
 						<span>密 码</span><input type="password" value="${password }" id="password" name="password" />
 					</div>
-				</form>
 				<div id="tip" style="color: red">${errMsg}</div>
 			</div>
 			<div id="loginBtnBg" onclick="login()" onmouseover="mouseOver()" onmouseout="mouseOut()">
-				
+				<div style="display:">
+					<input type="submit" value=""/>
+				</div>
 			</div>
-
+		</form>
 		</div>
 	</div>
 	<div class="footWraper"></div>
