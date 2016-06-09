@@ -5,3 +5,5 @@ insert into menu(text,parentID,url,orderNo) values('权限管理',-1,'/permission/li
 insert into menu(text,parentID,url,orderNo) values('菜单管理',-1,'/menu/list.do',5);
 insert into menu(text,parentID,url,orderNo) values('业务管理',-1,'/buss/list.do',6);
 insert into menu(text,parentID,url,orderNo) values('版本管理',-1,'/install/list.do',7);
+insert into menu(text,parentID,url,orderNo) values('注册类型管理',-1,'/registryType/list.do',8);
+insert into menu(text,parentID,url,orderNo) values('注册表管理',-1,'/registryTable/list.do',9);

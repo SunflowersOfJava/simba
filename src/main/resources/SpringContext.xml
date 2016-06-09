@@ -29,5 +29,7 @@
 	<!-- <import resource="classpath:/SpringDubbo.xml" /> -->
 	<!-- <import resource="classpath:/SpringMQ.xml" /> -->
 	<import resource="classpath:/SpringCache.xml" />
+	<!--
 	<import resource="classpath:/SpringActiviti.xml" />
+	 -->
 </beans>
