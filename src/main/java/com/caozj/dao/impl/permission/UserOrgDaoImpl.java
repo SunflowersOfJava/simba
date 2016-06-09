@@ -128,6 +128,12 @@ public class UserOrgDaoImpl implements UserOrgDao {
 		param.set(value2);
 		return jdbc.queryForPage(sql, UserOrg.class, page, param);
 	}
+
+	@Override
+	public void deleteByUserAccount(String account) {
+		String sql = "delete from " + table + " where userAccount = ? ";
+		jdbc.updateForBoolean(sql, account);
+	}
 	
 
 }

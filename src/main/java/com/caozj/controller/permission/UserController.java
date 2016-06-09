@@ -19,16 +19,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.caozj.controller.form.EasyUIPageForm;
 import com.caozj.controller.form.UserSearchForm;
 import com.caozj.controller.vo.UserVo;
-import com.caozj.framework.model.ext.ExtPageGrid;
+import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.model.json.JsonResult;
 import com.caozj.framework.session.SessionUtil;
+import com.caozj.framework.util.common.FastJsonUtil;
 import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.model.constant.ConstantData;
 import com.caozj.model.permission.Role;
 import com.caozj.model.permission.User;
 import com.caozj.model.permission.UserExt;
 import com.caozj.model.permission.UserExtDesc;
+import com.caozj.model.permission.UserOrg;
 import com.caozj.service.permission.RoleService;
+import com.caozj.service.permission.UserOrgService;
 import com.caozj.service.permission.UserService;
 
 @Controller
@@ -40,6 +43,9 @@ public class UserController {
 
 	@Autowired
 	private RoleService roleService;
+
+	@Autowired
+	private UserOrgService userOrgService;
 
 	@RequestMapping("/list.do")
 	public String list(ModelMap model) {
@@ -61,28 +67,51 @@ public class UserController {
 
 	@RequestMapping
 	public String listFull(UserSearchForm form, EasyUIPageForm page, String forSimple, ModelMap model) {
-
-		return "message";
-	}
-
-	@RequestMapping("/listDataOfExt.do")
-	public String listDataOfExt(ModelMap model, int start, int limit) {
-		Pager page = new Pager(start, limit);
-		List<User> list = userService.page(page);
-		List<UserVo> voList = new ArrayList<>(list.size());
-		list.forEach((user) -> {
-			UserVo vo = new UserVo();
-			vo.setUser(user);
-			vo.setUserExt(userService.getUserExt(user.getAccount()));
-			voList.add(vo);
-		});
-		String message = new JsonResult(new ExtPageGrid(voList, page.getTotalCount())).toJson();
-		model.put("message", message);
+		List<UserVo> voList = new ArrayList<>();
+		int total = 0;
+		if (StringUtils.isNotEmpty(form.getAccount())) {
+			User user = userService.get(form.getAccount());
+			if (user != null) {
+				total = 1;
+				UserVo vo = new UserVo();
+				vo.setUser(user);
+				vo.setUserExt(userService.getUserExt(user.getAccount()));
+				voList.add(vo);
+			}
+		} else if (form.getOrgID() != null) {
+			Pager pager = new Pager((page.getPage() - 1) * page.getRows(), page.getRows());
+			List<UserOrg> userOrgList = userOrgService.pageBy("orgID", form.getOrgID(), pager);
+			total = pager.getTotalCount();
+			List<User> userList = new ArrayList<User>(userOrgList.size());
+			userOrgList.forEach((userOrg) -> {
+				User user = userService.get(userOrg.getUserAccount());
+				userList.add(user);
+			});
+			userList.forEach((user) -> {
+				UserVo vo = new UserVo();
+				vo.setUser(user);
+				vo.setUserExt(userService.getUserExt(user.getAccount()));
+				voList.add(vo);
+			});
+		}
+		if ("true".equals(forSimple)) {
+			List<Map<String, Object>> mapList = new ArrayList<>(voList.size());
+			voList.forEach((vo) -> {
+				Map<String, Object> map = new HashMap<>();
+				map.put("account", vo.getUser().getAccount());
+				map.put("name", vo.getUser().getName());
+				map.putAll(vo.getUserExt().getExtMap());
+				mapList.add(map);
+			});
+			model.put("message", FastJsonUtil.toJson(new PageGrid(total, mapList)));
+		} else {
+			model.put("message", FastJsonUtil.toJson(new PageGrid(total, voList)));
+		}
 		return "message";
 	}
 
 	@RequestMapping("/toAdd.do")
-	public String toAdd(ModelMap model) {
+	public String toAdd(int parentID, ModelMap model) {
 		Map<String, String> desc = UserExtDesc.getAllDesc();
 		List<Map<String, Object>> descs = new ArrayList<>(desc.size());
 		desc.forEach((key, value) -> {
@@ -93,6 +122,7 @@ public class UserController {
 			descs.add(m);
 		});
 		model.put("descs", descs);
+		model.put("parentID", parentID);
 		return "permission/addUser";
 	}
 
@@ -106,7 +136,9 @@ public class UserController {
 		descMap.keySet().forEach((key) -> {
 			extMap.put(key, request.getParameter(key));
 		});
-		userService.add(user, userExt);
+		List<UserOrg> userOrgList = new ArrayList<UserOrg>();
+
+		userService.add(user, userExt, userOrgList);
 		model.put("message", new JsonResult().toJson());
 		return "message";
 	}
@@ -152,7 +184,8 @@ public class UserController {
 		descMap.keySet().forEach((key) -> {
 			extMap.put(key, request.getParameter(key));
 		});
-		userService.update(user, userExt);
+		List<UserOrg> userOrgList = new ArrayList<UserOrg>();
+		userService.update(user, userExt, userOrgList);
 		model.put("message", new JsonResult().toJson());
 		return "message";
 	}
@@ -239,12 +272,24 @@ public class UserController {
 	}
 
 	@RequestMapping("/assignRole.do")
-	public String assignRole(String[] roleName, String account, HttpServletRequest request, ModelMap model) {
+	public String assignRole(String[] roleName, String account, ModelMap model) {
 		if (roleName == null || roleName.length == 0) {
 			throw new RuntimeException("角色不能为空");
 		}
 		userService.assignRoles(account, Arrays.asList(roleName));
 		model.put("message", new JsonResult().toJson());
+		return "message";
+	}
+
+	@RequestMapping
+	public String toAssignOrg(String account, ModelMap model) {
+
+		return "permission/assignOrg";
+	}
+
+	@RequestMapping
+	public String assignOrg(String account) {
+
 		return "message";
 	}
 

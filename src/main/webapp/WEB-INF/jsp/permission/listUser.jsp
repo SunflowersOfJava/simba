@@ -13,7 +13,7 @@
 	<div data-options="region:'west',split:true" title="机构树" style="width: 180px;">
 		<ul class="easyui-tree" id="orgTree"></ul>
 	</div>
-	<div data-options="region:'center',title:'用户列表'">
+	<div data-options="region:'center',title:'机构树--用户列表'">
 		<table id="userTable"></table>
 		<div id="userToolbar">
 			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="User.toAdd();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0);" class="easyui-linkbutton"
@@ -68,7 +68,7 @@
 				, {
 					title : "操作",
 					field : "oper",
-					width : 120,
+					width : 300,
 					formatter : function(value, row, index) {
 						var html = "<a href=\"javascript:void(0)\" onclick=\"User.toUpdate('" + row["account"] + "')\">修改</a>";
 						html += "&nbsp;&nbsp;";

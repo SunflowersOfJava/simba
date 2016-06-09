@@ -45,4 +45,6 @@ public interface UserOrgDao {
 
 	List<UserOrg> pageByOr(String field1, Object value1, String field2, Object value2, Pager page);
 
+	void deleteByUserAccount(String account);
+
 }

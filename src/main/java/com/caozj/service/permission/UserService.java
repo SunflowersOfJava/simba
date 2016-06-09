@@ -8,6 +8,7 @@ import com.caozj.model.permission.OrgExt;
 import com.caozj.model.permission.Role;
 import com.caozj.model.permission.User;
 import com.caozj.model.permission.UserExt;
+import com.caozj.model.permission.UserOrg;
 
 /**
  * 用户service(传进方法里的密码全部为明文密码)
@@ -88,5 +89,9 @@ public interface UserService {
 	List<Org> listOrgByUser(String userAccount);
 
 	List<OrgExt> listOrgExtByUser(String userAccount);
+
+	void update(User user, UserExt userExt, List<UserOrg> userOrgList);
+
+	void add(User user, UserExt userExt, List<UserOrg> userOrgList);
 
 }

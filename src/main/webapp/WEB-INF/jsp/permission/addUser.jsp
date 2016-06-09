@@ -28,6 +28,10 @@
 							<td><input class="easyui-textbox" type="text" id="${ext.key}" name="${ext.key}" <c:if test="${ext.required}">data-options="required:true"</c:if>></input></td>
 						</tr>
 					</c:forEach>
+					<tr>
+						<td>所属机构:</td>
+						<td></td>
+					</tr>
 				</table>
 			</form>
 			<div style="text-align: center; padding: 5px">
@@ -35,7 +39,12 @@
 					onclick="User.toList();" data-options="iconCls:'icon-cancel'">取消</a>
 			</div>
 		</div>
-
 	</div>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		var orgID = ${parentID};
+		
+	});
+	</script>
 </body>
 </html>

@@ -15,15 +15,19 @@ var User = {
 	},
 
 	"search" : function() {
-
+		$("#userTable").datagrid("load", {
+			account : $("#account").val()
+		});
+		var name = "用户列表";
+		$(".layout-panel-center .panel-title").html(name);
 	},
 
 	"toAssignOrg" : function(account) {
-
+		window.self.location.href = contextPath + "/user/toAssignOrg.do?account=" + account;
 	},
 
 	"toAdd" : function() {
-		window.self.location.href = contextPath + "/user/toAdd.do";
+		window.self.location.href = contextPath + "/user/toAdd.do?orgID=" + $("#parentID").val();
 	},
 
 	"add" : function() {
@@ -66,8 +70,12 @@ var User = {
 	},
 
 	"batchDelete" : function() {
-		var selectedAccounts = ExtGridUtil.getValue("checkbox", null, "userList", "user.account");
-		if (selectedAccounts == "") {
+		var accountArray = new Array();
+		var selectedUsers = $("#userTable").datagrid("getSelections");
+		$.each(selectedUsers, function(i, user) {
+			accountArray.push(user.account);
+		});
+		if (accountArray.length == 0) {
 			$.messager.alert("系统提示", "请选择要删除的用户", 'warning');
 			return false;
 		}
@@ -77,11 +85,13 @@ var User = {
 			dataType : "json",
 			async : true,
 			data : {
-				accounts : selectedAccounts
+				accounts : accountArray
 			},
 			success : function(data) {
 				if (data.code == 200) {
-					ExtGridUtil.refreshStore(null, "userList", null, 10);
+					$("#userTable").datagrid("load", {
+						orgID : $("#parentID").val()
+					});
 					$.messager.alert("系统提示", "批量删除成功", 'info');
 				} else {
 					$.messager.alert("系统错误", data.msg, 'error');
@@ -125,7 +135,9 @@ var User = {
 			},
 			success : function(data) {
 				if (data.code == 200) {
-					ExtGridUtil.refreshStore(null, "userList", null, 10);
+					$("#userTable").datagrid("load", {
+						orgID : $("#parentID").val()
+					});
 					$.messager.alert("系统提示", "删除成功", 'info');
 				} else {
 					$.messager.alert("系统错误", data.msg, 'error');
