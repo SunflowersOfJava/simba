@@ -2,14 +2,22 @@ package com.caozj.model.permission;
 
 import java.io.Serializable;
 
-public class RolePermission implements Serializable{
+public class RolePermission implements Serializable {
 
 	private static final long serialVersionUID = -6978350619480118473L;
-	
+
+	public RolePermission() {
+	}
+
+	public RolePermission(String roleName, int permissionID) {
+		this.roleName = roleName;
+		this.permissionID = permissionID;
+	}
+
 	private int id;
-	
+
 	private String roleName;
-	
+
 	private int permissionID;
 
 	public int getId() {
@@ -48,7 +56,5 @@ public class RolePermission implements Serializable{
 		builder.append("]");
 		return builder.toString();
 	}
-	
-	
 
 }

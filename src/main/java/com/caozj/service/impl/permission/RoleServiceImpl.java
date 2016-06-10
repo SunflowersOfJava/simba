@@ -3,7 +3,6 @@ package com.caozj.service.impl.permission;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,11 +66,11 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public void assignPermission(String roleName, List<String> permissionNameList) {
+	public void assignPermission(String roleName, List<Integer> permissionIDList) {
 		rolePermissionDao.deleteByRoleName(roleName);
-		for (String permissionName : permissionNameList) {
-			if (StringUtils.isNotEmpty(permissionName)) {
-				rolePermissionDao.add(new RolePermission(roleName, permissionName));
+		for (Integer permissionID : permissionIDList) {
+			if (permissionID != null) {
+				rolePermissionDao.add(new RolePermission(roleName, permissionID));
 			}
 		}
 	}
@@ -85,10 +84,10 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	public List<Permission> listByRole(String roleName) {
-		List<RolePermission> rolePermissionList = rolePermissionDao.listByRoleName(roleName);
+		List<RolePermission> rolePermissionList = rolePermissionDao.listBy("roleName", roleName);
 		List<Permission> permissionList = new ArrayList<Permission>(rolePermissionList.size());
 		for (RolePermission rolePermission : rolePermissionList) {
-			Permission permission = permissionDao.get(rolePermission.getPermissionName());
+			Permission permission = permissionDao.get(rolePermission.getPermissionID());
 			permissionList.add(permission);
 		}
 		return permissionList;

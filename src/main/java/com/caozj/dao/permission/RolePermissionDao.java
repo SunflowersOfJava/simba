@@ -45,4 +45,6 @@ public interface RolePermissionDao {
 
 	List<RolePermission> pageByOr(String field1, Object value1, String field2, Object value2, Pager page);
 
+	void deleteByRoleName(String name);
+
 }

@@ -15,7 +15,7 @@ import com.caozj.model.permission.RolePermission;
  * 
  * 
  * @author caozj
- *  
+ * 
  */
 @Repository
 public class RolePermissionDaoImpl implements RolePermissionDao {
@@ -28,13 +28,13 @@ public class RolePermissionDaoImpl implements RolePermissionDao {
 	@Override
 	public void add(RolePermission rolePermission) {
 		String sql = "insert into " + table + "( roleName, permissionID) values(?,?)";
-		jdbc.updateForBoolean(sql, rolePermission.getRoleName(),rolePermission.getPermissionID());
+		jdbc.updateForBoolean(sql, rolePermission.getRoleName(), rolePermission.getPermissionID());
 	}
 
 	@Override
 	public void update(RolePermission rolePermission) {
 		String sql = "update " + table + " set  roleName = ? , permissionID = ?  where id = ?  ";
-		jdbc.updateForBoolean(sql,rolePermission.getRoleName(),rolePermission.getPermissionID(), rolePermission.getId());
+		jdbc.updateForBoolean(sql, rolePermission.getRoleName(), rolePermission.getPermissionID(), rolePermission.getId());
 	}
 
 	@Override
@@ -50,15 +50,15 @@ public class RolePermissionDaoImpl implements RolePermissionDao {
 	}
 
 	@Override
-	public List<RolePermission> listAll(){
+	public List<RolePermission> listAll() {
 		String sql = "select * from " + table;
 		return jdbc.queryForList(sql, RolePermission.class);
 	}
 
 	@Override
-	public int count(){
+	public int count() {
 		String sql = "select count(*) from " + table;
-		return jdbc.queryForInt(sql); 
+		return jdbc.queryForInt(sql);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class RolePermissionDaoImpl implements RolePermissionDao {
 		String sql = "select * from " + table + " where id = ? ";
 		return jdbc.query(sql, RolePermission.class, id);
 	}
-	
+
 	@Override
 	public RolePermission getBy(String field, Object value) {
 		String sql = "select * from " + table + " where " + field + " = ? ";
@@ -128,6 +128,11 @@ public class RolePermissionDaoImpl implements RolePermissionDao {
 		param.set(value2);
 		return jdbc.queryForPage(sql, RolePermission.class, page, param);
 	}
-	
+
+	@Override
+	public void deleteByRoleName(String name) {
+		String sql = "delete from " + table + " where roleName = ? ";
+		jdbc.updateForBoolean(sql, name);
+	}
 
 }

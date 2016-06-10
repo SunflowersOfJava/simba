@@ -20,7 +20,7 @@ public interface RoleService {
 
 	List<Role> listAll();
 
-	void assignPermission(String roleName, List<String> permissionNameList);
+	void assignPermission(String roleName, List<Integer> permissionIDList);
 
 	void batchDelete(List<String> roleNameList);
 

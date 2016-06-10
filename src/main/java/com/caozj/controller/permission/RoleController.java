@@ -88,11 +88,11 @@ public class RoleController {
 	}
 
 	@RequestMapping("/assignPermission.do")
-	public String assignPermission(String[] permissionName, String roleName, ModelMap model) {
-		if (permissionName == null || permissionName.length == 0) {
+	public String assignPermission(Integer[] permissionID, String roleName, ModelMap model) {
+		if (permissionID.length == 0) {
 			throw new RuntimeException("权限不能为空");
 		}
-		roleService.assignPermission(roleName, Arrays.asList(permissionName));
+		roleService.assignPermission(roleName, Arrays.asList(permissionID));
 		model.put("message", new JsonResult().toJson());
 		return "message";
 	}
