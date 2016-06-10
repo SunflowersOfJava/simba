@@ -42,7 +42,7 @@ public class RoleController {
 	public String listDataOfEasyUI(EasyUIPageForm form, ModelMap model) {
 		Pager pager = new Pager((form.getPage() - 1) * form.getRows(), form.getRows());
 		List<Role> list = roleService.page(pager);
-		String message = new JsonResult(new PageGrid(pager.getTotalCount(), list)).toJson();
+		String message = FastJsonUtil.toJson(new PageGrid(pager.getTotalCount(), list));
 		model.put("message", message);
 		return "message";
 	}

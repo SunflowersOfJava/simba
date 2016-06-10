@@ -17,7 +17,7 @@
 				onclick="Role.batchDelete();" data-options="iconCls:'icon-remove'">删除</a>
 		</div>
 	</div>
-	<div id="assignPermissionWindow" class="easyui-window" title="分配权限" style="width:600px;height:400px" data-options="iconCls:'icon-save',modal:true">
+	<div id="assignPermissionWindow" class="easyui-window" title="分配权限" style="width:600px;height:400px" data-options="modal:true,collapsible:false,minimizable:false,maximizable:false,closable:false,closed:true">
 		<form id="assignPermissionForm" method="post">
 			<input id="roleName" name="roleName" type="hidden" value="" />
 			<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
@@ -45,6 +45,7 @@
 				animate : true,
 				toolbar : "#toolbar",
 				singleSelect : false,
+				pagination : true,
 				idField : "name",
 				loadMsg : "正在加载数据，请耐心等待...",
 				rownumbers : true,

@@ -41,7 +41,7 @@ var Role = {
 			},
 			success : function(data) {
 				if (data.code == 200) {
-					$("#table").datagrid("load");
+					$("#table").datagrid("load",{});
 					$.messager.alert("系统提示", "删除成功", 'info');
 				} else {
 					$.messager.alert("系统错误", data.msg, 'error');
@@ -85,7 +85,7 @@ var Role = {
 			},
 			success : function(data) {
 				if (data.code == 200) {
-					$("#table").datagrid("load");
+					$("#table").datagrid("load",{});
 					$.messager.alert("系统提示", "删除成功", 'info');
 				} else {
 					$.messager.alert("系统错误", data.msg, 'error');
