@@ -13,18 +13,19 @@
 	<div class="easyui-panel" title="修改权限" style="width:700px">
 		<div style="padding:10px 60px 20px 60px">
 			<form id="permissionForm" method="post">
+			<input type="hidden" name="id" id="id" value="${permission.id }"/>
 				<table cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 					<tr>
 						<td>名称:</td>
-						<td><input class="easyui-textbox" type="text" id="name" name="name" data-options="required:true,readonly:true" value="${permission.name }"></input></td>
-					</tr>
-					<tr>
-						<td>描述:</td>
-						<td><input class="easyui-textbox" type="text" id="description" name="description" data-options="required:true" value="${permission.description }"></input></td>
+						<td><input class="easyui-textbox" type="text" id="text" name="text" data-options="required:true" value="${permission.text }"></input></td>
 					</tr>
 					<tr>
 						<td>URL地址:</td>
-						<td><input class="easyui-textbox" type="text" id="url" name="url" data-options="required:true,width:500,multiline:true,height:60,prompt:'多个url使用英文逗号隔开'" value="${permission.url}"></input></td>
+						<td><input class="easyui-textbox" type="text" id="url" name="url" data-options="width:500,multiline:true,height:60,prompt:'多个url使用英文逗号隔开'" value="${permission.url}"></input></td>
+					</tr>
+					<tr>
+						<td>父权限:</td>
+						<td><select id="parentID" name="parentID" style="width: 200px;" data-options="required:true"></select></td>
 					</tr>
 				</table>
 			</form>
@@ -33,7 +34,33 @@
 					onclick="Permission.toList();" data-options="iconCls:'icon-cancel'">取消</a>
 			</div>
 		</div>
-
 	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var defaultParentID = ${permission.parentID};
+			$("#parentID").combotree({
+				url : contextPath + "/permission/listChildrenPermission.do?showRoot=true",
+				required : true,
+				onLoadSuccess : function(node, data) {
+					if (defaultParentID == 0) {
+						return true;
+					}
+					var permissionTreeSelect = $("#parentID").combotree("tree");
+					var parentNode = permissionTreeSelect.tree("find", defaultParentID);
+					if (!parentNode) {
+						var root = permissionTreeSelect.tree("find", ${rootID});
+						permissionTreeSelect.tree("expandAll", root.target);
+						parentNode = permissionTreeSelect.tree("find", defaultParentID);
+					}
+					if (!parentNode) {
+						return true;
+					}
+					permissionTreeSelect.tree("scrollTo", parentNode.target);
+					$("#parentID").combotree("setValue", defaultParentID);
+					defaultParentID = 0;
+				}
+			});
+		});
+	</script>
 </body>
 </html>

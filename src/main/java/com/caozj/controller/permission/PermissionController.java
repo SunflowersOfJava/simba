@@ -3,17 +3,17 @@ package com.caozj.controller.permission;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.caozj.controller.form.EasyUIPageForm;
-import com.caozj.framework.model.easyui.PageGrid;
-import com.caozj.framework.model.ext.ExtPageGrid;
 import com.caozj.framework.model.json.JsonResult;
+import com.caozj.framework.util.common.FastJsonUtil;
 import com.caozj.framework.util.common.JsonUtil;
-import com.caozj.framework.util.jdbc.Pager;
+import com.caozj.model.constant.ConstantData;
 import com.caozj.model.permission.Permission;
 import com.caozj.service.permission.PermissionService;
 
@@ -26,30 +26,54 @@ public class PermissionController {
 
 	@RequestMapping("/list.do")
 	public String list(ModelMap model) {
-		return "permission/list";
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
+		return "permission/listPermission";
 	}
 
-	@RequestMapping("/listDataOfExt.do")
-	public String listDataOfExt(ModelMap model, int start, int limit) {
-		Pager page = new Pager(start, limit);
-		List<Permission> list = permissionService.page(page);
-		String message = new JsonResult(new ExtPageGrid(list, page.getTotalCount())).toJson();
-		model.put("message", message);
+	/**
+	 * 获取子权限数据
+	 * 
+	 * @param node
+	 *            ext会使用这个参数来传递父节点id
+	 * @param id
+	 *            easyui会使用这个参数来传递父节点id
+	 * @param showRoot
+	 *            是否显示根节点
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/listChildrenPermission.do")
+	public String listChildrenPermission(Integer node, Integer id, Boolean showRoot, ModelMap model, HttpServletRequest request) {
+		int parentID = ConstantData.TREE_ROOT_ID;
+		if (node != null) {
+			parentID = node;
+		} else if (id != null) {
+			parentID = id;
+		} else if (showRoot != null && showRoot) {
+			Permission permission = buildRootPermission();
+			model.put("message", JsonUtil.toJson(Arrays.asList(permission)));
+			return "message";
+		}
+		List<Permission> list = permissionService.listChildren(parentID);
+		model.put("message", FastJsonUtil.toJson(list));
 		return "message";
 	}
-	
-	@RequestMapping("/listDataOfEasyUI.do")
-	public String listDataOfEasyUI(ModelMap model, EasyUIPageForm form) {
-		Pager page = new Pager((form.getPage()-1) * form.getRows(), form.getRows());
-		List<Permission> list = permissionService.page(page);
-		String message = JsonUtil.toJson(new PageGrid(page.getTotalCount(), list));
-		model.put("message", message);
-		return "message";
+
+	private Permission buildRootPermission() {
+		Permission root = new Permission();
+		root.setId(ConstantData.TREE_ROOT_ID);
+		root.setText("权限树");
+		root.setLeaf(false);
+		root.setState("closed");
+		return root;
 	}
 
 	@RequestMapping("/toAdd.do")
-	public String toAdd() {
-		return "permission/add";
+	public String toAdd(Integer parentID, ModelMap model) {
+		model.put("parentID", parentID);
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
+		return "permission/addPermission";
 	}
 
 	@RequestMapping("/add.do")
@@ -62,8 +86,9 @@ public class PermissionController {
 	@RequestMapping("/toUpdate.do")
 	public String toUpdate(int id, ModelMap model) {
 		Permission permission = permissionService.get(id);
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
 		model.put("permission", permission);
-		return "permission/update";
+		return "permission/updatePermission";
 	}
 
 	@RequestMapping("/update.do")
@@ -80,7 +105,7 @@ public class PermissionController {
 		model.put("message", new JsonResult().toJson());
 		return "message";
 	}
-	
+
 	@RequestMapping("/delete.do")
 	public String delete(int id, ModelMap model) {
 		permissionService.delete(id);
@@ -94,7 +119,7 @@ public class PermissionController {
 		model.put("permission", permission);
 		return "permission/show";
 	}
-	
+
 	@RequestMapping("/get.do")
 	public String get(int id, ModelMap model) {
 		Permission permission = permissionService.get(id);

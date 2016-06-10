@@ -58,14 +58,14 @@ public class PermissionServiceImpl implements PermissionService {
 	public void update(Permission permission) {
 		permissionDao.update(permission);
 	}
-	
+
 	@Override
 	public void batchDelete(List<Integer> idList) {
 		for (Integer id : idList) {
 			this.delete(id);
 		}
 	}
-	
+
 	@Override
 	public Permission getBy(String field, Object value) {
 		return permissionDao.getBy(field, value);
@@ -109,5 +109,21 @@ public class PermissionServiceImpl implements PermissionService {
 	@Override
 	public List<Permission> pageByOr(String field1, Object value1, String field2, Object value2, Pager page) {
 		return permissionDao.pageByOr(field1, value1, field2, value2, page);
+	}
+
+	@Override
+	public List<Permission> listChildren(int parentID) {
+		List<Permission> children = this.listBy("parentID", parentID);
+		children.forEach((permission) -> {
+			int childrenCount = permissionDao.countBy("parentID", permission.getId());
+			if (childrenCount > 0) {
+				permission.setLeaf(false);
+				permission.setState("closed");
+			} else {
+				permission.setLeaf(true);
+				permission.setState("open");
+			}
+		});
+		return children;
 	}
 }

@@ -22,11 +22,11 @@ public interface PermissionDao {
 	List<Permission> listAll();
 
 	int count();
-	
+
 	List<Permission> page(Pager page);
 
 	Permission get(int id);
-	
+
 	Permission getBy(String field, Object value);
 
 	Permission getByAnd(String field1, Object value1, String field2, Object value2);
@@ -44,5 +44,7 @@ public interface PermissionDao {
 	List<Permission> pageByAnd(String field1, Object value1, String field2, Object value2, Pager page);
 
 	List<Permission> pageByOr(String field1, Object value1, String field2, Object value2, Pager page);
+
+	int countBy(String field, Object value);
 
 }

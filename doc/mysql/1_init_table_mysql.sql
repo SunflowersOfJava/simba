@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016/6/9 星期四 18:27:04                        */
+/* Created on:     2016/6/10 星期五 11:15:26                       */
 /*==============================================================*/
 
 
@@ -146,7 +146,7 @@ alter table registryTable comment '注册表';
 create table registryType
 (
    id                   int not null auto_increment,
-   name                 varchar(128) not null comment '名称',
+   text                 varchar(128) not null comment '名称',
    parentID             int not null comment '父ID',
    primary key (id)
 );

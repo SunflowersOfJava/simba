@@ -15,7 +15,7 @@ import com.caozj.model.permission.Permission;
  * 
  * 
  * @author caozj
- *  
+ * 
  */
 @Repository
 public class PermissionDaoImpl implements PermissionDao {
@@ -28,13 +28,13 @@ public class PermissionDaoImpl implements PermissionDao {
 	@Override
 	public void add(Permission permission) {
 		String sql = "insert into " + table + "( text, url, parentID) values(?,?,?)";
-		jdbc.updateForBoolean(sql, permission.getText(),permission.getUrl(),permission.getParentID());
+		jdbc.updateForBoolean(sql, permission.getText(), permission.getUrl(), permission.getParentID());
 	}
 
 	@Override
 	public void update(Permission permission) {
 		String sql = "update " + table + " set  text = ? , url = ? , parentID = ?  where id = ?  ";
-		jdbc.updateForBoolean(sql,permission.getText(),permission.getUrl(),permission.getParentID(), permission.getId());
+		jdbc.updateForBoolean(sql, permission.getText(), permission.getUrl(), permission.getParentID(), permission.getId());
 	}
 
 	@Override
@@ -50,15 +50,15 @@ public class PermissionDaoImpl implements PermissionDao {
 	}
 
 	@Override
-	public List<Permission> listAll(){
+	public List<Permission> listAll() {
 		String sql = "select * from " + table;
 		return jdbc.queryForList(sql, Permission.class);
 	}
 
 	@Override
-	public int count(){
+	public int count() {
 		String sql = "select count(*) from " + table;
-		return jdbc.queryForInt(sql); 
+		return jdbc.queryForInt(sql);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class PermissionDaoImpl implements PermissionDao {
 		String sql = "select * from " + table + " where id = ? ";
 		return jdbc.query(sql, Permission.class, id);
 	}
-	
+
 	@Override
 	public Permission getBy(String field, Object value) {
 		String sql = "select * from " + table + " where " + field + " = ? ";
@@ -128,6 +128,11 @@ public class PermissionDaoImpl implements PermissionDao {
 		param.set(value2);
 		return jdbc.queryForPage(sql, Permission.class, page, param);
 	}
-	
+
+	@Override
+	public int countBy(String field, Object value) {
+		String sql = "select count(*) from " + table + " where " + field + " = ? ";
+		return jdbc.queryForInt(sql, value);
+	}
 
 }

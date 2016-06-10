@@ -14,7 +14,7 @@ public class RegistryType implements Serializable {
 
 	private int id;
 
-	private String name;
+	private String text;
 
 	private int parentID;
 
@@ -26,12 +26,12 @@ public class RegistryType implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getText() {
+		return text;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	public int getParentID() {
@@ -47,8 +47,8 @@ public class RegistryType implements Serializable {
 		StringBuilder builder = new StringBuilder();
 		builder.append("RegistryType [id=");
 		builder.append(id);
-		builder.append(", name=");
-		builder.append(name);
+		builder.append(", text=");
+		builder.append(text);
 		builder.append(", parentID=");
 		builder.append(parentID);
 		builder.append("]");

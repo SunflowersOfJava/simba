@@ -5,70 +5,70 @@
 <head>
 <title>权限管理</title>
 <%@ include file="../common/header.jsp"%>
-<%@ include file="../common/ext.jsp"%>
 <%@ include file="../common/easyui.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/app/permission.js"></script>
 </head>
-<body>
-	<div id="list"></div>
+<body class="easyui-layout" id="layout">
+	<input type="hidden" id="parentID" name="parentID" value="${rootID}" />
+	<div data-options="region:'west',split:true" title="权限树" style="width: 180px;">
+		<ul class="easyui-tree" id="permissionTree"></ul>
+	</div>
+	<div data-options="region:'center',title:'权限树--子权限'">
+		<table id="permissionTable"></table>
+		<div id="permissionToolbar">
+			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="Permission.toAdd();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0);" class="easyui-linkbutton"
+				onclick="Permission.batchDelete();" data-options="iconCls:'icon-remove'">删除</a>
+		</div>
+	</div>
 	<script type="text/javascript">
-		Ext.onReady(function() {
-			var url = contextPath + "/permission/listDataOfExt.do";
-			var pageSize = 10;
-			var fields = [ {
-				name : "name",
-				type : "string"
-			}, {
-				name : "description",
-				type : "string"
-			}, {
-				name : "url",
-				type : "string"
-			} ];
-			var cmModels = [ {
-				header : '名称',
-				dataIndex : 'name',
-				width : 100,
-				sortable : true
-			}, {
-				header : '描述',
-				dataIndex : 'description',
-				width : 130,
-				sortable : true
-			}, {
-				header : 'URL地址',
-				dataIndex : 'url',
-				width : 400,
-				sortable : true
-			}, {
-				header : "操作",
-				renderer : renderOper
-			} ];
-			var type = "checkbox";
-			var id = "permissionList";
-			var field = "name";
-			var tbar = [ {
-				xtype : 'button',
-				text : '新增',
-				handler : function() {
-					Permission.toAdd();
+		$(document).ready(function() {
+			$("#permissionTree").tree({
+				url : contextPath + "/permission/listChildrenPermission.do?showRoot=true",
+				method : "post",
+				animate : true,
+				onClick : function(node) {
+					Permission.selectPermission(node);
 				}
-			}, '-', {
-				xtype : 'button',
-				text : '删除',
-				handler : function() {
-					Permission.batchDelete();
+			});
+			$("#permissionTable").datagrid({
+				url : contextPath + "/permission/listChildrenPermission.do",
+				method : "post",
+				animate : true,
+				toolbar : "#permissionToolbar",
+				singleSelect : false,
+				idField : "id",
+				loadMsg : "正在加载数据，请耐心等待...",
+				rownumbers : true,
+				queryParams : {
+					id : $("#parentID").val()
+				},
+				columns : [ [ {
+					title : "全选",
+					field : "ck",
+					checkbox : true
+				}, {
+					field : 'text',
+					title : '名称',
+					width : 150
 				}
-			} ];
-			ExtGridUtil.loadPageGrid(url, pageSize, fields, cmModels, '权限信息', "list", tbar, 0, id, type, field);
+				, {
+					field : 'url',
+					title : 'URL',
+					width : 150
+				}
+				, {
+					title : "操作",
+					field : "oper",
+					width : 120,
+					formatter : function(value, row, index) {
+						var html = "<a href=\"javascript:void(0);\" onclick=\"Permission.toUpdate('" + row["id"] + "')\">修改</a>";
+						html += "&nbsp;&nbsp;";
+						html += "<a href=\"javascript:void(0);\" onclick=\"Permission.deletePermission('" + row["id"] + "')\">删除</a>";
+						return html;
+					}
+				} ] ]
+			});
 		});
-
-		function renderOper(value, cellmeta, record, rowIndex, columnIndex, store) {
-			var html = "<a href=\"javascript:void(0)\" onclick=\"Permission.toUpdate('" + record.data["name"] + "')\">修改</a>";
-			html += "&nbsp;&nbsp;";
-			html += "<a href=\"javascript:void(0)\" onclick=\"Permission.deletePermission('" + record.data["name"] + "')\">删除</a>";
-			return html;
-		}
 	</script>
 </body>
 </html>

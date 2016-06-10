@@ -27,14 +27,14 @@ public class RegistryTypeDaoImpl implements RegistryTypeDao {
 
 	@Override
 	public void add(RegistryType registryType) {
-		String sql = "insert into " + table + "( name, parentID) values(?,?)";
-		jdbc.updateForBoolean(sql, registryType.getName(),registryType.getParentID());
+		String sql = "insert into " + table + "( text, parentID) values(?,?)";
+		jdbc.updateForBoolean(sql, registryType.getText(),registryType.getParentID());
 	}
 
 	@Override
 	public void update(RegistryType registryType) {
-		String sql = "update " + table + " set  name = ? , parentID = ?  where id = ?  ";
-		jdbc.updateForBoolean(sql,registryType.getName(),registryType.getParentID(), registryType.getId());
+		String sql = "update " + table + " set  text = ? , parentID = ?  where id = ?  ";
+		jdbc.updateForBoolean(sql,registryType.getText(),registryType.getParentID(), registryType.getId());
 	}
 
 	@Override

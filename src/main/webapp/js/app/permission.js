@@ -1,7 +1,7 @@
 var Permission = {
 
 	"toAdd" : function() {
-		window.self.location.href = contextPath + "/permission/toAdd.do";
+		window.self.location.href = contextPath + "/permission/toAdd.do?parentID=" + $("#parentID").val();
 	},
 
 	"add" : function() {
@@ -22,8 +22,12 @@ var Permission = {
 	},
 
 	"batchDelete" : function() {
-		var selectedpermissionNames = ExtGridUtil.getValue("checkbox", null, "permissionList", "name");
-		if (selectedpermissionNames == "") {
+		var idArray = new Array();
+		var selectedPermissions = $("#permissionTable").datagrid("getSelections");
+		$.each(selectedPermissions, function(i, permission) {
+			idArray.push(permission.id);
+		});
+		if (idArray.length == 0) {
 			$.messager.alert("系统提示", "请选择要删除的权限", 'warning');
 			return false;
 		}
@@ -33,24 +37,28 @@ var Permission = {
 			dataType : "json",
 			async : true,
 			data : {
-				permissionNames : selectedpermissionNames
+				ids : idArray.join(",")
 			},
 			success : function(data) {
 				if (data.code == 200) {
-					ExtGridUtil.refreshStore(null, "permissionList", null, 10);
-					$.messager.alert("系统提示", "批量删除成功", 'info');
+					$("#permissionTable").datagrid("load", {
+						id : $("#parentID").val()
+					});
+					var parentNode = $("#permissionTree").tree("find", $("#parentID").val());
+					$("#permissionTree").tree("reload", parentNode.target);
+					$.messager.alert("系统提示", "删除成功", 'info');
 				} else {
 					$.messager.alert("系统错误", data.msg, 'error');
 				}
 			},
 			error : function() {
-				$.messager.alert("系统错误", "批量删除失败", 'error');
+				$.messager.alert("系统错误", "删除失败", 'error');
 			}
 		});
 	},
 
-	"toUpdate" : function(name) {
-		window.self.location.href = contextPath + "/permission/toUpdate.do?name=" + encodeURIComponent(encodeURI(name));
+	"toUpdate" : function(id) {
+		window.self.location.href = contextPath + "/permission/toUpdate.do?id=" + id;
 	},
 
 	"update" : function() {
@@ -70,18 +78,22 @@ var Permission = {
 		});
 	},
 
-	"deletePermission" : function(name) {
+	"deletePermission" : function(id) {
 		$.ajax({
 			url : contextPath + "/permission/batchDelete.do?json",
 			type : "post",
 			dataType : "json",
 			async : true,
 			data : {
-				permissionNames : name
+				ids : id
 			},
 			success : function(data) {
 				if (data.code == 200) {
-					ExtGridUtil.refreshStore(null, "permissionList", null, 10);
+					$("#permissionTable").datagrid("load", {
+						id : $("#parentID").val()
+					});
+					var parentNode = $("#permissionTree").tree("find", $("#parentID").val());
+					$("#permissionTree").tree("reload", parentNode.target);
 					$.messager.alert("系统提示", "删除成功", 'info');
 				} else {
 					$.messager.alert("系统错误", data.msg, 'error');
@@ -95,6 +107,16 @@ var Permission = {
 
 	"toList" : function() {
 		window.self.location.href = contextPath + "/permission/list.do";
+	},
+
+	"selectPermission" : function(node) {
+		var id = node.id;
+		$("#parentID").val(id);
+		$("#permissionTable").datagrid("load", {
+			id : id
+		});
+		var name = node.text + "--子权限";
+		$(".layout-panel-center .panel-title").html(name);
 	},
 
 	"end" : null

@@ -1,4 +1,4 @@
-package  com.caozj.service.permission;
+package com.caozj.service.permission;
 
 import java.util.List;
 
@@ -22,11 +22,11 @@ public interface PermissionService {
 	List<Permission> listAll();
 
 	int count();
-	
+
 	List<Permission> page(Pager page);
 
 	Permission get(int id);
-	
+
 	void batchDelete(List<Integer> idList);
 
 	Permission getBy(String field, Object value);
@@ -46,4 +46,6 @@ public interface PermissionService {
 	List<Permission> pageByAnd(String field1, Object value1, String field2, Object value2, Pager page);
 
 	List<Permission> pageByOr(String field1, Object value1, String field2, Object value2, Pager page);
+
+	List<Permission> listChildren(int parentID);
 }
