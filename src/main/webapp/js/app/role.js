@@ -22,8 +22,12 @@ var Role = {
 	},
 
 	"batchDelete" : function() {
-		var selectedroleNames = ExtGridUtil.getValue("checkbox", null, "roleList", "name");
-		if (selectedroleNames == "") {
+		var nameArray = new Array();
+		var selectedRoles = $("#table").datagrid("getSelections");
+		$.each(selectedRoles, function(i, role) {
+			nameArray.push(role.name);
+		});
+		if (nameArray.length == 0) {
 			$.messager.alert("系统提示", "请选择要删除的角色", 'warning');
 			return false;
 		}
@@ -33,18 +37,18 @@ var Role = {
 			dataType : "json",
 			async : true,
 			data : {
-				roleNames : selectedroleNames
+				roleNames : nameArray.join(",")
 			},
 			success : function(data) {
 				if (data.code == 200) {
-					ExtGridUtil.refreshStore(null, "roleList", null, 10);
-					$.messager.alert("系统提示", "批量删除成功", 'info');
+					$("#table").datagrid("load");
+					$.messager.alert("系统提示", "删除成功", 'info');
 				} else {
 					$.messager.alert("系统错误", data.msg, 'error');
 				}
 			},
 			error : function() {
-				$.messager.alert("系统错误", "批量删除失败", 'error');
+				$.messager.alert("系统错误", "删除失败", 'error');
 			}
 		});
 	},
@@ -81,7 +85,7 @@ var Role = {
 			},
 			success : function(data) {
 				if (data.code == 200) {
-					ExtGridUtil.refreshStore(null, "roleList", null, 10);
+					$("#table").datagrid("load");
 					$.messager.alert("系统提示", "删除成功", 'info');
 				} else {
 					$.messager.alert("系统错误", data.msg, 'error');
@@ -94,27 +98,45 @@ var Role = {
 	},
 
 	"toAssignPermission" : function(roleName) {
-		window.self.location.href = contextPath + "/role/toAssignPermission.do?roleName=" + roleName;
+		$("#roleName").val(roleName);
+		$.ajax({
+			url : contextPath + "/role/getPermissionByRoleName.do?roleName=" + roleName,
+			type : "get",
+			async : true,
+			dataType : "json",
+			success : function(data) {
+				$("#permissionID").combotree("setValues", data);
+				$('#assignPermissionWindow').window('open');
+				if (data.length > 0) {
+					var permissionID = data[0];
+					var permissionTreeSelect = $("#permissionID").combotree("tree");
+					var permissionNode = permissionTreeSelect.tree("find", permissionID);
+					if (!permissionNode) {
+						return true;
+					}
+					permissionTreeSelect.tree("scrollTo", permissionNode.target);
+				}
+			}
+		});
+	},
+
+	"cancelAssignPermission" : function() {
+		$('#assignPermissionWindow').window('close');
+		$("#roleName").val("");
+		$("#permissionID").combotree("setValues", []);
 	},
 
 	"assignPermission" : function() {
-		$("#roleForm").form('submit', {
+		$("#assignPermissionForm").form('submit', {
 			url : contextPath + "/role/assignPermission.do?json",
 			onSubmit : function() {
-				var permissionArray = new Array();
-				$("input[name='permissionName']:checked").each(function() {
-					permissionArray.push($(this).val());
-				});
-				if (permissionArray.length > 0) {
-					return true;
-				}
-				$.messager.alert("系统提示", "请选择要分配的权限", 'warning');
-				return false;
+				return $("#assignPermissionForm").form("validate");
 			},
 			success : function(data) {
 				var data = eval('(' + data + ')');
 				if (data.code == 200) {
-					Role.toList();
+					$.messager.alert("系统提示", "分配权限成功", 'info');
+					Role.cancelAssignPermission();
 				} else {
 					$.messager.alert("系统错误", data.msg, "error");
 				}

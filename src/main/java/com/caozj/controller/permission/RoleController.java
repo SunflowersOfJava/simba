@@ -2,6 +2,7 @@ package com.caozj.controller.permission;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,8 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.caozj.framework.model.ext.ExtPageGrid;
+import com.caozj.controller.form.EasyUIPageForm;
+import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.model.json.JsonResult;
+import com.caozj.framework.util.common.FastJsonUtil;
 import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.model.constant.ConstantData;
 import com.caozj.model.permission.Permission;
@@ -30,15 +33,16 @@ public class RoleController {
 	private PermissionService permissionService;
 
 	@RequestMapping("/list.do")
-	public String list() {
+	public String list(ModelMap model) {
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
 		return "permission/listRole";
 	}
 
-	@RequestMapping("/listDataOfExt.do")
-	public String listDataOfExt(ModelMap model, int start, int limit) {
-		Pager page = new Pager(start, limit);
-		List<Role> list = roleService.page(page);
-		String message = new JsonResult(new ExtPageGrid(list, page.getTotalCount())).toJson();
+	@RequestMapping
+	public String listDataOfEasyUI(EasyUIPageForm form, ModelMap model) {
+		Pager pager = new Pager((form.getPage() - 1) * form.getRows(), form.getRows());
+		List<Role> list = roleService.page(pager);
+		String message = new JsonResult(new PageGrid(pager.getTotalCount(), list)).toJson();
 		model.put("message", message);
 		return "message";
 	}
@@ -77,16 +81,6 @@ public class RoleController {
 		return "message";
 	}
 
-	@RequestMapping("/toAssignPermission.do")
-	public String toAssignPermission(String roleName, ModelMap model) {
-		List<Permission> allPermissionList = permissionService.listAll();
-		List<Permission> assignPermissionList = roleService.listByRole(roleName);
-		model.put("roleName", roleName);
-		model.put("allPermissionList", allPermissionList);
-		model.put("assignPermissionList", assignPermissionList);
-		return "permission/assignPermission";
-	}
-
 	@RequestMapping("/assignPermission.do")
 	public String assignPermission(Integer[] permissionID, String roleName, ModelMap model) {
 		if (permissionID.length == 0) {
@@ -94,6 +88,17 @@ public class RoleController {
 		}
 		roleService.assignPermission(roleName, Arrays.asList(permissionID));
 		model.put("message", new JsonResult().toJson());
+		return "message";
+	}
+
+	@RequestMapping
+	public String getPermissionByRoleName(String roleName, ModelMap model) {
+		List<Permission> list = roleService.listByRole(roleName);
+		List<Integer> permissionIDList = new ArrayList<Integer>(list.size());
+		list.forEach((p) -> {
+			permissionIDList.add(p.getId());
+		});
+		model.put("message", FastJsonUtil.toJson(permissionIDList));
 		return "message";
 	}
 }
