@@ -58,12 +58,58 @@ public class CodeGenerateUtil {
 	 * @throws IOException
 	 * @throws TemplateException
 	 */
-	public void codeGenerate(Class<?> c, File dir, CODETYPE type) throws IOException, TemplateException {
-		logger.info("生成代码" + c.getName() + "开始,类型为" + type.getFolderName());
-		initPath(dir, type);
-		Map<String, Object> param = buildParam(c);
-		generateClassFile(dir, c.getSimpleName(), param, type);
-		logger.info("生成代码" + c.getName() + "结束,类型为" + type.getFolderName());
+	public void codeGenerate(Class<?> c, File dir, CODETYPE type, PAGETYPE pageType) throws IOException, TemplateException {
+		logger.info("生成代码" + c.getName() + "开始,代码类型为" + type.getFolderName() + ",页面类型为" + pageType.getName());
+		initPath(dir, type, pageType, c);
+		Map<String, Object> param = buildParam(c, pageType);
+		generateClassFile(dir, param, type);
+		generatePageFile(param);
+		logger.info("生成代码" + c.getName() + "结束,代码类型为" + type.getFolderName() + ",页面类型为" + pageType.getName());
+	}
+
+	/**
+	 * 生成页面文件
+	 * 
+	 * @param param
+	 * @throws IOException
+	 * @throws TemplateException
+	 */
+	private void generatePageFile(Map<String, Object> param) throws IOException, TemplateException {
+		String firstLower = param.get("firstLower").toString();
+		String jsDir = ServerUtil.getWebRoot() + "/js/app";
+		String jspDir = ServerUtil.getWebRoot() + "/WEB-INF/jsp/" + firstLower;
+		String jsFile = jsDir + "/" + firstLower + ".js";
+		String addFile = jspDir + "/add.jsp";
+		String updateFile = jspDir + "/update.jsp";
+		String listFile = jspDir + "/list.jsp";
+		String jsContent = getJs(param);
+		String addContent = getAdd(param);
+		String updateContent = getUpdate(param);
+		String listContent = getList(param);
+		FileUtils.writeStringToFile(new File(jsFile), jsContent, ConstantData.DEFAULT_CHARSET);
+		logger.info("生成" + jsFile);
+		FileUtils.writeStringToFile(new File(addFile), addContent, ConstantData.DEFAULT_CHARSET);
+		logger.info("生成" + addFile);
+		FileUtils.writeStringToFile(new File(updateFile), updateContent, ConstantData.DEFAULT_CHARSET);
+		logger.info("生成" + updateFile);
+		FileUtils.writeStringToFile(new File(listFile), listContent, ConstantData.DEFAULT_CHARSET);
+		logger.info("生成" + listFile);
+	}
+
+	private String getList(Map<String, Object> param) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
+		return FreemarkerUtil.parse("codegenerate/jsp/list.ftl", param);
+	}
+
+	private String getUpdate(Map<String, Object> param) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
+		return FreemarkerUtil.parse("codegenerate/jsp/update.ftl", param);
+	}
+
+	private String getAdd(Map<String, Object> param) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
+		return FreemarkerUtil.parse("codegenerate/jsp/add.ftl", param);
+	}
+
+	private String getJs(Map<String, Object> param) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
+		return FreemarkerUtil.parse("codegenerate/js/js.ftl", param);
 	}
 
 	/**
@@ -72,13 +118,14 @@ public class CodeGenerateUtil {
 	 * @param c
 	 * @return
 	 */
-	private Map<String, Object> buildParam(Class<?> c) {
+	private Map<String, Object> buildParam(Class<?> c, PAGETYPE pageType) {
 		Map<String, Object> param = new HashMap<String, Object>();
 		String className = c.getSimpleName();
 		String firstLower = StringUtil.getFirstLower(className);
 		param.put("className", className);
 		param.put("firstLower", firstLower);
 		param.put("packageName", packageName);
+		param.put("pageType", pageType.getName());
 		List<String> fields = ReflectUtil.getAllPropertiesName(c);
 		String updateProperties = "";
 		String insertProperties = "";
@@ -113,7 +160,8 @@ public class CodeGenerateUtil {
 	 * @throws IOException
 	 * @throws TemplateException
 	 */
-	private void generateClassFile(File dir, String className, Map<String, Object> param, CODETYPE type) throws IOException, TemplateException {
+	private void generateClassFile(File dir, Map<String, Object> param, CODETYPE type) throws IOException, TemplateException {
+		String className = param.get("className").toString();
 		String controllerContent = getController(param, type);
 		String serviceContent = getService(param, type);
 		String serviceImplContent = getServiceImpl(param, type);
@@ -173,7 +221,7 @@ public class CodeGenerateUtil {
 	/**
 	 * 创建好所有需要的路径
 	 */
-	private void initPath(File dir, CODETYPE type) {
+	private void initPath(File dir, CODETYPE type, PAGETYPE pageType, Class<?> c) {
 		String root = dir.getAbsolutePath();
 		String service = root + "/service";
 		String serviceImpl = service + "/impl";
@@ -189,6 +237,12 @@ public class CodeGenerateUtil {
 			new File(dao).mkdirs();
 			new File(ServerUtil.getResourcesDir().getAbsolutePath() + "/" + mybatisXmlDir).mkdirs();
 		}
+		if (pageType != PAGETYPE.NONE) {
+			String jsDir = ServerUtil.getWebRoot() + "/js/app";
+			new File(jsDir).mkdirs();
+			String jspDir = ServerUtil.getWebRoot() + "/WEB-INF/jsp/" + StringUtil.getFirstLower(c.getSimpleName());
+			new File(jspDir).mkdirs();
+		}
 	}
 
 	/**
@@ -201,9 +255,9 @@ public class CodeGenerateUtil {
 	 * @throws IOException
 	 * @throws TemplateException
 	 */
-	public void codeGenerate(Class<?>[] cs, File dir, CODETYPE type) throws IOException, TemplateException {
+	public void codeGenerate(Class<?>[] cs, File dir, CODETYPE type, PAGETYPE pageType) throws IOException, TemplateException {
 		for (Class<?> c : cs) {
-			codeGenerate(c, dir, type);
+			codeGenerate(c, dir, type, pageType);
 		}
 	}
 
@@ -215,8 +269,8 @@ public class CodeGenerateUtil {
 	 * @throws IOException
 	 * @throws TemplateException
 	 */
-	public void codeGenerate(Class<?> c, CODETYPE type) throws IOException, TemplateException {
-		codeGenerate(c, new File(ServerUtil.getSrcDir().getAbsolutePath() + "/" + getPackagePath()), type);
+	public void codeGenerate(Class<?> c, CODETYPE type, PAGETYPE pageType) throws IOException, TemplateException {
+		codeGenerate(c, new File(ServerUtil.getSrcDir().getAbsolutePath() + "/" + getPackagePath()), type, pageType);
 	}
 
 	/**
@@ -227,8 +281,8 @@ public class CodeGenerateUtil {
 	 * @throws IOException
 	 * @throws TemplateException
 	 */
-	public void codeGenerate(Class<?>[] cs, CODETYPE type) throws IOException, TemplateException {
-		codeGenerate(cs, new File(ServerUtil.getSrcDir().getAbsolutePath() + "/" + getPackagePath()), type);
+	public void codeGenerate(Class<?>[] cs, CODETYPE type, PAGETYPE pageType) throws IOException, TemplateException {
+		codeGenerate(cs, new File(ServerUtil.getSrcDir().getAbsolutePath() + "/" + getPackagePath()), type, pageType);
 	}
 
 	private String getPackagePath() {
