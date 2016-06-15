@@ -20,7 +20,7 @@ public class CodeGenerate {
 		// 生成代码的dao层使用的方式，目前只支持枚举类型CODETYPE的类型
 		CODETYPE codeType = CODETYPE.JDBC;
 		// 生成代码的页面类型
-		PAGETYPE pageType = PAGETYPE.TABLE;
+		PAGETYPE pageType = PAGETYPE.TREETABLE;
 		// 下面的代码无需修改
 		CodeGenerateUtil.getInstance().codeGenerate(classes, codeType, pageType);
 		System.exit(0);

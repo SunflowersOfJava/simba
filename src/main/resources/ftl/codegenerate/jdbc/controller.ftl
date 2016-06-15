@@ -26,9 +26,13 @@ public class ${className}Controller {
 
 	@RequestMapping("/list.do")
 	public String list(ModelMap model) {
+	<#if ${pageType=="treeTable"}>
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
+	</#if> 
 		return "${firstLower}/list";
 	}
 
+<#if ${pageType!="treeTable"}>
 	@RequestMapping("/listDataOfExt.do")
 	public String listDataOfExt(ModelMap model, int start, int limit) {
 		Pager page = new Pager(start, limit);
@@ -46,12 +50,23 @@ public class ${className}Controller {
 		model.put("message", message);
 		return "message";
 	}
+</#if> 
+<#if ${pageType=="treeTable"}>
 
+</#if> 
+<#if ${pageType=="treeTable"}>
+	@RequestMapping("/toAdd.do")
+	public String toAdd(Integer parentID, ModelMap model) {
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
+		return "${firstLower}/add";
+	}
+</#if> 
+<#if ${pageType!="treeTable"}>
 	@RequestMapping("/toAdd.do")
 	public String toAdd() {
 		return "${firstLower}/add";
 	}
-
+</#if> 
 	@RequestMapping("/add.do")
 	public String add(${className} ${firstLower}, ModelMap model) {
 		${firstLower}Service.add(${firstLower});
@@ -63,6 +78,9 @@ public class ${className}Controller {
 	public String toUpdate(int id, ModelMap model) {
 		${className} ${firstLower} = ${firstLower}Service.get(id);
 		model.put("${firstLower}", ${firstLower});
+	<#if ${pageType=="treeTable"}>
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
+	</#if> 
 		return "${firstLower}/update";
 	}
 

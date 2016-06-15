@@ -1,21 +1,26 @@
-var Menu = {
+var ${className} = {
 
 	"toAdd" : function() {
-		window.self.location.href = contextPath + "/menu/toAdd.do?parentID=" + $("#parentID").val();
+		<#if ${pageType=="treeTable"}>
+			window.self.location.href = contextPath + "/${firstLower}/toAdd.do?parentID=" + $("#parentID").val();
+		</#if> 
+		<#if ${pageType!="treeTable"}>
+			window.self.location.href = contextPath + "/${firstLower}/toAdd.do";
+		</#if> 
 	},
 
 	"batchDelete" : function() {
 		var idArray = new Array();
-		var selectedMenus = $("#menuTable").datagrid("getSelections");
-		$.each(selectedMenus, function(i, menu) {
-			idArray.push(menu.id);
+		var selected${className}s = $("#${firstLower}Table").datagrid("getSelections");
+		$.each(selected${className}s, function(i, ${firstLower}) {
+			idArray.push(${firstLower}.id);
 		});
 		if (idArray.length == 0) {
-			$.messager.alert("系统提示", "请选择要删除的菜单", 'warning');
+			$.messager.alert("系统提示", "请选择要删除的行", 'warning');
 			return false;
 		}
 		$.ajax({
-			url : contextPath + "/menu/batchDelete.do?json",
+			url : contextPath + "/${firstLower}/batchDelete.do?json",
 			type : "post",
 			dataType : "json",
 			async : true,
@@ -24,11 +29,11 @@ var Menu = {
 			},
 			success : function(data) {
 				if (data.code == 200) {
-					$("#menuTable").datagrid("load", {
+					$("#${firstLower}Table").datagrid("load", {
 						id : $("#parentID").val()
 					});
-					var parentNode = $("#menuTree").tree("find", $("#parentID").val());
-					$("#menuTree").tree("reload", parentNode.target);
+					var parentNode = $("#${firstLower}Tree").tree("find", $("#parentID").val());
+					$("#${firstLower}Tree").tree("reload", parentNode.target);
 					$.messager.alert("系统提示", "删除成功", 'info');
 				} else {
 					$.messager.alert("系统错误", data.msg, 'error');
@@ -40,10 +45,10 @@ var Menu = {
 		});
 	},
 
-	"selectMenu" : function(node) {
+	"select${className}" : function(node) {
 		var id = node.id;
 		$("#parentID").val(id);
-		$("#menuTable").datagrid("load", {
+		$("#${firstLower}Table").datagrid("load", {
 			id : id
 		});
 		var name = node.text + "--子菜单";
@@ -51,12 +56,12 @@ var Menu = {
 	},
 
 	"toUpdate" : function(id) {
-		window.self.location.href = contextPath + "/menu/toUpdate.do?id=" + id;
+		window.self.location.href = contextPath + "/${firstLower}/toUpdate.do?id=" + id;
 	},
 
-	"deleteMenu" : function(id) {
+	"delete${className}" : function(id) {
 		$.ajax({
-			url : contextPath + "/menu/delete.do?json",
+			url : contextPath + "/${firstLower}/delete.do?json",
 			type : "post",
 			dataType : "json",
 			async : true,
@@ -65,11 +70,11 @@ var Menu = {
 			},
 			success : function(data) {
 				if (data.code == 200) {
-					$("#menuTable").datagrid("load", {
+					$("#${firstLower}Table").datagrid("load", {
 						id : $("#parentID").val()
 					});
-					var parentNode = $("#menuTree").tree("find", $("#parentID").val());
-					$("#menuTree").tree("reload", parentNode.target);
+					var parentNode = $("#${firstLower}Tree").tree("find", $("#parentID").val());
+					$("#${firstLower}Tree").tree("reload", parentNode.target);
 					$.messager.alert("系统提示", "删除成功", 'info');
 				} else {
 					$.messager.alert("系统错误", data.msg, 'error');
@@ -82,15 +87,15 @@ var Menu = {
 	},
 
 	"add" : function() {
-		$("#menuForm").form('submit', {
-			url : contextPath + "/menu/add.do?json",
+		$("#${firstLower}Form").form('submit', {
+			url : contextPath + "/${firstLower}/add.do?json",
 			onSubmit : function() {
-				return $("#menuForm").form("validate");
+				return $("#${firstLower}Form").form("validate");
 			},
 			success : function(data) {
 				var data = eval('(' + data + ')');
 				if (data.code == 200) {
-					Menu.toList();
+					${className}.toList();
 				} else {
 					$.messager.alert("系统错误", data.msg, "error");
 				}
@@ -99,15 +104,15 @@ var Menu = {
 	},
 
 	"update" : function() {
-		$("#menuForm").form('submit', {
-			url : contextPath + "/menu/update.do?json",
+		$("#${firstLower}Form").form('submit', {
+			url : contextPath + "/${firstLower}/update.do?json",
 			onSubmit : function() {
-				return $("#menuForm").form("validate");
+				return $("#${firstLower}Form").form("validate");
 			},
 			success : function(data) {
 				var data = eval('(' + data + ')');
 				if (data.code == 200) {
-					Menu.toList();
+					${className}.toList();
 				} else {
 					$.messager.alert("系统错误", data.msg, "error");
 				}
@@ -116,7 +121,7 @@ var Menu = {
 	},
 
 	"toList" : function() {
-		window.self.location.href = contextPath + "/menu/list.do";
+		window.self.location.href = contextPath + "/${firstLower}/list.do";
 	},
 
 	"end" : null
