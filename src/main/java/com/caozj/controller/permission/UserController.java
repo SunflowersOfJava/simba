@@ -30,6 +30,7 @@ import com.caozj.model.permission.User;
 import com.caozj.model.permission.UserExt;
 import com.caozj.model.permission.UserExtDesc;
 import com.caozj.model.permission.UserOrg;
+import com.caozj.service.permission.OrgService;
 import com.caozj.service.permission.RoleService;
 import com.caozj.service.permission.UserOrgService;
 import com.caozj.service.permission.UserService;
@@ -47,8 +48,11 @@ public class UserController {
 	@Autowired
 	private UserOrgService userOrgService;
 
+	@Autowired
+	private OrgService orgService;
+
 	@RequestMapping("/list.do")
-	public String list(ModelMap model) {
+	public String list(Integer orgID, ModelMap model) {
 		Map<String, String> desc = UserExtDesc.getAllDesc();
 		List<String> keys = new ArrayList<>(desc.size());
 		List<Map<String, String>> descs = new ArrayList<>(desc.size());
@@ -59,8 +63,17 @@ public class UserController {
 			m.put("value", value);
 			descs.add(m);
 		});
+		if (orgID == null) {
+			orgID = ConstantData.TREE_ROOT_ID;
+		}
+		String orgName = "机构树";
+		if (orgID != ConstantData.TREE_ROOT_ID) {
+			orgName = orgService.get(orgID).getText();
+		}
 		model.put("keys", keys);
 		model.put("descs", descs);
+		model.put("orgID", orgID);
+		model.put("orgName", orgName);
 		model.put("rootID", ConstantData.TREE_ROOT_ID);
 		return "permission/listUser";
 	}
@@ -128,7 +141,7 @@ public class UserController {
 	}
 
 	@RequestMapping("/add.do")
-	public String add(User user,Integer[] orgID, HttpServletRequest request, ModelMap model) {
+	public String add(User user, Integer[] orgID, HttpServletRequest request, ModelMap model) {
 		UserExt userExt = new UserExt();
 		Map<String, String> extMap = new HashMap<>();
 		userExt.setExtMap(extMap);
@@ -138,7 +151,7 @@ public class UserController {
 			extMap.put(key, request.getParameter(key));
 		});
 		List<UserOrg> userOrgList = new ArrayList<UserOrg>();
-		for(Integer org  : orgID){
+		for (Integer org : orgID) {
 			UserOrg userOrg = new UserOrg();
 			userOrg.setOrgID(org);
 			userOrg.setUserAccount(user.getAccount());
@@ -176,7 +189,7 @@ public class UserController {
 		});
 		List<UserOrg> userOrgList = userOrgService.listBy("userAccount", account);
 		List<Integer> orgIDs = new ArrayList<Integer>(userOrgList.size());
-		userOrgList.forEach((userOrg)->{
+		userOrgList.forEach((userOrg) -> {
 			orgIDs.add(userOrg.getOrgID());
 		});
 		model.put("descs", descs);
@@ -188,7 +201,7 @@ public class UserController {
 	}
 
 	@RequestMapping("/update.do")
-	public String update(User user,Integer[] orgID,  HttpServletRequest request, ModelMap model) {
+	public String update(User user, Integer[] orgID, HttpServletRequest request, ModelMap model) {
 		UserExt userExt = new UserExt();
 		Map<String, String> extMap = new HashMap<>();
 		userExt.setExtMap(extMap);
@@ -198,7 +211,7 @@ public class UserController {
 			extMap.put(key, request.getParameter(key));
 		});
 		List<UserOrg> userOrgList = new ArrayList<UserOrg>();
-		for(Integer org  : orgID){
+		for (Integer org : orgID) {
 			UserOrg userOrg = new UserOrg();
 			userOrg.setOrgID(org);
 			userOrg.setUserAccount(user.getAccount());
@@ -299,6 +312,5 @@ public class UserController {
 		model.put("message", new JsonResult().toJson());
 		return "message";
 	}
-
 
 }

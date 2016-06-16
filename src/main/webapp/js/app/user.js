@@ -175,7 +175,11 @@ var User = {
 	},
 
 	"toList" : function() {
-		window.self.location.href = contextPath + "/user/list.do";
+		var orgID = "";
+		if ($("#orgID").length > 0) {
+			orgID = $("#orgID").combotree("getValue")
+		}
+		window.self.location.href = contextPath + "/user/list.do?orgID=" + orgID;
 	},
 
 	"toModifyPwd" : function() {
