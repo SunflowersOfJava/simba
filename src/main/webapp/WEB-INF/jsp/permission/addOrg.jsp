@@ -35,8 +35,8 @@
 				</table>
 			</form>
 			<div style="text-align: center; padding: 5px">
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Org.add();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0)" class="easyui-linkbutton"
-					onclick="Org.toList();" data-options="iconCls:'icon-cancel'">取消</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Org.add();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="Org.toList();"
+					data-options="iconCls:'icon-cancel'">取消</a>
 			</div>
 		</div>
 
@@ -54,7 +54,7 @@
 					var orgTreeSelect = $("#parentID").combotree("tree");
 					var parentNode = orgTreeSelect.tree("find", defaultParentID);
 					if (!parentNode) {
-						var root = orgTreeSelect.tree("find", ${rootID});
+						var root = orgTreeSelect.tree("find", ${rootID});	
 						orgTreeSelect.tree("expandAll", root.target);
 						parentNode = orgTreeSelect.tree("find", defaultParentID);
 					}

@@ -9,11 +9,11 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/app/org.js"></script>
 </head>
 <body class="easyui-layout" id="layout">
-	<input type="hidden" id="parentID" name="parentID" value="${rootID}" />
+	<input type="hidden" id="parentID" name="parentID" value="${parentID}" />
 	<div data-options="region:'west',split:true" title="机构树" style="width: 180px;">
 		<ul class="easyui-tree" id="orgTree"></ul>
 	</div>
-	<div data-options="region:'center',title:'机构树--子机构'">
+	<div data-options="region:'center',title:'${parentName}--子机构'">
 		<table id="orgTable"></table>
 		<div id="orgToolbar">
 			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="Org.toAdd();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0);" class="easyui-linkbutton"
@@ -28,6 +28,18 @@
 				animate : true,
 				onClick : function(node) {
 					Org.selectOrg(node);
+				},
+				onLoadSuccess: function(node,data){
+					if(${parentID} != ${rootID}){
+						var root =  $("#orgTree").tree("find",${rootID});
+						$("#orgTree").tree("expandAll", root.target);
+						var parentNode = $("#orgTree").tree("find", ${parentID});
+						if (!parentNode) {
+							return true;
+						}
+						$("#orgTree").tree("scrollTo", parentNode.target);
+						$("#orgTree").tree("select", parentNode.target);
+					}
 				}
 			});
 			$("#orgTable").datagrid({

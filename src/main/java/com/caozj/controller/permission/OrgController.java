@@ -36,7 +36,7 @@ public class OrgController {
 	private OrgService orgService;
 
 	@RequestMapping("/list.do")
-	public String list(ModelMap model) {
+	public String list(Integer parentID, ModelMap model) {
 		Map<String, String> desc = OrgExtDesc.getAllDesc();
 		List<String> keys = new ArrayList<>(desc.size());
 		List<Map<String, String>> descs = new ArrayList<>(desc.size());
@@ -47,9 +47,18 @@ public class OrgController {
 			m.put("value", value);
 			descs.add(m);
 		});
+		if (parentID == null) {
+			parentID = ConstantData.TREE_ROOT_ID;
+		}
+		String parentName = "机构树";
+		if (parentID != ConstantData.TREE_ROOT_ID) {
+			parentName = orgService.get(parentID).getText();
+		}
 		model.put("keys", keys);
 		model.put("descs", descs);
 		model.put("rootID", ConstantData.TREE_ROOT_ID);
+		model.put("parentID", parentID);
+		model.put("parentName", parentName);
 		return "permission/listOrg";
 	}
 

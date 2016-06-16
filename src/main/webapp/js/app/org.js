@@ -68,7 +68,6 @@ var Org = {
 					$("#orgTable").datagrid("load", {
 						id : $("#parentID").val()
 					});
-					debugger;
 					var parentNode = $("#orgTree").tree("find", $("#parentID").val());
 					$("#orgTree").tree("reload", parentNode.target);
 					$.messager.alert("系统提示", "删除成功", 'info');
@@ -117,7 +116,7 @@ var Org = {
 	},
 
 	"toList" : function() {
-		window.self.location.href = contextPath + "/org/list.do";
+		window.self.location.href = contextPath + "/org/list.do?parentID=" + $("#parentID").combotree("getValue");
 	},
 
 	"end" : null
