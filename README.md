@@ -1,8 +1,10 @@
 # demoWeb
-一个基于SpringMVC的web框架,初始化脚本在doc目录中，ppt有基本的使用介绍，由于时间关系并未包含所有的功能介绍。
+一个基于SpringMVC的web框架,初始化脚本在doc目录中，目前只提供了mysql版本，ppt有基本的使用介绍，由于时间关系并未包含所有的功能介绍。
 直接运行Jetty类的main方法，即可启动web服务
 登陆系统的入口: 
 http://localhost:8080/demo/login/toLogin.do 
+或者
+http://localhost:8080/demo/
 账号密码是admin admin123 
 所有的配置都在configs.properties里
 系统默认把登陆拦截和权限拦截关闭了，需要打开的可以在SpringMVC.xml文件中修改
@@ -89,10 +91,12 @@ react集成ueditor在线编辑器
 用户机构关系管理
 按照账号全局查询用户
 权限改成树形结构
-ToDo
 1.1.15
+页面优化
 代码生成器生成页面（树形+表格结构和表格结构）使用EasyUI实现
-注册类型和注册表管理,更新说明ppt
+注册类型和注册表管理
+更新说明ppt
+ToDo
 1.2.0
 流程管理，启动流程，待办任务，已办任务
 1.2.1
