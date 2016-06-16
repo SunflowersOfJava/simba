@@ -106,7 +106,7 @@ var Permission = {
 	},
 
 	"toList" : function() {
-		window.self.location.href = contextPath + "/permission/list.do";
+		window.self.location.href = contextPath + "/permission/list.do?parentID="+ $("#parentID").combotree("getValue");
 	},
 
 	"selectPermission" : function(node) {

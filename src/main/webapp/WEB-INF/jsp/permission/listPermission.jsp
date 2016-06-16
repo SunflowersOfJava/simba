@@ -9,11 +9,11 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/app/permission.js"></script>
 </head>
 <body class="easyui-layout" id="layout">
-	<input type="hidden" id="parentID" name="parentID" value="${rootID}" />
+	<input type="hidden" id="parentID" name="parentID" value="${parentID}" />
 	<div data-options="region:'west',split:true" title="权限树" style="width: 180px;">
 		<ul class="easyui-tree" id="permissionTree"></ul>
 	</div>
-	<div data-options="region:'center',title:'权限树--子权限'">
+	<div data-options="region:'center',title:'${parentName}--子权限'">
 		<table id="permissionTable"></table>
 		<div id="permissionToolbar">
 			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="Permission.toAdd();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0);" class="easyui-linkbutton"
@@ -28,6 +28,18 @@
 				animate : true,
 				onClick : function(node) {
 					Permission.selectPermission(node);
+				},
+				onLoadSuccess: function(node,data){
+					if(${parentID} != ${rootID}){
+						var root =  $("#permissionTree").tree("find",${rootID});
+						$("#permissionTree").tree("expandAll", root.target);
+						var parentNode = $("#permissionTree").tree("find", ${parentID});
+						if (!parentNode) {
+							return true;
+						}
+						$("#permissionTree").tree("scrollTo", parentNode.target);
+						$("#permissionTree").tree("select", parentNode.target);
+					}
 				}
 			});
 			$("#permissionTable").datagrid({

@@ -25,7 +25,16 @@ public class PermissionController {
 	private PermissionService permissionService;
 
 	@RequestMapping("/list.do")
-	public String list(ModelMap model) {
+	public String list(Integer parentID,ModelMap model) {
+		if (parentID == null) {
+			parentID = ConstantData.TREE_ROOT_ID;
+		}
+		String parentName = "权限树";
+		if (parentID != ConstantData.TREE_ROOT_ID) {
+			parentName = permissionService.get(parentID).getText();
+		}
+		model.put("parentID", parentID);
+		model.put("parentName", parentName);
 		model.put("rootID", ConstantData.TREE_ROOT_ID);
 		return "permission/listPermission";
 	}
