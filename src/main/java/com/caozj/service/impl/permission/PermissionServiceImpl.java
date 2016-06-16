@@ -31,6 +31,9 @@ public class PermissionServiceImpl implements PermissionService {
 
 	@Override
 	public void delete(int id) {
+		if (permissionDao.countBy("parentID", id) > 0) {
+			throw new RuntimeException("权限下有子权限，不能删除，请先删除子权限");
+		}
 		permissionDao.delete(id);
 	}
 

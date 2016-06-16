@@ -42,6 +42,9 @@ public class OrgServiceImpl implements OrgService {
 
 	@Override
 	public void delete(int id) {
+		if (orgDao.countBy("parentID", id) > 0) {
+			throw new RuntimeException("机构下有子机构，不能删除，请先删除子机构");
+		}
 		orgDao.delete(id);
 	}
 
