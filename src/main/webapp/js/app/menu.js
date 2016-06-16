@@ -116,7 +116,7 @@ var Menu = {
 	},
 
 	"toList" : function() {
-		window.self.location.href = contextPath + "/menu/list.do";
+		window.self.location.href = contextPath + "/menu/list.do?parentID=" + $("#parentID").combotree("getValue");
 	},
 
 	"end" : null

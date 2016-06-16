@@ -28,6 +28,18 @@
 				animate : true,
 				onClick : function(node) {
 					Menu.selectMenu(node);
+				},
+				onLoadSuccess: function(node,data){
+					if(${parentID} != ${rootID}){
+						var root =  $("#menuTree").tree("find",${rootID});
+						$("#menuTree").tree("expandAll", root.target);
+						var parentNode = $("#menuTree").tree("find", ${parentID});
+						if (!parentNode) {
+							return true;
+						}
+						$("#menuTree").tree("scrollTo", parentNode.target);
+						$("#menuTree").tree("select", parentNode.target);
+					}
 				}
 			});
 			$("#menuTable").datagrid({
