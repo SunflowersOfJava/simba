@@ -3,43 +3,44 @@ package ${packageName}.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+<#if pageType!="treeTable">
 import ${packageName}.controller.form.EasyUIPageForm;
 import ${packageName}.framework.model.easyui.PageGrid;
-import ${packageName}.framework.model.ext.ExtPageGrid;
+import ${packageName}.framework.util.jdbc.Pager;
+</#if>
 import ${packageName}.framework.model.json.JsonResult;
 import ${packageName}.framework.util.common.JsonUtil;
-import ${packageName}.framework.util.jdbc.Pager;
+import ${packageName}.framework.util.common.FastJsonUtil;
+
+<#if pageType=="treeTable">
+import com.caozj.model.constant.ConstantData;
+</#if>
 import ${packageName}.model.${className};
 import ${packageName}.service.${className}Service;
 
+/**
+ * 
+ * 
+ * @author caozj
+ *  
+ */
 @Controller
-@RequestMapping("/${firstLower}")
+@RequestMapping("\${firstLower}")
 public class ${className}Controller {
 
 	@Autowired
 	private ${className}Service ${firstLower}Service;
-
+<#if pageType!="treeTable">
 	@RequestMapping("/list.do")
 	public String list(ModelMap model) {
-	<#if ${pageType=="treeTable"}>
-		model.put("rootID", ConstantData.TREE_ROOT_ID);
-	</#if> 
 		return "${firstLower}/list";
-	}
-
-<#if ${pageType!="treeTable"}>
-	@RequestMapping("/listDataOfExt.do")
-	public String listDataOfExt(ModelMap model, int start, int limit) {
-		Pager page = new Pager(start, limit);
-		List<${className}> list = ${firstLower}Service.page(page);
-		String message = new JsonResult(new ExtPageGrid(list, page.getTotalCount())).toJson();
-		model.put("message", message);
-		return "message";
 	}
 	
 	@RequestMapping("/listDataOfEasyUI.do")
@@ -50,38 +51,97 @@ public class ${className}Controller {
 		model.put("message", message);
 		return "message";
 	}
-</#if> 
-<#if ${pageType=="treeTable"}>
-
-</#if> 
-<#if ${pageType=="treeTable"}>
-	@RequestMapping("/toAdd.do")
-	public String toAdd(Integer parentID, ModelMap model) {
-		model.put("rootID", ConstantData.TREE_ROOT_ID);
-		return "${firstLower}/add";
-	}
-</#if> 
-<#if ${pageType!="treeTable"}>
+	
 	@RequestMapping("/toAdd.do")
 	public String toAdd() {
 		return "${firstLower}/add";
 	}
-</#if> 
+	
+	@RequestMapping("/toUpdate.do")
+	public String toUpdate(int id, ModelMap model) {
+		${className} ${firstLower} = ${firstLower}Service.get(id);
+		model.put("${firstLower}", ${firstLower});
+		return "${firstLower}/update";
+	}
+</#if>	
+
+
+<#if pageType=="treeTable">
+	private static final String rootName = "树";
+
+	@RequestMapping("/list.do")
+	public String list(Integer parentID, ModelMap model) {
+		if (parentID == null) {
+			parentID = ConstantData.TREE_ROOT_ID;
+		}
+		String parentName = rootName;
+		if (parentID != ConstantData.TREE_ROOT_ID) {
+			parentName = ${firstLower}Service.get(parentID).getText();
+		}
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
+		model.put("parentID", parentID);
+		model.put("parentName", parentName);
+		return "${firstLower}/list";
+	}
+	
+	/**
+	 * 获取子数据
+	 * 
+	 * @param id
+	 *            easyui会使用这个参数来传递父节点id
+	 * @param showRoot
+	 *            是否显示根节点
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/listChildren${className}.do")
+	public String listChildren${className}(Integer id, Boolean showRoot, ModelMap model, HttpServletRequest request) {
+		int parentID = ConstantData.TREE_ROOT_ID;
+		if (id != null) {
+			parentID = id;
+		} else if (showRoot != null && showRoot) {
+			${className} root = buildRoot${className}();
+			model.put("message", JsonUtil.toJson(Arrays.asList(root)));
+			return "message";
+		}
+		List<${className}> list = ${firstLower}Service.listChildren(parentID);
+		model.put("message", FastJsonUtil.toJson(list));
+		return "message";
+	}
+	
+	private ${className} buildRoot${className}() {
+		${className} root = new ${className}();
+		root.setId(ConstantData.TREE_ROOT_ID);
+		root.setText(rootName);
+		root.setState("closed");
+		return root;
+	}
+	
+	@RequestMapping("/toAdd.do")
+	public String toAdd(Integer parentID, ModelMap model) {
+		if (parentID == null) {
+			parentID = ConstantData.TREE_ROOT_ID;
+		}
+		model.put("parentID", parentID);
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
+		return "${firstLower}/add";
+	}
+	
+	@RequestMapping("/toUpdate.do")
+	public String toUpdate(int id, ModelMap model) {
+		${className} ${firstLower} = ${firstLower}Service.get(id);
+		model.put("${firstLower}", ${firstLower});
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
+		return "menu/update";
+	}
+</#if>	
+
 	@RequestMapping("/add.do")
 	public String add(${className} ${firstLower}, ModelMap model) {
 		${firstLower}Service.add(${firstLower});
 		model.put("message", new JsonResult().toJson());
 		return "message";
-	}
-
-	@RequestMapping("/toUpdate.do")
-	public String toUpdate(int id, ModelMap model) {
-		${className} ${firstLower} = ${firstLower}Service.get(id);
-		model.put("${firstLower}", ${firstLower});
-	<#if ${pageType=="treeTable"}>
-		model.put("rootID", ConstantData.TREE_ROOT_ID);
-	</#if> 
-		return "${firstLower}/update";
 	}
 
 	@RequestMapping("/update.do")

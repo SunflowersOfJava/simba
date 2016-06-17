@@ -49,6 +49,11 @@ public class ${className}ServiceImpl implements ${className}Service {
 	public int count() {
 		return ${firstLower}Dao.count();
 	}
+	
+	@Override
+	public int countBy(String field, Object value){
+		return ${firstLower}Dao.countBy(field,value);
+	}
 
 	@Override
 	public List<${className}> listAll() {
@@ -111,4 +116,20 @@ public class ${className}ServiceImpl implements ${className}Service {
 	public List<${className}> pageByOr(String field1, Object value1, String field2, Object value2, Pager page) {
 		return ${firstLower}Dao.pageByOr(field1, value1, field2, value2, page);
 	}
+	
+	<#if pageType=="treeTable">
+	@Override
+	public List<${className}> listChildren(int parentID) {
+		List<${className}> children = ${firstLower}Dao.listBy("parentID", parentID);
+		children.forEach((${firstLower}) -> {
+			int childrenCount = ${firstLower}Dao.countBy("parentID", ${firstLower}.getId());
+			if (childrenCount > 0) {
+				${firstLower}.setState("closed");
+			} else {
+				${firstLower}.setState("open");
+			}
+		});
+		return children;
+	}
+	</#if> 
 }

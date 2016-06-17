@@ -49,6 +49,11 @@ public class RegistryTypeServiceImpl implements RegistryTypeService {
 	public int count() {
 		return registryTypeDao.count();
 	}
+	
+	@Override
+	public int countBy(String field, Object value){
+		return registryTypeDao.countBy(field,value);
+	}
 
 	@Override
 	public List<RegistryType> listAll() {
@@ -110,5 +115,19 @@ public class RegistryTypeServiceImpl implements RegistryTypeService {
 	@Override
 	public List<RegistryType> pageByOr(String field1, Object value1, String field2, Object value2, Pager page) {
 		return registryTypeDao.pageByOr(field1, value1, field2, value2, page);
+	}
+	
+	@Override
+	public List<RegistryType> listChildren(int parentID) {
+		List<RegistryType> children = registryTypeDao.listBy("parentID", parentID);
+		children.forEach((registryType) -> {
+			int childrenCount = registryTypeDao.countBy("parentID", registryType.getId());
+			if (childrenCount > 0) {
+				registryType.setState("closed");
+			} else {
+				registryType.setState("open");
+			}
+		});
+		return children;
 	}
 }

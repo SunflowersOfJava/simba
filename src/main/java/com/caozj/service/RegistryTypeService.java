@@ -23,6 +23,8 @@ public interface RegistryTypeService {
 
 	int count();
 	
+	int countBy(String field, Object value);
+	
 	List<RegistryType> page(Pager page);
 
 	RegistryType get(int id);
@@ -46,4 +48,5 @@ public interface RegistryTypeService {
 	List<RegistryType> pageByAnd(String field1, Object value1, String field2, Object value2, Pager page);
 
 	List<RegistryType> pageByOr(String field1, Object value1, String field2, Object value2, Pager page);
+	List<RegistryType> listChildren(int parentID);
 }

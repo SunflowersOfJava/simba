@@ -18,6 +18,20 @@ public class RegistryType implements Serializable {
 
 	private int parentID;
 
+	// ///扩展属性////
+	/**
+	 * 树节点状态,easyUI使用
+	 */
+	private String state;
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	public int getId() {
 		return id;
 	}

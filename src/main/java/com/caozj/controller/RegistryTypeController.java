@@ -3,53 +3,96 @@ package com.caozj.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.caozj.controller.form.EasyUIPageForm;
-import com.caozj.framework.model.easyui.PageGrid;
-import com.caozj.framework.model.ext.ExtPageGrid;
 import com.caozj.framework.model.json.JsonResult;
 import com.caozj.framework.util.common.JsonUtil;
-import com.caozj.framework.util.jdbc.Pager;
+import com.caozj.framework.util.common.FastJsonUtil;
+
+import com.caozj.model.constant.ConstantData;
 import com.caozj.model.RegistryType;
 import com.caozj.service.RegistryTypeService;
 
 @Controller
-@RequestMapping("/registryType")
+@RequestMapping("\registryType")
 public class RegistryTypeController {
 
 	@Autowired
 	private RegistryTypeService registryTypeService;
 
+
+	private static final String rootName = "树";
+
 	@RequestMapping("/list.do")
-	public String list(ModelMap model) {
+	public String list(Integer parentID, ModelMap model) {
+		if (parentID == null) {
+			parentID = ConstantData.TREE_ROOT_ID;
+		}
+		String parentName = rootName;
+		if (parentID != ConstantData.TREE_ROOT_ID) {
+			parentName = registryTypeService.get(parentID).getText();
+		}
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
+		model.put("parentID", parentID);
+		model.put("parentName", parentName);
 		return "registryType/list";
 	}
-
-	@RequestMapping("/listDataOfExt.do")
-	public String listDataOfExt(ModelMap model, int start, int limit) {
-		Pager page = new Pager(start, limit);
-		List<RegistryType> list = registryTypeService.page(page);
-		String message = new JsonResult(new ExtPageGrid(list, page.getTotalCount())).toJson();
-		model.put("message", message);
+	
+	/**
+	 * 获取子数据
+	 * 
+	 * @param id
+	 *            easyui会使用这个参数来传递父节点id
+	 * @param showRoot
+	 *            是否显示根节点
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/listChildrenRegistryType.do")
+	public String listChildrenRegistryType(Integer id, Boolean showRoot, ModelMap model, HttpServletRequest request) {
+		int parentID = ConstantData.TREE_ROOT_ID;
+		if (id != null) {
+			parentID = id;
+		} else if (showRoot != null && showRoot) {
+			RegistryType root = buildRootRegistryType();
+			model.put("message", JsonUtil.toJson(Arrays.asList(root)));
+			return "message";
+		}
+		List<RegistryType> list = registryTypeService.listChildren(parentID);
+		model.put("message", FastJsonUtil.toJson(list));
 		return "message";
 	}
 	
-	@RequestMapping("/listDataOfEasyUI.do")
-	public String listDataOfEasyUI(ModelMap model, EasyUIPageForm form) {
-		Pager page = new Pager((form.getPage()-1) * form.getRows(), form.getRows());
-		List<RegistryType> list = registryTypeService.page(page);
-		String message = JsonUtil.toJson(new PageGrid(page.getTotalCount(), list));
-		model.put("message", message);
-		return "message";
+	private RegistryType buildRootRegistryType() {
+		RegistryType root = new RegistryType();
+		root.setId(ConstantData.TREE_ROOT_ID);
+		root.setText(rootName);
+		root.setState("closed");
+		return root;
 	}
-
+	
 	@RequestMapping("/toAdd.do")
-	public String toAdd() {
+	public String toAdd(Integer parentID, ModelMap model) {
+		if (parentID == null) {
+			parentID = ConstantData.TREE_ROOT_ID;
+		}
+		model.put("parentID", parentID);
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
 		return "registryType/add";
+	}
+	
+	@RequestMapping("/toUpdate.do")
+	public String toUpdate(int id, ModelMap model) {
+		RegistryType registryType = registryTypeService.get(id);
+		model.put("registryType", registryType);
+		model.put("rootID", ConstantData.TREE_ROOT_ID);
+		return "menu/update";
 	}
 
 	@RequestMapping("/add.do")
@@ -57,13 +100,6 @@ public class RegistryTypeController {
 		registryTypeService.add(registryType);
 		model.put("message", new JsonResult().toJson());
 		return "message";
-	}
-
-	@RequestMapping("/toUpdate.do")
-	public String toUpdate(int id, ModelMap model) {
-		RegistryType registryType = registryTypeService.get(id);
-		model.put("registryType", registryType);
-		return "registryType/update";
 	}
 
 	@RequestMapping("/update.do")

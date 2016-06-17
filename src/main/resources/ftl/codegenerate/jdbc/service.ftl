@@ -23,6 +23,8 @@ public interface ${className}Service {
 
 	int count();
 	
+	int countBy(String field, Object value);
+	
 	List<${className}> page(Pager page);
 
 	${className} get(int id);
@@ -46,4 +48,7 @@ public interface ${className}Service {
 	List<${className}> pageByAnd(String field1, Object value1, String field2, Object value2, Pager page);
 
 	List<${className}> pageByOr(String field1, Object value1, String field2, Object value2, Pager page);
+	<#if pageType=="treeTable">
+	List<${className}> listChildren(int parentID);
+	</#if> 
 }

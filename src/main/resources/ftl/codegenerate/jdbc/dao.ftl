@@ -23,6 +23,8 @@ public interface ${className}Dao {
 
 	int count();
 	
+	int countBy(String field, Object value);
+	
 	List<${className}> page(Pager page);
 
 	${className} get(int id);

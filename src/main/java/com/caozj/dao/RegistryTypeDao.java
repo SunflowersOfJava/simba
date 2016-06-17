@@ -23,6 +23,8 @@ public interface RegistryTypeDao {
 
 	int count();
 	
+	int countBy(String field, Object value);
+	
 	List<RegistryType> page(Pager page);
 
 	RegistryType get(int id);

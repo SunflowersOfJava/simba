@@ -1,10 +1,10 @@
 var ${className} = {
 
 	"toAdd" : function() {
-		<#if ${pageType=="treeTable"}>
+		<#if pageType=="treeTable">
 			window.self.location.href = contextPath + "/${firstLower}/toAdd.do?parentID=" + $("#parentID").val();
 		</#if> 
-		<#if ${pageType!="treeTable"}>
+		<#if pageType!="treeTable">
 			window.self.location.href = contextPath + "/${firstLower}/toAdd.do";
 		</#if> 
 	},
@@ -25,15 +25,20 @@ var ${className} = {
 			dataType : "json",
 			async : true,
 			data : {
-				id : idArray.join(",")
+				ids : idArray.join(",")
 			},
 			success : function(data) {
 				if (data.code == 200) {
-					$("#${firstLower}Table").datagrid("load", {
-						id : $("#parentID").val()
-					});
-					var parentNode = $("#${firstLower}Tree").tree("find", $("#parentID").val());
-					$("#${firstLower}Tree").tree("reload", parentNode.target);
+					<#if pageType=="treeTable">
+						$("#${firstLower}Table").datagrid("load", {
+							id : $("#parentID").val()
+						});
+						var parentNode = $("#${firstLower}Tree").tree("find", $("#parentID").val());
+						$("#${firstLower}Tree").tree("reload", parentNode.target);
+					</#if> 
+					<#if pageType!="treeTable">
+						$("#${firstLower}Table").datagrid("load",{});
+					</#if> 
 					$.messager.alert("系统提示", "删除成功", 'info');
 				} else {
 					$.messager.alert("系统错误", data.msg, 'error');
@@ -44,17 +49,17 @@ var ${className} = {
 			}
 		});
 	},
-
+<#if pageType=="treeTable">
 	"select${className}" : function(node) {
 		var id = node.id;
 		$("#parentID").val(id);
 		$("#${firstLower}Table").datagrid("load", {
 			id : id
 		});
-		var name = node.text + "--子菜单";
+		var name = node.text + "--子列表";
 		$(".layout-panel-center .panel-title").html(name);
 	},
-
+</#if> 
 	"toUpdate" : function(id) {
 		window.self.location.href = contextPath + "/${firstLower}/toUpdate.do?id=" + id;
 	},
@@ -70,11 +75,16 @@ var ${className} = {
 			},
 			success : function(data) {
 				if (data.code == 200) {
-					$("#${firstLower}Table").datagrid("load", {
-						id : $("#parentID").val()
-					});
-					var parentNode = $("#${firstLower}Tree").tree("find", $("#parentID").val());
-					$("#${firstLower}Tree").tree("reload", parentNode.target);
+					<#if pageType=="treeTable">
+						$("#${firstLower}Table").datagrid("load", {
+							id : $("#parentID").val()
+						});
+						var parentNode = $("#${firstLower}Tree").tree("find", $("#parentID").val());
+						$("#${firstLower}Tree").tree("reload", parentNode.target);
+					</#if> 
+					<#if pageType!="treeTable">
+						$("#${firstLower}Table").datagrid("load",{});
+					</#if> 
 					$.messager.alert("系统提示", "删除成功", 'info');
 				} else {
 					$.messager.alert("系统错误", data.msg, 'error');
@@ -121,7 +131,12 @@ var ${className} = {
 	},
 
 	"toList" : function() {
-		window.self.location.href = contextPath + "/${firstLower}/list.do";
+		<#if pageType=="treeTable">
+			window.self.location.href = contextPath + "/${firstLower}/list.do?parentID=" + $("#parentID").combotree("getValue");
+		</#if> 
+		<#if pageType!="treeTable">
+			window.self.location.href = contextPath + "/${firstLower}/list.do";
+		</#if> 
 	},
 
 	"end" : null

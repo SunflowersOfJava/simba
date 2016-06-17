@@ -19,7 +19,6 @@ import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.model.constant.ConstantData;
 import com.caozj.model.permission.Permission;
 import com.caozj.model.permission.Role;
-import com.caozj.service.permission.PermissionService;
 import com.caozj.service.permission.RoleService;
 
 @Controller
@@ -28,9 +27,6 @@ public class RoleController {
 
 	@Autowired
 	private RoleService roleService;
-
-	@Autowired
-	private PermissionService permissionService;
 
 	@RequestMapping("/list.do")
 	public String list(ModelMap model) {

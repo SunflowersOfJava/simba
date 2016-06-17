@@ -2,6 +2,7 @@ package com.caozj.codegenerate;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,6 +128,7 @@ public class CodeGenerateUtil {
 		param.put("packageName", packageName);
 		param.put("pageType", pageType.getName());
 		List<String> fields = ReflectUtil.getAllPropertiesName(c);
+		List<String> filedsWithPage = new ArrayList<>();
 		String updateProperties = "";
 		String insertProperties = "";
 		String params = "";
@@ -134,6 +136,12 @@ public class CodeGenerateUtil {
 		for (String field : fields) {
 			if ("id".equals(field) || "serialVersionUID".equals(field)) {
 				continue;
+			}
+			if (pageType == PAGETYPE.TREETABLE && "state".equals(field)) {
+				continue;
+			}
+			if (!"parentID".equals(field)) {
+				filedsWithPage.add(field);
 			}
 			updateProperties += " " + field + " = ? ,";
 			insertProperties += " " + field + ",";
@@ -148,6 +156,7 @@ public class CodeGenerateUtil {
 		param.put("insertProperties", insertProperties);
 		param.put("params", params);
 		param.put("propertiesCount", propertiesCount);
+		param.put("filedsWithPage", filedsWithPage);
 		return param;
 	}
 

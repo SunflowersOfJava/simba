@@ -129,5 +129,10 @@ public class ${className}DaoImpl implements ${className}Dao {
 		return jdbc.queryForPage(sql, ${className}.class, page, param);
 	}
 	
+	@Override
+	public int countBy(String field, Object value) {
+		String sql = "select count(*) from " + table + " where " + field + " = ? ";
+		return jdbc.queryForInt(sql, value);
+	}
 
 }
