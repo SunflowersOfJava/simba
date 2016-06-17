@@ -2,18 +2,22 @@ package com.caozj.model;
 
 import java.io.Serializable;
 
+import com.caozj.codegenerate.DescAnnotation;
+
 /**
  * 注册类型
  * 
  * @author caozj
  *
  */
+@DescAnnotation(desc = "注册类型")
 public class RegistryType implements Serializable {
 
 	private static final long serialVersionUID = 3417111265402798750L;
 
 	private int id;
 
+	@DescAnnotation(desc = "名称")
 	private String text;
 
 	private int parentID;
