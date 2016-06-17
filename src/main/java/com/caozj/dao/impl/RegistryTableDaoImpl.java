@@ -129,5 +129,10 @@ public class RegistryTableDaoImpl implements RegistryTableDao {
 		return jdbc.queryForPage(sql, RegistryTable.class, page, param);
 	}
 	
+	@Override
+	public int countBy(String field, Object value) {
+		String sql = "select count(*) from " + table + " where " + field + " = ? ";
+		return jdbc.queryForInt(sql, value);
+	}
 
 }

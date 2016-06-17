@@ -2,26 +2,22 @@ package ${packageName}.controller;
 
 import java.util.Arrays;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 <#if pageType!="treeTable">
 import ${packageName}.controller.form.EasyUIPageForm;
 import ${packageName}.framework.model.easyui.PageGrid;
 import ${packageName}.framework.util.jdbc.Pager;
 </#if>
+<#if pageType=="treeTable">
+import ${packageName}.framework.util.common.FastJsonUtil;
+import com.caozj.model.constant.ConstantData;
+import javax.servlet.http.HttpServletRequest;
+</#if>
 import ${packageName}.framework.model.json.JsonResult;
 import ${packageName}.framework.util.common.JsonUtil;
-import ${packageName}.framework.util.common.FastJsonUtil;
-
-<#if pageType=="treeTable">
-import com.caozj.model.constant.ConstantData;
-</#if>
 import ${packageName}.model.${className};
 import ${packageName}.service.${className}Service;
 

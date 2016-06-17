@@ -2,19 +2,15 @@ package com.caozj.controller;
 
 import java.util.Arrays;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import com.caozj.framework.util.common.FastJsonUtil;
+import com.caozj.model.constant.ConstantData;
+import javax.servlet.http.HttpServletRequest;
 import com.caozj.framework.model.json.JsonResult;
 import com.caozj.framework.util.common.JsonUtil;
-import com.caozj.framework.util.common.FastJsonUtil;
-
-import com.caozj.model.constant.ConstantData;
 import com.caozj.model.RegistryType;
 import com.caozj.service.RegistryTypeService;
 

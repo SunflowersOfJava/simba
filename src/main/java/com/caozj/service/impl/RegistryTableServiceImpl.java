@@ -49,6 +49,11 @@ public class RegistryTableServiceImpl implements RegistryTableService {
 	public int count() {
 		return registryTableDao.count();
 	}
+	
+	@Override
+	public int countBy(String field, Object value){
+		return registryTableDao.countBy(field,value);
+	}
 
 	@Override
 	public List<RegistryTable> listAll() {
@@ -111,4 +116,5 @@ public class RegistryTableServiceImpl implements RegistryTableService {
 	public List<RegistryTable> pageByOr(String field1, Object value1, String field2, Object value2, Pager page) {
 		return registryTableDao.pageByOr(field1, value1, field2, value2, page);
 	}
+	
 }
