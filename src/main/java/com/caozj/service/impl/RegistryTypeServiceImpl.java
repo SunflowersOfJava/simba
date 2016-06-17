@@ -32,6 +32,9 @@ public class RegistryTypeServiceImpl implements RegistryTypeService {
 
 	@Override
 	public void delete(int id) {
+		if (registryTypeDao.countBy("parentID", id) > 0) {
+			throw new RuntimeException("此记录下有子记录，不能删除，请先删除子记录");
+		}
 		registryTypeDao.delete(id);
 	}
 

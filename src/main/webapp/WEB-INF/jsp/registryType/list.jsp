@@ -3,39 +3,52 @@
 <!DOCTYPE html >
 <html>
 <head>
-<title>菜单管理</title>
+<title>管理</title>
 <%@ include file="../common/header.jsp"%>
 <%@ include file="../common/easyui.jsp"%>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/app/menu.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/app/registryType.js"></script>
 </head>
 <body class="easyui-layout" id="layout">
-	<input type="hidden" id="parentID" name="parentID" value=""/>
-	<div data-options="region:'west',split:true" title="菜单树" style="width:180px;">
-		<ul class="easyui-tree" id="menuTree"></ul>
+	<input type="hidden" id="parentID" name="parentID" value="${parentID}"/>
+	<div data-options="region:'west',split:true" title="树" style="width:180px;">
+		<ul class="easyui-tree" id="registryTypeTree"></ul>
 	</div>
-	<div data-options="region:'center',title:'菜单树--子菜单'">
-		<table id="menuTable"></table>
-		<div id="menuToolbar">
-			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="Menu.toAdd();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0);" class="easyui-linkbutton"
-				onclick="Menu.batchDelete();" data-options="iconCls:'icon-remove'">删除</a>
+	<div data-options="region:'center',title:'${parentName}--子列表'">
+		<table id="registryTypeTable"></table>
+		<div id="registryTypeToolbar">
+			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="RegistryType.toAdd();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0);" class="easyui-linkbutton"
+				onclick="RegistryType.batchDelete();" data-options="iconCls:'icon-remove'">删除</a>
 		</div>
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$("#menuTree").tree({
-				url : contextPath + "/menu/listChildrenMenu.do?dealMenu=false&showRoot=true",
+			$("#registryTypeTree").tree({
+				url : contextPath + "/registryType/listChildrenRegistryType.do?showRoot=true",
 				method : "post",
 				animate : true,
 				onClick : function(node) {
-					Menu.selectMenu(node);
+					RegistryType.selectRegistryType(node);
+				},
+				onLoadSuccess: function(node,data){
+					if(${parentID} != ${rootID}){
+						var root =  $("#registryTypeTree").tree("find",${rootID});
+						$("#registryTypeTree").tree("expandAll", root.target);
+						var parentNode = $("#registryTypeTree").tree("find", ${parentID});
+						if (!parentNode) {
+							return true;
+						}
+						$("#registryTypeTree").tree("scrollTo", parentNode.target);
+						$("#registryTypeTree").tree("select", parentNode.target);
+					}
 				}
 			});
-			$("#menuTable").datagrid({
-				url : contextPath + "/menu/listChildrenMenu.do?dealMenu=false",
+			$("#registryTypeTable").datagrid({
+				url : contextPath + "/registryType/listChildrenRegistryType.do",
 				method : "post",
 				animate : true,
-				toolbar : "#menuToolbar",
+				toolbar : "#registryTypeToolbar",
 				singleSelect : false,
+				pagination : false,
 				idField : "id",
 				loadMsg : "正在加载数据，请耐心等待...",
 				rownumbers : true,
@@ -46,31 +59,26 @@
 					title : "全选",
 					field : "ck",
 					checkbox : true
-				}, {
+				}
+				, {
 					field : 'text',
-					title : '名称',
+					title : 'text',
 					width : 150
-				}, {
-					field : 'url',
-					title : 'URL地址',
-					width : 400
-				}, {
-					field : 'orderNo',
-					title : '排序号',
-					width : 100
-				}, {
+				}
+				, {
 					title : "操作",
 					field : "oper",
-					width : 120,
+					width : 250,
 					formatter : function(value, row, index) {
-						var html = "<a href=\"javascript:void(0);\" onclick=\"Menu.toUpdate('" + row["id"] + "')\">修改</a>";
+						var html = "<a href=\"javascript:void(0)\" onclick=\"RegistryType.toUpdate('" + row["id"] + "')\">修改</a>";
 						html += "&nbsp;&nbsp;";
-						html += "<a href=\"javascript:void(0);\" onclick=\"Menu.deleteMenu('" + row["id"] + "')\">删除</a>";
+						html += "<a href=\"javascript:void(0)\" onclick=\"RegistryType.deleteRegistryType('" + row["id"] + "')\">删除</a>";
 						return html;
 					}
 				} ] ]
 			});
 		});
 	</script>
+
 </body>
 </html>

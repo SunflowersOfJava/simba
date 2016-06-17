@@ -32,6 +32,11 @@ public class ${className}ServiceImpl implements ${className}Service {
 
 	@Override
 	public void delete(int id) {
+	<#if pageType=="treeTable">
+		if (${firstLower}Dao.countBy("parentID", id) > 0) {
+			throw new RuntimeException("此记录下有子记录，不能删除，请先删除子记录");
+		}
+	</#if>	
 		${firstLower}Dao.delete(id);
 	}
 

@@ -16,7 +16,7 @@ var ${className} = {
 			idArray.push(${firstLower}.id);
 		});
 		if (idArray.length == 0) {
-			$.messager.alert("系统提示", "请选择要删除的行", 'warning');
+			$.messager.alert("系统提示", "请选择要删除的记录", 'warning');
 			return false;
 		}
 		$.ajax({

@@ -18,8 +18,14 @@ import com.caozj.model.constant.ConstantData;
 import com.caozj.model.RegistryType;
 import com.caozj.service.RegistryTypeService;
 
+/**
+ * 
+ * 
+ * @author caozj
+ *  
+ */
 @Controller
-@RequestMapping("\registryType")
+@RequestMapping("/registryType")
 public class RegistryTypeController {
 
 	@Autowired
@@ -92,7 +98,7 @@ public class RegistryTypeController {
 		RegistryType registryType = registryTypeService.get(id);
 		model.put("registryType", registryType);
 		model.put("rootID", ConstantData.TREE_ROOT_ID);
-		return "menu/update";
+		return "registryType/update";
 	}
 
 	@RequestMapping("/add.do")

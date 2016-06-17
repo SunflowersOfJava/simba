@@ -3,39 +3,53 @@
 <!DOCTYPE html >
 <html>
 <head>
-<title>菜单管理</title>
+<title>管理</title>
 <%@ include file="../common/header.jsp"%>
 <%@ include file="../common/easyui.jsp"%>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/app/menu.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/app/${firstLower}.js"></script>
 </head>
+<#if pageType=="treeTable">
 <body class="easyui-layout" id="layout">
-	<input type="hidden" id="parentID" name="parentID" value="${rootID}"/>
-	<div data-options="region:'west',split:true" title="菜单树" style="width:180px;">
-		<ul class="easyui-tree" id="menuTree"></ul>
+	<input type="hidden" id="parentID" name="parentID" value="${r'${parentID}'}"/>
+	<div data-options="region:'west',split:true" title="树" style="width:180px;">
+		<ul class="easyui-tree" id="${firstLower}Tree"></ul>
 	</div>
-	<div data-options="region:'center',title:'菜单树--子菜单'">
-		<table id="menuTable"></table>
-		<div id="menuToolbar">
-			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="Menu.toAdd();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0);" class="easyui-linkbutton"
-				onclick="Menu.batchDelete();" data-options="iconCls:'icon-remove'">删除</a>
+	<div data-options="region:'center',title:'${r'${parentName}'}--子列表'">
+		<table id="${firstLower}Table"></table>
+		<div id="${firstLower}Toolbar">
+			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="${className}.toAdd();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0);" class="easyui-linkbutton"
+				onclick="${className}.batchDelete();" data-options="iconCls:'icon-remove'">删除</a>
 		</div>
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$("#menuTree").tree({
-				url : contextPath + "/menu/listChildrenMenu.do?dealMenu=false&showRoot=true",
+			$("#${firstLower}Tree").tree({
+				url : contextPath + "/${firstLower}/listChildren${className}.do?showRoot=true",
 				method : "post",
 				animate : true,
 				onClick : function(node) {
-					Menu.selectMenu(node);
+					${className}.select${className}(node);
+				},
+				onLoadSuccess: function(node,data){
+					if(${r'${parentID}'} != ${r'${rootID}'}){
+						var root =  $("#${firstLower}Tree").tree("find",${r'${rootID}'});
+						$("#${firstLower}Tree").tree("expandAll", root.target);
+						var parentNode = $("#${firstLower}Tree").tree("find", ${r'${parentID}'});
+						if (!parentNode) {
+							return true;
+						}
+						$("#${firstLower}Tree").tree("scrollTo", parentNode.target);
+						$("#${firstLower}Tree").tree("select", parentNode.target);
+					}
 				}
 			});
-			$("#menuTable").datagrid({
-				url : contextPath + "/menu/listChildrenMenu.do?dealMenu=false",
+			$("#${firstLower}Table").datagrid({
+				url : contextPath + "/${firstLower}/listChildren${className}.do",
 				method : "post",
 				animate : true,
-				toolbar : "#menuToolbar",
+				toolbar : "#${firstLower}Toolbar",
 				singleSelect : false,
+				pagination : false,
 				idField : "id",
 				loadMsg : "正在加载数据，请耐心等待...",
 				rownumbers : true,
@@ -46,31 +60,83 @@
 					title : "全选",
 					field : "ck",
 					checkbox : true
-				}, {
-					field : 'text',
-					title : '名称',
+				}
+				<#list filedsWithPage as field> 
+				, {
+					field : '${field}',
+					title : '${field}',
 					width : 150
-				}, {
-					field : 'url',
-					title : 'URL地址',
-					width : 400
-				}, {
-					field : 'orderNo',
-					title : '排序号',
-					width : 100
-				}, {
+				}
+				</#list> 
+				, {
 					title : "操作",
 					field : "oper",
-					width : 120,
+					width : 250,
 					formatter : function(value, row, index) {
-						var html = "<a href=\"javascript:void(0);\" onclick=\"Menu.toUpdate('" + row["id"] + "')\">修改</a>";
+						var html = "<a href=\"javascript:void(0)\" onclick=\"${className}.toUpdate('" + row["id"] + "')\">修改</a>";
 						html += "&nbsp;&nbsp;";
-						html += "<a href=\"javascript:void(0);\" onclick=\"Menu.deleteMenu('" + row["id"] + "')\">删除</a>";
+						html += "<a href=\"javascript:void(0)\" onclick=\"${className}.delete${className}('" + row["id"] + "')\">删除</a>";
 						return html;
 					}
 				} ] ]
 			});
 		});
 	</script>
+</#if> 
+
+<#if pageType!="treeTable">
+<body>
+	<div style="margin: 20px 0;"></div>
+	<div id="panel">
+		<table id="${firstLower}Table"></table>
+		<div id="${firstLower}Toolbar">
+			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="${className}.toAdd();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0);" class="easyui-linkbutton"
+				onclick="${className}.batchDelete();" data-options="iconCls:'icon-remove'">删除</a>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#panel").panel({
+				height : $(document).height() - 50,
+				width : $(document).width() - 20,
+				title : "列表信息"
+			});
+			$("#${firstLower}Table").datagrid({
+				url : contextPath + "/${firstLower}/listDataOfEasyUI.do",
+				method : "post",
+				animate : true,
+				toolbar : "#${firstLower}Toolbar",
+				singleSelect : false,
+				pagination : true,
+				idField : "id",
+				loadMsg : "正在加载数据，请耐心等待...",
+				rownumbers : true,
+				columns : [ [ {
+					title : "全选",
+					field : "ck",
+					checkbox : true
+				}
+				<#list filedsWithPage as field> 
+				, {
+					field : '${field}',
+					title : '${field}',
+					width : 150
+				}
+				</#list> 
+				, {
+					title : "操作",
+					field : "oper",
+					width : 250,
+					formatter : function(value, row, index) {
+						var html = "<a href=\"javascript:void(0)\" onclick=\"${className}.toUpdate('" + row["id"] + "')\">修改</a>";
+						html += "&nbsp;&nbsp;";
+						html += "<a href=\"javascript:void(0)\" onclick=\"${className}.delete${className}('" + row["id"] + "')\">删除</a>";
+						return html;
+					}
+				} ] ]
+			});
+		});
+	</script>
+</#if> 
 </body>
 </html>

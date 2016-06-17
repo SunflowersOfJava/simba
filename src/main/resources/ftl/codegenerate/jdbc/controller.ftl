@@ -32,7 +32,7 @@ import ${packageName}.service.${className}Service;
  *  
  */
 @Controller
-@RequestMapping("\${firstLower}")
+@RequestMapping("/${firstLower}")
 public class ${className}Controller {
 
 	@Autowired
@@ -133,7 +133,7 @@ public class ${className}Controller {
 		${className} ${firstLower} = ${firstLower}Service.get(id);
 		model.put("${firstLower}", ${firstLower});
 		model.put("rootID", ConstantData.TREE_ROOT_ID);
-		return "menu/update";
+		return "${firstLower}/update";
 	}
 </#if>	
 
