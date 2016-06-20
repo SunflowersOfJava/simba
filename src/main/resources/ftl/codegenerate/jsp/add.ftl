@@ -22,7 +22,7 @@
 					</#list> 
 					<#if pageType=="treeTable">
 					<tr>
-						<td>父:</td>
+						<td>父${classDesc}:</td>
 						<td><select id="parentID" name="parentID" style="width:200px;"></select></td>
 					</tr>
 					</#if>

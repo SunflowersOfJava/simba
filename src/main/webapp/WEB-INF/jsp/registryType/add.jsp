@@ -19,7 +19,7 @@
 						<td><input class="easyui-textbox" type="text" id="text" name="text" data-options="required:true" style="width:200px"></input></td>
 					</tr>
 					<tr>
-						<td>父:</td>
+						<td>父注册类型:</td>
 						<td><select id="parentID" name="parentID" style="width:200px;"></select></td>
 					</tr>
 				</table>
