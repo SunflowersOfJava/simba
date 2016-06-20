@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.caozj.annotation.TimeAnnotation;
 import com.caozj.framework.util.upload.UploadUtil;
+import com.caozj.service.RegistryTableService;
 import com.caozj.service.permission.OrgService;
 import com.caozj.service.permission.UserService;
 
@@ -29,6 +30,9 @@ public class InitService {
 	@Autowired
 	private OrgService orgService;
 
+	@Autowired
+	private RegistryTableService registryTableService;
+
 	@PostConstruct
 	@TimeAnnotation
 	private void init() {
@@ -36,6 +40,7 @@ public class InitService {
 		UploadUtil.init();
 		userService.checkAndCreateUserExt();
 		orgService.checkAndCreateOrgExt();
+		registryTableService.init();
 		logger.info("================end to init====================");
 	}
 }

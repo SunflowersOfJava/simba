@@ -9,9 +9,12 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/app/registryTable.js"></script>
 </head>
 
-<body>
-	<div style="margin: 20px 0;"></div>
-	<div id="panel">
+<body class="easyui-layout" id="layout">
+	<input type="hidden" id="typeID" name="typeID" value="${typeID}"/>
+	<div data-options="region:'west',split:true" title="注册类型树" style="width:180px;">
+		<ul class="easyui-tree" id="registryTypeTree"></ul>
+	</div>
+	<div data-options="region:'center',title:'${typeName}--子注册表列表'">
 		<table id="registryTableTable"></table>
 		<div id="registryTableToolbar">
 			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="RegistryTable.toAdd();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0);" class="easyui-linkbutton"
@@ -20,11 +23,27 @@
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$("#panel").panel({
-				height : $(document).height() - 50,
-				width : $(document).width() - 20,
-				title : "注册表列表信息"
+			$("#registryTypeTree").tree({
+				url : contextPath + "/registryType/listChildrenRegistryType.do?showRoot=true",
+				method : "post",
+				animate : true,
+				onClick : function(node) {
+					RegistryTable.selectRegistryType(node);
+				},
+				onLoadSuccess: function(node,data){
+					if(${typeID} != ${rootID}){
+						var root =  $("#registryTypeTree").tree("find",${rootID});
+						$("#registryTypeTree").tree("expandAll", root.target);
+						var typeNode = $("#registryTypeTree").tree("find", ${typeID});
+						if (!typeNode) {
+							return true;
+						}
+						$("#registryTypeTree").tree("scrollTo", typeNode.target);
+						$("#registryTypeTree").tree("select", typeNode.target);
+					}
+				}
 			});
+			
 			$("#registryTableTable").datagrid({
 				url : contextPath + "/registryTable/listDataOfEasyUI.do",
 				method : "post",
@@ -35,6 +54,9 @@
 				idField : "id",
 				loadMsg : "正在加载数据，请耐心等待...",
 				rownumbers : true,
+				queryParams : {
+					typeID : $("#typeID").val()
+				},
 				columns : [ [ {
 					title : "全选",
 					field : "ck",
@@ -48,11 +70,6 @@
 				, {
 					field : 'value',
 					title : '值',
-					width : 150
-				}
-				, {
-					field : 'typeID',
-					title : '类型ID',
 					width : 150
 				}
 				, {

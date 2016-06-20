@@ -23,8 +23,8 @@
 						<td><input class="easyui-textbox" type="text" id="value" name="value" data-options="required:true" style="width:200px"></input></td>
 					</tr>
 					<tr>
-						<td>类型ID:</td>
-						<td><input class="easyui-textbox" type="text" id="typeID" name="typeID" data-options="required:true" style="width:200px"></input></td>
+						<td>类型:</td>
+						<td><select id="typeID" name="typeID" style="width:200px;"></select></td>
 					</tr>
 					<tr>
 						<td>描述:</td>
@@ -41,6 +41,29 @@
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function() {
+			var defaultTypeID = ${typeID};
+			$("#typeID").combotree({
+				url : contextPath + "/registryType/listChildrenRegistryType.do?showRoot=true",
+				required : true,
+				onLoadSuccess : function(node, data) {
+					if (defaultTypeID == 0) {
+						return true;
+					}
+					var treeSelect = $("#typeID").combotree("tree");
+					var typeNode = treeSelect.tree("find", defaultTypeID);
+					if (!typeNode) {
+						var root = treeSelect.tree("find", ${rootID});
+						treeSelect.tree("expandAll", root.target);
+						typeNode = treeSelect.tree("find", defaultTypeID);
+					}
+					if (!typeNode) {
+						return true;
+					}
+					treeSelect.tree("scrollTo", typeNode.target);
+					$("#typeID").combotree("setValue", defaultTypeID);
+					defaultTypeID = 0;
+				}
+			});
 		});
 	</script>
 </body>

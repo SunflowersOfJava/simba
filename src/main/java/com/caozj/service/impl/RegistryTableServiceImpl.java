@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import com.caozj.dao.RegistryTableDao;
 import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.model.RegistryTable;
+import com.caozj.model.constant.RegistryTableData;
 import com.caozj.service.RegistryTableService;
 
 /**
@@ -28,11 +28,17 @@ public class RegistryTableServiceImpl implements RegistryTableService {
 	@Override
 	public void add(RegistryTable registryTable) {
 		registryTableDao.add(registryTable);
+		RegistryTableData.getInstance().add(registryTable.getCode(), registryTable.getValue());
 	}
 
 	@Override
 	public void delete(int id) {
+		RegistryTable registryTable = this.get(id);
+		if (registryTable == null) {
+			return;
+		}
 		registryTableDao.delete(id);
+		RegistryTableData.getInstance().remove(registryTable.getCode());
 	}
 
 	@Override
@@ -49,10 +55,10 @@ public class RegistryTableServiceImpl implements RegistryTableService {
 	public int count() {
 		return registryTableDao.count();
 	}
-	
+
 	@Override
-	public int countBy(String field, Object value){
-		return registryTableDao.countBy(field,value);
+	public int countBy(String field, Object value) {
+		return registryTableDao.countBy(field, value);
 	}
 
 	@Override
@@ -62,16 +68,19 @@ public class RegistryTableServiceImpl implements RegistryTableService {
 
 	@Override
 	public void update(RegistryTable registryTable) {
+		RegistryTable oldRegistryTable = this.get(registryTable.getId());
 		registryTableDao.update(registryTable);
+		RegistryTableData.getInstance().remove(oldRegistryTable.getCode());
+		RegistryTableData.getInstance().add(registryTable.getCode(), registryTable.getValue());
 	}
-	
+
 	@Override
 	public void batchDelete(List<Integer> idList) {
 		for (Integer id : idList) {
 			this.delete(id);
 		}
 	}
-	
+
 	@Override
 	public RegistryTable getBy(String field, Object value) {
 		return registryTableDao.getBy(field, value);
@@ -116,5 +125,13 @@ public class RegistryTableServiceImpl implements RegistryTableService {
 	public List<RegistryTable> pageByOr(String field1, Object value1, String field2, Object value2, Pager page) {
 		return registryTableDao.pageByOr(field1, value1, field2, value2, page);
 	}
-	
+
+	@Override
+	public void init() {
+		List<RegistryTable> list = registryTableDao.listAll();
+		list.forEach((registryTable) -> {
+			RegistryTableData.getInstance().add(registryTable.getCode(), registryTable.getValue());
+		});
+	}
+
 }

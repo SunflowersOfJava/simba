@@ -177,7 +177,7 @@ var User = {
 	"toList" : function() {
 		var orgID = "";
 		if ($("#orgID").length > 0) {
-			orgID = $("#orgID").combotree("getValue")
+			orgID = $("#orgID").combotree("getValue");
 		}
 		window.self.location.href = contextPath + "/user/list.do?orgID=" + orgID;
 	},

@@ -1,7 +1,17 @@
 var RegistryTable = {
 
 	"toAdd" : function() {
-			window.self.location.href = contextPath + "/registryTable/toAdd.do";
+		window.self.location.href = contextPath + "/registryTable/toAdd.do?typeID=" + $("#typeID").val();
+	},
+
+	"selectRegistryType" : function(node) {
+		var id = node.id;
+		$("#typeID").val(id);
+		$("#registryTableTable").datagrid("load", {
+			typeID : id
+		});
+		var name = node.text + "--子注册表列表";
+		$(".layout-panel-center .panel-title").html(name);
 	},
 
 	"batchDelete" : function() {
@@ -24,7 +34,9 @@ var RegistryTable = {
 			},
 			success : function(data) {
 				if (data.code == 200) {
-						$("#registryTableTable").datagrid("load",{});
+					$("#registryTableTable").datagrid("load", {
+						typeID : $("#typeID").val()
+					});
 					$.messager.alert("系统提示", "删除成功", 'info');
 				} else {
 					$.messager.alert("系统错误", data.msg, 'error');
@@ -50,7 +62,9 @@ var RegistryTable = {
 			},
 			success : function(data) {
 				if (data.code == 200) {
-						$("#registryTableTable").datagrid("load",{});
+					$("#registryTableTable").datagrid("load", {
+						typeID : $("#typeID").val()
+					});
 					$.messager.alert("系统提示", "删除成功", 'info');
 				} else {
 					$.messager.alert("系统错误", data.msg, 'error');
@@ -97,7 +111,7 @@ var RegistryTable = {
 	},
 
 	"toList" : function() {
-			window.self.location.href = contextPath + "/registryTable/list.do";
+		window.self.location.href = contextPath + "/registryTable/list.do?typeID=" + $("#typeID").combotree("getValue");
 	},
 
 	"end" : null
