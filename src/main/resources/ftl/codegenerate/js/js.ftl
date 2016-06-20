@@ -56,7 +56,7 @@ var ${className} = {
 		$("#${firstLower}Table").datagrid("load", {
 			id : id
 		});
-		var name = node.text + "--子列表";
+		var name = node.text + "--子${classDesc}列表";
 		$(".layout-panel-center .panel-title").html(name);
 	},
 </#if> 

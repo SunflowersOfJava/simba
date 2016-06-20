@@ -12,6 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.caozj.common.CustomizedPropertyPlaceholderConfigurer;
+import com.caozj.framework.util.common.AnnotationUtil;
 import com.caozj.framework.util.common.ReflectUtil;
 import com.caozj.framework.util.common.ServerUtil;
 import com.caozj.framework.util.common.StringUtil;
@@ -123,12 +124,18 @@ public class CodeGenerateUtil {
 		Map<String, Object> param = new HashMap<String, Object>();
 		String className = c.getSimpleName();
 		String firstLower = StringUtil.getFirstLower(className);
+		DescAnnotation descAnnotation = AnnotationUtil.getClassAnnotation(c, DescAnnotation.class);
+		if (descAnnotation == null) {
+			param.put("classDesc", "");
+		} else {
+			param.put("classDesc", descAnnotation.desc());
+		}
 		param.put("className", className);
 		param.put("firstLower", firstLower);
 		param.put("packageName", packageName);
 		param.put("pageType", pageType.getName());
 		List<String> fields = ReflectUtil.getAllPropertiesName(c);
-		List<String> filedsWithPage = new ArrayList<>();
+		List<Map<String, String>> filedsWithPage = new ArrayList<>();
 		String updateProperties = "";
 		String insertProperties = "";
 		String params = "";
@@ -141,7 +148,15 @@ public class CodeGenerateUtil {
 				continue;
 			}
 			if (!"parentID".equals(field)) {
-				filedsWithPage.add(field);
+				Map<String, String> fDesc = new HashMap<>(2);
+				fDesc.put("key", field);
+				DescAnnotation da = AnnotationUtil.getFiledAnnotion(c, field, DescAnnotation.class);
+				if (da == null) {
+					fDesc.put("desc", field);
+				} else {
+					fDesc.put("desc", da.desc());
+				}
+				filedsWithPage.add(fDesc);
 			}
 			updateProperties += " " + field + " = ? ,";
 			insertProperties += " " + field + ",";

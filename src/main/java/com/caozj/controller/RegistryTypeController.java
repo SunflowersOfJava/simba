@@ -15,7 +15,7 @@ import com.caozj.model.RegistryType;
 import com.caozj.service.RegistryTypeService;
 
 /**
- * 
+ * 注册类型 Controller
  * 
  * @author caozj
  *  
@@ -28,7 +28,7 @@ public class RegistryTypeController {
 	private RegistryTypeService registryTypeService;
 
 
-	private static final String rootName = "树";
+	private static final String rootName = "注册类型树";
 
 	@RequestMapping("/list.do")
 	public String list(Integer parentID, ModelMap model) {

@@ -13,7 +13,7 @@ import ${packageName}.model.${className};
 import ${packageName}.service.${className}Service;
 
 /**
- * 
+ * ${classDesc} Service实现类
  * 
  * @author caozj
  * 

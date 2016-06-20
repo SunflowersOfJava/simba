@@ -3,20 +3,20 @@
 <!DOCTYPE html >
 <html>
 <head>
-<title>管理</title>
+<title>注册类型管理</title>
 <%@ include file="../common/header.jsp"%>
 <%@ include file="../common/easyui.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/app/registryType.js"></script>
 </head>
 <body style="padding:0px;margin:0px">
 	<div style="margin:20px 0;"></div>
-	<div class="easyui-panel" title="修改" style="width:700px">
+	<div class="easyui-panel" title="修改注册类型" style="width:700px">
 		<div style="padding:10px 60px 20px 60px">
 			<form id="registryTypeForm" method="post">
 				<input type="hidden" id="id" name="id" value="${registryType.id}" />
 				<table cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 					<tr>
-						<td>text:</td>
+						<td>名称:</td>
 						<td><input class="easyui-textbox" type="text" id="text" name="text" data-options="required:true" style="width:200px" value="${registryType.text}"></input></td>
 					</tr>
 					<tr>

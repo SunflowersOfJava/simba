@@ -3,7 +3,7 @@
 <!DOCTYPE html >
 <html>
 <head>
-<title>管理</title>
+<title>${classDesc}管理</title>
 <%@ include file="../common/header.jsp"%>
 <%@ include file="../common/easyui.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/app/${firstLower}.js"></script>
@@ -11,10 +11,10 @@
 <#if pageType=="treeTable">
 <body class="easyui-layout" id="layout">
 	<input type="hidden" id="parentID" name="parentID" value="${r'${parentID}'}"/>
-	<div data-options="region:'west',split:true" title="树" style="width:180px;">
+	<div data-options="region:'west',split:true" title="${classDesc}树" style="width:180px;">
 		<ul class="easyui-tree" id="${firstLower}Tree"></ul>
 	</div>
-	<div data-options="region:'center',title:'${r'${parentName}'}--子列表'">
+	<div data-options="region:'center',title:'${r'${parentName}'}--子${classDesc}列表'">
 		<table id="${firstLower}Table"></table>
 		<div id="${firstLower}Toolbar">
 			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="${className}.toAdd();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0);" class="easyui-linkbutton"
@@ -63,8 +63,8 @@
 				}
 				<#list filedsWithPage as field> 
 				, {
-					field : '${field}',
-					title : '${field}',
+					field : '${field.key}',
+					title : '${field.desc}',
 					width : 150
 				}
 				</#list> 
@@ -99,7 +99,7 @@
 			$("#panel").panel({
 				height : $(document).height() - 50,
 				width : $(document).width() - 20,
-				title : "列表信息"
+				title : "${classDesc}列表信息"
 			});
 			$("#${firstLower}Table").datagrid({
 				url : contextPath + "/${firstLower}/listDataOfEasyUI.do",
@@ -118,8 +118,8 @@
 				}
 				<#list filedsWithPage as field> 
 				, {
-					field : '${field}',
-					title : '${field}',
+					field : '${field.key}',
+					title : '${field.desc}',
 					width : 150
 				}
 				</#list> 

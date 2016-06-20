@@ -3,7 +3,7 @@
 <!DOCTYPE html >
 <html>
 <head>
-<title>管理</title>
+<title>注册表管理</title>
 <%@ include file="../common/header.jsp"%>
 <%@ include file="../common/easyui.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/app/registryTable.js"></script>
@@ -23,7 +23,7 @@
 			$("#panel").panel({
 				height : $(document).height() - 50,
 				width : $(document).width() - 20,
-				title : "列表信息"
+				title : "注册表列表信息"
 			});
 			$("#registryTableTable").datagrid({
 				url : contextPath + "/registryTable/listDataOfEasyUI.do",
@@ -42,22 +42,22 @@
 				}
 				, {
 					field : 'code',
-					title : 'code',
+					title : '编码',
 					width : 150
 				}
 				, {
 					field : 'value',
-					title : 'value',
+					title : '值',
 					width : 150
 				}
 				, {
 					field : 'typeID',
-					title : 'typeID',
+					title : '类型ID',
 					width : 150
 				}
 				, {
 					field : 'description',
-					title : 'description',
+					title : '描述',
 					width : 150
 				}
 				, {

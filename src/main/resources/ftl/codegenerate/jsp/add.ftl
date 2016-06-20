@@ -3,21 +3,21 @@
 <!DOCTYPE html >
 <html>
 <head>
-<title>管理</title>
+<title>${classDesc}管理</title>
 <%@ include file="../common/header.jsp"%>
 <%@ include file="../common/easyui.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/app/${firstLower}.js"></script>
 </head>
 <body style="padding:0px;margin:0px">
 	<div style="margin:20px 0;"></div>
-	<div class="easyui-panel" title="新增" style="width:700px">
+	<div class="easyui-panel" title="新增${classDesc}" style="width:700px">
 		<div style="padding:10px 60px 20px 60px">
 			<form id="${firstLower}Form" method="post">
 				<table cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 					<#list filedsWithPage as field> 
 					<tr>
-						<td>${field}:</td>
-						<td><input class="easyui-textbox" type="text" id="${field}" name="${field}" data-options="required:true" style="width:200px"></input></td>
+						<td>${field.desc}:</td>
+						<td><input class="easyui-textbox" type="text" id="${field.key}" name="${field.key}" data-options="required:true" style="width:200px"></input></td>
 					</tr>
 					</#list> 
 					<#if pageType=="treeTable">

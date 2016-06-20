@@ -6,7 +6,7 @@ import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.model.RegistryType;
 
 /**
- *
+ *注册类型 Service
  * 
  * @author caozj
  * 

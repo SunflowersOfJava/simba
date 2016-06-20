@@ -6,7 +6,7 @@ import ${packageName}.framework.util.jdbc.Pager;
 import ${packageName}.model.${className};
 
 /**
- *
+ *${classDesc} Service
  * 
  * @author caozj
  * 

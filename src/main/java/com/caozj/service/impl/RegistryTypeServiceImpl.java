@@ -13,7 +13,7 @@ import com.caozj.model.RegistryType;
 import com.caozj.service.RegistryTypeService;
 
 /**
- * 
+ * 注册类型 Service实现类
  * 
  * @author caozj
  * 

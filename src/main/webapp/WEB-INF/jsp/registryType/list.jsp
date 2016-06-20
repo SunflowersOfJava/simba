@@ -3,17 +3,17 @@
 <!DOCTYPE html >
 <html>
 <head>
-<title>管理</title>
+<title>注册类型管理</title>
 <%@ include file="../common/header.jsp"%>
 <%@ include file="../common/easyui.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/app/registryType.js"></script>
 </head>
 <body class="easyui-layout" id="layout">
 	<input type="hidden" id="parentID" name="parentID" value="${parentID}"/>
-	<div data-options="region:'west',split:true" title="树" style="width:180px;">
+	<div data-options="region:'west',split:true" title="注册类型树" style="width:180px;">
 		<ul class="easyui-tree" id="registryTypeTree"></ul>
 	</div>
-	<div data-options="region:'center',title:'${parentName}--子列表'">
+	<div data-options="region:'center',title:'${parentName}--子注册类型列表'">
 		<table id="registryTypeTable"></table>
 		<div id="registryTypeToolbar">
 			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="RegistryType.toAdd();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0);" class="easyui-linkbutton"
@@ -62,7 +62,7 @@
 				}
 				, {
 					field : 'text',
-					title : 'text',
+					title : '名称',
 					width : 150
 				}
 				, {

@@ -15,7 +15,7 @@ import com.caozj.model.RegistryTable;
 import com.caozj.service.RegistryTableService;
 
 /**
- * 
+ * 注册表 Controller
  * 
  * @author caozj
  *  

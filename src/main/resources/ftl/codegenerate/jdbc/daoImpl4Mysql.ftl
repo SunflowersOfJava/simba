@@ -12,7 +12,7 @@ import com.caozj.framework.util.jdbc.StatementParameter;
 import ${packageName}.model.${className};
 
 /**
- * 
+ * ${classDesc} Dao实现类
  * 
  * @author caozj
  *  

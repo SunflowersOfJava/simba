@@ -22,7 +22,7 @@ import ${packageName}.model.${className};
 import ${packageName}.service.${className}Service;
 
 /**
- * 
+ * ${classDesc} Controller
  * 
  * @author caozj
  *  
@@ -63,7 +63,7 @@ public class ${className}Controller {
 
 
 <#if pageType=="treeTable">
-	private static final String rootName = "树";
+	private static final String rootName = "${classDesc}树";
 
 	@RequestMapping("/list.do")
 	public String list(Integer parentID, ModelMap model) {

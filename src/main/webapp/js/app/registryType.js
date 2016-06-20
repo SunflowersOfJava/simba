@@ -45,7 +45,7 @@ var RegistryType = {
 		$("#registryTypeTable").datagrid("load", {
 			id : id
 		});
-		var name = node.text + "--子列表";
+		var name = node.text + "--子注册类型列表";
 		$(".layout-panel-center .panel-title").html(name);
 	},
 	"toUpdate" : function(id) {

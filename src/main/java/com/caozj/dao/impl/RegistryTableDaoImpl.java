@@ -12,7 +12,7 @@ import com.caozj.framework.util.jdbc.StatementParameter;
 import com.caozj.model.RegistryTable;
 
 /**
- * 
+ * 注册表 Dao实现类
  * 
  * @author caozj
  *  
