@@ -128,8 +128,8 @@ public class CookieUtil {
 	 * 
 	 * @param name
 	 *            cookie名称
-	 * @param request
-	 *            http请求
+	 * @param domain
+	 *            域名
 	 * @param response
 	 *            http响应
 	 */

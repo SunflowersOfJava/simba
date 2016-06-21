@@ -12,7 +12,6 @@ import org.apache.commons.logging.LogFactory;
  * 批量替换工具类
  * 
  * @author caozj
- * @date 2013-04-28
  * 
  */
 public class BatchReplaceUtil {

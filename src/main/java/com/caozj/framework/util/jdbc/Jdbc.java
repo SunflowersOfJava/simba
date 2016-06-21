@@ -622,9 +622,9 @@ public class Jdbc extends JdbcDaoSupport {
 	 * @param sql
 	 *            单表SELECT语句，代码从第一个“from(不区分大小写)”关键字开始截取，头尾添加select
 	 *            count(0)和limit ?,?进行查询
-	 * @param type
+	 * @param elementType
 	 *            返回类型
-	 * @param page
+	 * @param pager
 	 *            包含pageNo和pageSize或者start和pageSize的分页容器
 	 * @param param
 	 *            填充参数
@@ -725,7 +725,7 @@ public class Jdbc extends JdbcDaoSupport {
 	 *            count(0)和limit ?,?进行查询
 	 * @param type
 	 *            返回类型
-	 * @param pageStart
+	 * @param start
 	 *            开始位置
 	 * @param limit
 	 *            最大数量

@@ -28,7 +28,7 @@ public class JsonUtil {
 	private static final Log logger = LogFactory.getLog(JsonUtil.class);
 
 	/**
-	 * Object -> json
+	 * Object to json
 	 * 
 	 * @param obj
 	 * @return
@@ -43,7 +43,7 @@ public class JsonUtil {
 	}
 
 	/**
-	 * json -> Object
+	 * json to Object
 	 * 
 	 * @param <T>
 	 * @param content
@@ -63,7 +63,7 @@ public class JsonUtil {
 	}
 
 	/**
-	 * json -> List
+	 * json to List
 	 * 
 	 * @param <T>
 	 * @param content

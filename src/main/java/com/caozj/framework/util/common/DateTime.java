@@ -21,7 +21,7 @@ public class DateTime {
 	public static final long EIGHT_HOUR_MILLI_SECOND = EIGHT_HOUR_SECOND * 1000L;
 
 	/**
-	 * 获取从1970年1月1日经历的天数</br>
+	 * 获取从1970年1月1日经历的天数
 	 * 
 	 * @return 天数
 	 */
@@ -31,7 +31,7 @@ public class DateTime {
 	}
 
 	/**
-	 * 获取小时数量.</br>
+	 * 获取小时数量.
 	 * 
 	 * @return 小时数
 	 */

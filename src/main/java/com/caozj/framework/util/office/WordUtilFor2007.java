@@ -25,7 +25,7 @@ public class WordUtilFor2007 {
 	 * 
 	 * @param in
 	 *            输入流
-	 * @return
+	 * @return 读取Word中的内容
 	 * @throws IOException
 	 */
 	public static String read(InputStream in) throws IOException {

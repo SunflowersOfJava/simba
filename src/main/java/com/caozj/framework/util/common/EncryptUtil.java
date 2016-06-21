@@ -18,7 +18,7 @@ public class EncryptUtil {
 	/**
 	 * md5加密
 	 * 
-	 * @praram str 需要进行md5加密的字符
+	 * @param str 需要进行md5加密的字符
 	 * @return 已进行md5的加密的字符
 	 */
 	public static String md5(String str) {
@@ -28,7 +28,7 @@ public class EncryptUtil {
 	/**
 	 * sha1 加密
 	 * 
-	 * @praram str 需要进行sha1加密的字符
+	 * @param str 需要进行sha1加密的字符
 	 * @return 已进行sha1的加密的字符
 	 */
 	public static String sha1(String str) {

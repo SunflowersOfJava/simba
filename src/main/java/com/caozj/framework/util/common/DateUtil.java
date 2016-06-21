@@ -500,7 +500,7 @@ public class DateUtil {
 	}
 
 	/**
-	 * 计算二个时间相差的天数</br>
+	 * 计算二个时间相差的天数
 	 * 
 	 * @param date1
 	 *            日期

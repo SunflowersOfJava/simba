@@ -15,7 +15,6 @@ import org.springframework.web.util.UrlPathHelper;
  * 自定义的文件上传处理类，主要是为了过滤部分url可以不走Spring的文件上传，自己自定义文件上传处理
  * 
  * @author caozj
- * @date 2013-04-11
  * 
  */
 public class CustomMultipartResolver extends CommonsMultipartResolver {
