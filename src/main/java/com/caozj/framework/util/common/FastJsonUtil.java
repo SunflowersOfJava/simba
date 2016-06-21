@@ -17,7 +17,7 @@ public class FastJsonUtil {
 	}
 
 	/**
-	 * Object -> json
+	 * Object to json
 	 * 
 	 * @param obj
 	 * @return
@@ -27,7 +27,7 @@ public class FastJsonUtil {
 	}
 
 	/**
-	 * json -> Object
+	 * json to Object
 	 * 
 	 * @param <T>
 	 * @param content
@@ -39,7 +39,7 @@ public class FastJsonUtil {
 	}
 
 	/**
-	 * json -> List
+	 * json to List
 	 * 
 	 * @param <T>
 	 * @param content

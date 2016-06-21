@@ -20,7 +20,6 @@ public class ExceptionUtil {
 	 * 
 	 * @param t
 	 * @return
-	 * @throws IOException
 	 */
 	public static String getStackTrace(Throwable t) {
 		StringWriter sw = new StringWriter();

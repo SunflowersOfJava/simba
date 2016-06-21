@@ -29,7 +29,6 @@ import com.caozj.framework.util.upload.UploadUtil;
  * 处理html编辑器的Controller
  * 
  * @author caozj
- * @date 2013-04-11
  * 
  */
 @Controller

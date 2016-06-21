@@ -144,7 +144,7 @@ public class ZipUtil {
 	 * @param dest
 	 *            压缩文件存放路径
 	 * @param isCreateDir
-	 *            是否在压缩文件里创建目录,仅在压缩文件为目录时有效.<br />
+	 *            是否在压缩文件里创建目录,仅在压缩文件为目录时有效.
 	 *            如果为false,将直接压缩目录下文件到压缩文件.
 	 * @param passwd
 	 *            压缩使用的密码
@@ -180,7 +180,7 @@ public class ZipUtil {
 	 * @param dest
 	 *            压缩文件存放路径
 	 * @param isCreateDir
-	 *            是否在压缩文件里创建目录,仅在压缩文件为目录时有效.<br />
+	 *            是否在压缩文件里创建目录,仅在压缩文件为目录时有效.
 	 *            如果为false,将直接压缩目录下文件到压缩文件.
 	 * @param passwd
 	 *            压缩使用的密码
@@ -198,7 +198,7 @@ public class ZipUtil {
 	 * @param dest
 	 *            压缩文件存放路径
 	 * @param isCreateDir
-	 *            是否在压缩文件里创建目录,仅在压缩文件为目录时有效.<br />
+	 *            是否在压缩文件里创建目录,仅在压缩文件为目录时有效.
 	 *            如果为false,将直接压缩目录下文件到压缩文件.
 	 * @throws ZipException
 	 */
@@ -214,7 +214,7 @@ public class ZipUtil {
 	 * @param dest
 	 *            压缩文件存放路径
 	 * @param isCreateDir
-	 *            是否在压缩文件里创建目录,仅在压缩文件为目录时有效.<br />
+	 *            是否在压缩文件里创建目录,仅在压缩文件为目录时有效.
 	 *            如果为false,将直接压缩目录下文件到压缩文件.
 	 * @throws ZipException
 	 */

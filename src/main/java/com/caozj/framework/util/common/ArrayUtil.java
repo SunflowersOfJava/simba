@@ -14,7 +14,7 @@ public class ArrayUtil {
 	}
 
 	/**
-	 * 截取数组个数</br> 注意：截取位置从0开始
+	 * 截取数组个数，注意：截取位置从0开始
 	 * 
 	 * @param args
 	 *            完整的数组列表
@@ -29,7 +29,7 @@ public class ArrayUtil {
 	}
 
 	/**
-	 * 移除数组的最后一个元素</br>
+	 * 移除数组的最后一个元素
 	 * 
 	 * @param args
 	 *            数组
@@ -42,7 +42,7 @@ public class ArrayUtil {
 	}
 
 	/**
-	 * 移除数组的第一个元素</br>
+	 * 移除数组的第一个元素
 	 * 
 	 * @param args
 	 *            数组
@@ -55,7 +55,7 @@ public class ArrayUtil {
 	}
 
 	/**
-	 * 插入元素到数组的第一个位置</br> 注意：该方法只对字符串有效</br>
+	 * 插入元素到数组的第一个位置, 注意：该方法只对字符串有效
 	 * 
 	 * @param array
 	 *            数组
@@ -71,7 +71,7 @@ public class ArrayUtil {
 	}
 
 	/**
-	 * 生成数组</br> 格式为：perfix+i</br> 例如：prefix传入duowan,数量传入3;</br>
+	 * 生成数组  格式为：perfix+i  例如：prefix传入duowan,数量传入3
 	 * 返回的数组为：["duowan0","duowan1","duowan2"]</br>
 	 * 
 	 * @param prefix

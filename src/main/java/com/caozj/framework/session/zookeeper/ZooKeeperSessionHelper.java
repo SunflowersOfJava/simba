@@ -52,10 +52,8 @@ public class ZooKeeperSessionHelper {
 	/**
 	 * 获取zookeeper对应路径中的对象
 	 * 
-	 * @param path
-	 * @return
-	 * @throws KeeperException
-	 * @throws InterruptedException
+	 * @param path 路径
+	 * @return 路径中存的对象
 	 */
 	public Object get(String path) {
 		ZooKeeper zk = null;

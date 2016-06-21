@@ -25,8 +25,6 @@ public class ConnectionWatcher implements Watcher {
 	/**
 	 * 连接服务
 	 * 
-	 * @throws IOException
-	 * @throws InterruptedException
 	 */
 	public ZooKeeper connection(String servers) {
 		ZooKeeper zk;

@@ -39,7 +39,6 @@ public class WordUtilFor2003 {
 	 * @param file
 	 *            word文档
 	 * @return
-	 * @throws IOException
 	 */
 	public static String read(File file) {
 		FileInputStream in = null;

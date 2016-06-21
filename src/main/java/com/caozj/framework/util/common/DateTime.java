@@ -367,7 +367,7 @@ public class DateTime {
 	/**
 	 * 判断字符串是否为正确的日期格式
 	 * 
-	 * @param str
+	 * @param date
 	 *            字符串日期
 	 * @return 是否合法日期格式
 	 */

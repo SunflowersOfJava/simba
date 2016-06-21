@@ -17,7 +17,7 @@ public class CookieUtil {
 	protected static final Log logger = LogFactory.getLog(CookieUtil.class);
 
 	/**
-	 * 设置cookie</br>
+	 * 设置cookie
 	 * 
 	 * @param name
 	 *            cookie名称
@@ -34,7 +34,7 @@ public class CookieUtil {
 	}
 
 	/**
-	 * 设置cookie</br>
+	 * 设置cookie
 	 * 
 	 * @param name
 	 *            cookie名称
@@ -53,7 +53,7 @@ public class CookieUtil {
 	}
 
 	/**
-	 * 设置cookie</br>
+	 * 设置cookie
 	 * 
 	 * @param name
 	 *            cookie名称
@@ -88,7 +88,7 @@ public class CookieUtil {
 	}
 
 	/**
-	 * 获取cookie的值</br>
+	 * 获取cookie的值
 	 * 
 	 * @param name
 	 *            cookie名称
@@ -110,7 +110,7 @@ public class CookieUtil {
 	}
 
 	/**
-	 * 删除cookie</br>
+	 * 删除cookie
 	 * 
 	 * @param name
 	 *            cookie名称
@@ -124,7 +124,7 @@ public class CookieUtil {
 	}
 
 	/**
-	 * 删除cookie</br>
+	 * 删除cookie
 	 * 
 	 * @param name
 	 *            cookie名称

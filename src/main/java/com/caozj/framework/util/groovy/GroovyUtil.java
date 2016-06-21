@@ -1,5 +1,11 @@
 package com.caozj.framework.util.groovy;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+
+import org.codehaus.groovy.control.CompilationFailedException;
+
 import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyObject;
@@ -8,12 +14,6 @@ import groovy.lang.Script;
 import groovy.util.GroovyScriptEngine;
 import groovy.util.ResourceException;
 import groovy.util.ScriptException;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Map;
-
-import org.codehaus.groovy.control.CompilationFailedException;
 
 /**
  * Groovy工具类
@@ -30,7 +30,7 @@ public class GroovyUtil {
 	 *            脚本内容
 	 * @param param
 	 *            参数
-	 * @return
+	 * @return 返回脚本执行的结果
 	 */
 	public static Object executeScript(String script, Map<String, Object> param) {
 		String key = String.valueOf(script.hashCode());
@@ -50,7 +50,7 @@ public class GroovyUtil {
 	 * 
 	 * @param script
 	 *            脚本内容
-	 * @return
+	 * @return 返回脚本执行的结果
 	 */
 	public static Object executeScript(String script) {
 		return GroovyUtil.executeScript(script, null);
@@ -60,13 +60,14 @@ public class GroovyUtil {
 	 * 执行Groovy脚本文件(使用GroovyShell方式执行)
 	 * 
 	 * @param scriptFile
+	 *            脚本文件
 	 * @param param
-	 * @return
+	 *            参数
+	 * @return 返回脚本执行的结果
 	 * @throws CompilationFailedException
 	 * @throws IOException
 	 */
-	public static Object executeFile(File scriptFile, Map<String, Object> param) throws CompilationFailedException,
-			IOException {
+	public static Object executeFile(File scriptFile, Map<String, Object> param) throws CompilationFailedException, IOException {
 		String key = String.valueOf(scriptFile.hashCode());
 		Script scriptObject = getScriptFromCache(key);
 		Binding binding = convertParam(param);
@@ -83,7 +84,8 @@ public class GroovyUtil {
 	 * 执行Groovy脚本文件(使用GroovyShell方式执行)
 	 * 
 	 * @param scriptFile
-	 * @return
+	 *            脚本文件
+	 * @return 返回脚本执行的结果
 	 * @throws CompilationFailedException
 	 * @throws IOException
 	 */
@@ -107,13 +109,12 @@ public class GroovyUtil {
 	 *            脚本文件地址(classpath的相对路径)
 	 * @param param
 	 *            参数
-	 * @return
+	 * @return 返回脚本执行的结果
 	 * @throws ResourceException
 	 * @throws ScriptException
 	 * @throws IOException
 	 */
-	public static Object executeFile(String scriptFile, Map<String, Object> param) throws ResourceException,
-			ScriptException, IOException {
+	public static Object executeFile(String scriptFile, Map<String, Object> param) throws ResourceException, ScriptException, IOException {
 		return getGroovyScriptEngine().run(scriptFile, convertParam(param));
 	}
 
@@ -122,10 +123,10 @@ public class GroovyUtil {
 	 * 
 	 * @param scriptFile
 	 *            脚本文件地址(classpath的相对路径)
-	 * @return
+	 * @return 返回脚本执行的结果
+	 * @throws ResourceException
+	 * @throws ScriptException
 	 * @throws IOException
-	 * @throw ScriptException
-	 * @throws ResourceExceptio
 	 */
 	public static Object executeFile(String scriptFile) throws ResourceException, ScriptException, IOException {
 		return GroovyUtil.executeFile(scriptFile, null);
@@ -140,14 +141,13 @@ public class GroovyUtil {
 	 *            方法名
 	 * @param args
 	 *            参数列表
-	 * @return
+	 * @return 返回脚本执行的结果
 	 * @throws CompilationFailedException
 	 * @throws IOException
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	public static Object executeMethod(File groovyFile, String method, Object... args)
-			throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException {
+	public static Object executeMethod(File groovyFile, String method, Object... args) throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException {
 		GroovyClassLoader groovyClassLoader = new GroovyClassLoader(GroovyUtil.class.getClassLoader());
 		String key = String.valueOf(groovyFile.getPath().hashCode());
 		// 先从缓存里面取Class文件
@@ -169,12 +169,12 @@ public class GroovyUtil {
 	 *            方法名
 	 * @param args
 	 *            参数列表
-	 * @return
+	 * @return 返回脚本执行的结果
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	public static Object executeMethod(String groovyClassText, String method, Object... args)
-			throws InstantiationException, IllegalAccessException {
+	@SuppressWarnings("resource")
+	public static Object executeMethod(String groovyClassText, String method, Object... args) throws InstantiationException, IllegalAccessException {
 		GroovyClassLoader groovyClassLoader = new GroovyClassLoader(GroovyUtil.class.getClassLoader());
 		String key = String.valueOf(groovyClassText.hashCode());
 		// 先从缓存里面取Class文件
@@ -225,8 +225,7 @@ public class GroovyUtil {
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	private static GroovyObject getGroovyObjectFromCache(String key) throws InstantiationException,
-			IllegalAccessException {
+	private static GroovyObject getGroovyObjectFromCache(String key) throws InstantiationException, IllegalAccessException {
 		GroovyObject go = null;
 		if (GroovyCache.getInstance().containsClassKey(key)) {
 			go = (GroovyObject) (GroovyCache.getInstance().getClassByKey(key).newInstance());

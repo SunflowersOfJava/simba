@@ -30,7 +30,6 @@ public class PropertiesUtil {
 	 * @param resourcePath
 	 *            文件地址，相对于classpath,例如/config.properties
 	 * @return
-	 * @throws IOException
 	 */
 	public static Map<String, String> read(String resourcePath) {
 		InputStream in = PropertiesUtil.class.getResourceAsStream(resourcePath);
@@ -67,7 +66,6 @@ public class PropertiesUtil {
 	 *            文件地址
 	 * @return
 	 * @throws FileNotFoundException
-	 * @throws IOException
 	 */
 	public static Map<String, String> readFile(String filePath) throws FileNotFoundException {
 		FileInputStream in = new FileInputStream(filePath);

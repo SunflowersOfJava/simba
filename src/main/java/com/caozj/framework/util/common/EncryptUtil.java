@@ -16,7 +16,7 @@ public class EncryptUtil {
 	private static final Log logger = LogFactory.getLog(EncryptUtil.class);
 
 	/**
-	 * md5加密</br>
+	 * md5加密
 	 * 
 	 * @praram str 需要进行md5加密的字符
 	 * @return 已进行md5的加密的字符
@@ -36,7 +36,7 @@ public class EncryptUtil {
 	}
 
 	/**
-	 * 按类型对字符串进行加密并转换成16进制输出</br>
+	 * 按类型对字符串进行加密并转换成16进制输出
 	 * 
 	 * @param str
 	 *            字符串
@@ -78,7 +78,7 @@ public class EncryptUtil {
 	}
 
 	/**
-	 * 将成16进制转换字符串字符</br>
+	 * 将成16进制转换字符串字符
 	 * 
 	 * @param s
 	 *            需要转换的16进制字符串 return 转换后的字符
@@ -94,7 +94,7 @@ public class EncryptUtil {
 	}
 
 	/**
-	 * 将字符串转换成16进制字符</br>
+	 * 将字符串转换成16进制字符
 	 * 
 	 * @param s
 	 *            需要转换的字符串 return 转换后的16进制字符

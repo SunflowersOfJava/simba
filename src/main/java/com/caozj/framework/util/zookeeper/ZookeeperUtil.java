@@ -103,7 +103,6 @@ public class ZookeeperUtil {
 	/**
 	 * 关闭一个会话
 	 * 
-	 * @throws InterruptedException
 	 */
 	public static void close(ZooKeeper zk) {
 		if (zk != null) {
@@ -251,8 +250,6 @@ public class ZookeeperUtil {
 	 *            锁路径(每个锁的这个值唯一)
 	 * @param zk
 	 * @return
-	 * @throws InterruptedException
-	 * @throws KeeperException
 	 */
 	public static boolean tryLock(String path, ZooKeeper zk) {
 		try {
