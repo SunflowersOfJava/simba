@@ -18,9 +18,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class TestInitService {
 
-	private static final Log logger = LogFactory.getLog(TestInitService.class);
+  private static final Log logger = LogFactory.getLog(TestInitService.class);
 
-	@PostConstruct
-	private void init() throws IOException, URISyntaxException {
-	}
+
+  @PostConstruct
+  private void init() throws IOException, URISyntaxException {
+
+  }
 }
