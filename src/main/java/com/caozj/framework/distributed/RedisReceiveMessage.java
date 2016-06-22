@@ -19,10 +19,15 @@ public class RedisReceiveMessage extends BinaryJedisPubSub implements ReceiveMes
 
   @Override
   public void onMessage(byte[] channel, byte[] message) {
-    logger.info(
-        "接收到" + SerializeUtil.unserialize(channel) + "的消息:" + SerializeUtil.unserialize(message));
+    ClusterMessage clusterMessage = (ClusterMessage) SerializeUtil.unserialize(message);
+    logger.info("接收到集群" + SerializeUtil.unserialize(channel) + "的消息:" + clusterMessage.toString());
+    ClusterExecute execute = DistributedData.getInstance().get(clusterMessage.getClassFullPath());
+    if (execute != null) {
+      execute.execute(clusterMessage.getData());
+      logger.info(clusterMessage.getClassFullPath() + "执行完成");
+    } else {
+      logger.warn("没有找到" + clusterMessage.getClassFullPath());
+    }
   }
-
-
 
 }

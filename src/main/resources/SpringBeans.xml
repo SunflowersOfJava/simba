@@ -15,13 +15,14 @@
 	<context:component-scan base-package="com.caozj.framework.chat" />
 	<context:component-scan base-package="com.caozj.framework.util" />
 	<context:component-scan base-package="com.caozj.framework.session" />
+	<context:component-scan base-package="com.caozj.framework.distributed" />
 	<context:component-scan base-package="com.caozj.mq" />
 	<context:component-scan base-package="com.caozj.aspect" />
 	<context:component-scan base-package="com.caozj.codegenerate" />
 	<context:component-scan base-package="com.caozj.dubbo" />
 	<context:component-scan base-package="com.caozj.cache" />
 	<context:component-scan base-package="com.caozj.activiti" />
-	<context:component-scan base-package="com.caozj.framework.distributed" />
+	
 	
 	
 </beans>
