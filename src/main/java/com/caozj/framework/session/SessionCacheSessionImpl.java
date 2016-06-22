@@ -13,9 +13,9 @@ public class SessionCacheSessionImpl extends RedisByteCacheServiceImpl {
 
 	@PostConstruct
 	public void init() {
-		setRedisHost(CustomizedPropertyPlaceholderConfigurer.getContextProperty("session.redis.host"));
-		setRedisPort(NumberUtils.toInt(CustomizedPropertyPlaceholderConfigurer.getContextProperty("session.redis.port"), 6379));
-		setRedisPassword(CustomizedPropertyPlaceholderConfigurer.getContextProperty("session.redis.password"));
+		setRedisHost(CustomizedPropertyPlaceholderConfigurer.getContextProperty("distributed.redis.host"));
+		setRedisPort(NumberUtils.toInt(CustomizedPropertyPlaceholderConfigurer.getContextProperty("distributed.redis.port"), 6379));
+		setRedisPassword(CustomizedPropertyPlaceholderConfigurer.getContextProperty("distributed.redis.password"));
 		super.init();
 	}
 
