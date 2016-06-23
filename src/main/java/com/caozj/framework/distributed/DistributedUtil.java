@@ -50,6 +50,10 @@ public class DistributedUtil {
    * @param message 消息对象
    */
   public void executeInCluster(ClusterMessage message) {
+    if (!"true".equalsIgnoreCase(distributedEnable)) {
+      logger.error("没有打开分布式开关session.isEnableDistributedSession，不能使用分布式功能");
+      return;
+    }
     di.publish(key, SerializeUtil.serialize(message));
   }
 

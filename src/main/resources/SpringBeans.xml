@@ -22,6 +22,7 @@
 	<context:component-scan base-package="com.caozj.dubbo" />
 	<context:component-scan base-package="com.caozj.cache" />
 	<context:component-scan base-package="com.caozj.activiti" />
+	<context:component-scan base-package="com.caozj.cluster" />
 	
 	
 	
