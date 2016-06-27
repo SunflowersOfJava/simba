@@ -1,16 +1,16 @@
-package com.caozj.activiti;
+package com.caozj.activiti.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * 工作流Controller
+ * 流程管理Controller
  * 
  * @author caozj
  *
  */
 @Controller
-@RequestMapping("/workflow")
-public class WorkFlowController {
+@RequestMapping("/processManagement")
+public class ProcessManagementController {
 
 }
