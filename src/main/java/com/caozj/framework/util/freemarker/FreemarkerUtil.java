@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.caozj.model.constant.ConstantData;
 
+import freemarker.cache.StringTemplateLoader;
 import freemarker.core.ParseException;
 import freemarker.template.Configuration;
 import freemarker.template.MalformedTemplateNameException;
@@ -74,6 +75,31 @@ public class FreemarkerUtil {
 	private static File getFreeMarkerFolder() {
 		String path = FreemarkerUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 		return new File(path + "/" + freemarkerFolder);
+	}
+	
+	/**
+	 * 解析freemarker模板，返回解析后的字符串
+	 * @param content freemarker模板內容
+	 * @param param 參數對象
+	 * @return
+	 * @throws TemplateNotFoundException
+	 * @throws MalformedTemplateNameException
+	 * @throws ParseException
+	 * @throws IOException
+	 * @throws TemplateException
+	 */
+	public static String parseContent(String content,Map<String,Object> param) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException{
+	  Configuration cfg = new Configuration(Configuration.VERSION_2_3_22);
+      cfg.setLocale(Locale.CHINA);
+      cfg.setDefaultEncoding(ConstantData.DEFAULT_CHARSET);
+      cfg.setClassicCompatible(true);// 处理空值为空字符串
+      StringTemplateLoader stringLoader = new StringTemplateLoader(); 
+      stringLoader.putTemplate(freemarkerFolder,content);  
+      cfg.setTemplateLoader(stringLoader);  
+      Template template = cfg.getTemplate(freemarkerFolder);
+      Writer out = new StringWriter();
+      template.process(param, out);
+      return out.toString();
 	}
 
 }
