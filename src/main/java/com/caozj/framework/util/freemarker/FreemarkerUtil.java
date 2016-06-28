@@ -43,7 +43,7 @@ public class FreemarkerUtil {
 	 * @throws IOException
 	 * @throws TemplateException
 	 */
-	public static String parse(String fileName, Map<String, Object> param) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
+	public static String parseFile(String fileName, Map<String, Object> param) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
 		Configuration cfg = buildConfiguration();
 		Template temp = cfg.getTemplate(fileName);
 		Writer out = new StringWriter();

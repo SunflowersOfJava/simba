@@ -99,19 +99,19 @@ public class CodeGenerateUtil {
 	}
 
 	private String getList(Map<String, Object> param) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
-		return FreemarkerUtil.parse("codegenerate/jsp/list.ftl", param);
+		return FreemarkerUtil.parseFile("codegenerate/jsp/list.ftl", param);
 	}
 
 	private String getUpdate(Map<String, Object> param) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
-		return FreemarkerUtil.parse("codegenerate/jsp/update.ftl", param);
+		return FreemarkerUtil.parseFile("codegenerate/jsp/update.ftl", param);
 	}
 
 	private String getAdd(Map<String, Object> param) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
-		return FreemarkerUtil.parse("codegenerate/jsp/add.ftl", param);
+		return FreemarkerUtil.parseFile("codegenerate/jsp/add.ftl", param);
 	}
 
 	private String getJs(Map<String, Object> param) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
-		return FreemarkerUtil.parse("codegenerate/js/js.ftl", param);
+		return FreemarkerUtil.parseFile("codegenerate/js/js.ftl", param);
 	}
 
 	/**
@@ -219,27 +219,27 @@ public class CodeGenerateUtil {
 	}
 
 	private String getMybatisDaoXml(Map<String, Object> param, CODETYPE type) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
-		return FreemarkerUtil.parse("codegenerate/" + type.getFolderName() + "/mybatisXml.ftl", param);
+		return FreemarkerUtil.parseFile("codegenerate/" + type.getFolderName() + "/mybatisXml.ftl", param);
 	}
 
 	private String getController(Map<String, Object> param, CODETYPE type) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
-		return FreemarkerUtil.parse("codegenerate/" + type.getFolderName() + "/controller.ftl", param);
+		return FreemarkerUtil.parseFile("codegenerate/" + type.getFolderName() + "/controller.ftl", param);
 	}
 
 	private String getService(Map<String, Object> param, CODETYPE type) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
-		return FreemarkerUtil.parse("codegenerate/" + type.getFolderName() + "/service.ftl", param);
+		return FreemarkerUtil.parseFile("codegenerate/" + type.getFolderName() + "/service.ftl", param);
 	}
 
 	private String getServiceImpl(Map<String, Object> param, CODETYPE type) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
-		return FreemarkerUtil.parse("codegenerate/" + type.getFolderName() + "/serviceImpl.ftl", param);
+		return FreemarkerUtil.parseFile("codegenerate/" + type.getFolderName() + "/serviceImpl.ftl", param);
 	}
 
 	private String getDao(Map<String, Object> param, CODETYPE type) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
-		return FreemarkerUtil.parse("codegenerate/" + type.getFolderName() + "/dao.ftl", param);
+		return FreemarkerUtil.parseFile("codegenerate/" + type.getFolderName() + "/dao.ftl", param);
 	}
 
 	private String getDaoImpl(Map<String, Object> param, CODETYPE type) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
-		return FreemarkerUtil.parse("codegenerate/" + type.getFolderName() + "/daoImpl4Mysql.ftl", param);
+		return FreemarkerUtil.parseFile("codegenerate/" + type.getFolderName() + "/daoImpl4Mysql.ftl", param);
 	}
 
 	/**
