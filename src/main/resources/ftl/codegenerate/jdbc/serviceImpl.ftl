@@ -41,26 +41,31 @@ public class ${className}ServiceImpl implements ${className}Service {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ${className} get(int id) {
 		return ${firstLower}Dao.get(id);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<${className}> page(Pager page) {
 		return ${firstLower}Dao.page(page);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public int count() {
 		return ${firstLower}Dao.count();
 	}
 	
 	@Override
+	@Transactional(readOnly = true)
 	public int countBy(String field, Object value){
 		return ${firstLower}Dao.countBy(field,value);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<${className}> listAll() {
 		return ${firstLower}Dao.listAll();
 	}
@@ -78,52 +83,62 @@ public class ${className}ServiceImpl implements ${className}Service {
 	}
 	
 	@Override
+	@Transactional(readOnly = true)
 	public ${className} getBy(String field, Object value) {
 		return ${firstLower}Dao.getBy(field, value);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ${className} getByAnd(String field1, Object value1, String field2, Object value2) {
 		return ${firstLower}Dao.getByAnd(field1, value1, field2, value2);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ${className} getByOr(String field1, Object value1, String field2, Object value2) {
 		return ${firstLower}Dao.getByOr(field1, value1, field2, value2);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<${className}> listBy(String field, Object value) {
 		return ${firstLower}Dao.listBy(field, value);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<${className}> listByAnd(String field1, Object value1, String field2, Object value2) {
 		return ${firstLower}Dao.listByAnd(field1, value1, field2, value2);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<${className}> listByOr(String field1, Object value1, String field2, Object value2) {
 		return ${firstLower}Dao.listByOr(field1, value1, field2, value2);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<${className}> pageBy(String field, Object value, Pager page) {
 		return ${firstLower}Dao.pageBy(field, value, page);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<${className}> pageByAnd(String field1, Object value1, String field2, Object value2, Pager page) {
 		return ${firstLower}Dao.pageByAnd(field1, value1, field2, value2, page);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<${className}> pageByOr(String field1, Object value1, String field2, Object value2, Pager page) {
 		return ${firstLower}Dao.pageByOr(field1, value1, field2, value2, page);
 	}
 	
 	<#if pageType=="treeTable">
 	@Override
+	@Transactional(readOnly = true)
 	public List<${className}> listChildren(int parentID) {
 		List<${className}> children = ${firstLower}Dao.listBy("parentID", parentID);
 		children.forEach((${firstLower}) -> {
