@@ -41,6 +41,26 @@ public class InitService {
 		userService.checkAndCreateUserExt();
 		orgService.checkAndCreateOrgExt();
 		registryTableService.init();
+		printlnlog();
 		logger.info("================end to init====================");
 	}
+
+  private void printlnlog() {
+    System.out.println("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
+    System.out.println("+                 _._                                                 +");
+    System.out.println("+            _.-``-.-''-._                                            +");
+    System.out.println("+       _.-``     `  `    ''-._                                       +");
+    System.out.println("+    .-`` .-```. ```````  ```-.''-._                                  +");
+    System.out.println("+  (    '          Web        '     )                                 +");
+    System.out.println("+  |`-._`-...-- __...-...__ - ` _.-'|                                 +");
+    System.out.println("+  |    `-._                _.-'    |                                 +");
+    System.out.println("+   `-._    `-._  caozj  .-'    _.-'                                  +");
+    System.out.println("+  |`-._`-._    `-.__.-'    _.-'_.-'|                                 +");
+    System.out.println("+  |    `-._`-._        _.-'_.-'    |                                 +");
+    System.out.println("+   `-._    `-._`-.__.-'_.-'    _.-'                                  +");
+    System.out.println("+       `-._    `-.__.-'    _.-'                                      +");
+    System.out.println("+           `-._        _.-'                                          +");
+    System.out.println("+               `-.__.-'        loceme.student@163.com                +");
+    System.out.println("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
+  }
 }
