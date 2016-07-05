@@ -11,6 +11,7 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.stereotype.Component;
@@ -128,6 +129,15 @@ public class ApplicationContextUtil implements ApplicationContextAware {
     List<T> beans = new ArrayList<T>(getContext().getBeansOfType(type).values());
     AnnotationAwareOrderComparator.sort(beans);
     return beans;
+  }
+
+  /**
+   * 发布一个事件，所有的实现了ApplicationListener的类都会接收到这个事件
+   * 
+   * @param event 事件
+   */
+  public static void publishEvent(ApplicationEvent event) {
+    getContext().publishEvent(event);
   }
 
   /**
