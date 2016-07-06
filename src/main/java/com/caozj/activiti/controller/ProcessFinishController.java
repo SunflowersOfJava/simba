@@ -4,18 +4,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * 流程管理Controller
+ * 已归档流程
  * 
  * @author caozj
  *
  */
 @Controller
-@RequestMapping("/processManagement")
-public class ProcessManagementController {
-  
-  @RequestMapping
-  public String list(){
-    return "processManagementList";
-  }
+@RequestMapping("/processFinish")
+public class ProcessFinishController {
 
+  @RequestMapping
+  public String list() {
+    return "processFinishList";
+  }
 }
