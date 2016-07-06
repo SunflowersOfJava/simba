@@ -6,6 +6,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
+import com.caozj.activiti.interfaces.SendUser;
 import com.caozj.framework.distributed.ClusterExecute;
 import com.caozj.framework.distributed.DistributedData;
 import com.caozj.framework.session.page.PageParameter;
@@ -37,6 +38,8 @@ public class CustomBeanPostProcessor implements BeanPostProcessor {
       String classFullPath = bean.getClass().getCanonicalName();
       DistributedData.getInstance().add(classFullPath, (ClusterExecute) bean);
       logger.info("注入集群方法:" + classFullPath);
+    }else if(bean instanceof SendUser){
+      
     }
     return bean;
   }
