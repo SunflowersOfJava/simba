@@ -1,4 +1,4 @@
-package com.caozj.framework.chat.interceptor;
+package com.caozj.chat.interceptor;
 
 import java.util.Map;
 
