@@ -15,6 +15,6 @@ public class ProcessMonitorController {
 
   @RequestMapping
   public String list() {
-    return "processMonitorList";
+    return "activiti/processMonitorList";
   }
 }

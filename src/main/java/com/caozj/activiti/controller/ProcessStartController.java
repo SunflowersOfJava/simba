@@ -15,7 +15,7 @@ public class ProcessStartController {
 
   @RequestMapping
   public String list() {
-    return "processStartList";
+    return "activiti/processStartList";
   }
 
 }

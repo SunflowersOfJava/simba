@@ -16,7 +16,7 @@
 		<property name="databaseSchemaUpdate" value="true" />
 		<property name="mailServerHost" value="${email.host}" />
 		<property name="mailServerPort" value="${email.port}" />
-		<property name="jobExecutorActivate" value="true" />
+		<property name="jobExecutorActivate" value="false" />
 		<property name="asyncExecutorEnabled" value="true" />
 		<property name="asyncExecutorActivate" value="true" />
 		<property name="history" value="full" />

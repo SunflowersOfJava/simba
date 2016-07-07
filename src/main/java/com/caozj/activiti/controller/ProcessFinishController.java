@@ -15,6 +15,6 @@ public class ProcessFinishController {
 
   @RequestMapping
   public String list() {
-    return "processFinishList";
+    return "activiti/processFinishList";
   }
 }

@@ -15,7 +15,7 @@ public class ProcessAgencySetController {
 
   @RequestMapping
   public String list() {
-    return "processAgencySetList";
+    return "activiti/processAgencySetList";
   }
 
 }

@@ -15,6 +15,6 @@ public class ProcessJobControlle {
 
   @RequestMapping
   public String list() {
-    return "processJobList";
+    return "activiti/processJobList";
   }
 }

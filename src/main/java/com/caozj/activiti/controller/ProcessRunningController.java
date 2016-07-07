@@ -15,7 +15,7 @@ public class ProcessRunningController {
 
   @RequestMapping
   public String list() {
-    return "processRunningList";
+    return "activiti/processRunningList";
   }
 
 }

@@ -15,6 +15,6 @@ public class ProcessDoneController {
 
   @RequestMapping
   public String list() {
-    return "processDoneList";
+    return "activiti/processDoneList";
   }
 }
