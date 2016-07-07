@@ -46,5 +46,4 @@
 		factory-method="getManagementService" />
 	<bean id="identityService" factory-bean="processEngine"
 		factory-method="getIdentityService" />
-
 </beans>

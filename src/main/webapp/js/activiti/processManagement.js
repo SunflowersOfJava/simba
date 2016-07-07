@@ -1,7 +1,7 @@
 var ProcessManagement = {
 
 	"toAdd" : function() {
-
+$("#processWindow").window('open');
 	},
 
 	"batchDelete" : function() {
@@ -18,6 +18,10 @@ var ProcessManagement = {
 
 	},
 
+	"showXml": function(id) {
+
+	},
+
 	"deleteProcess" : function(id) {
 
 	},
@@ -29,6 +33,14 @@ var ProcessManagement = {
 	"start" : function(id) {
 
 	},
+
+		"uploadProcess" :function(){
+		
+		},
+
+					"cancelUploadProcess" :function(){
+					$("#processWindow").window('close'); 
+					},
 
 	"end" : null
 };

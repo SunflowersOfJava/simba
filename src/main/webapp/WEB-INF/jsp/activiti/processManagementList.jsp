@@ -18,6 +18,20 @@
 				<label>流程名称:</label> <input type="text" id="processName" name="processName" class="easyui-textbox" prompt="请输入您要查询的流程名称" /> <a
 				href="javascript:void(0);" class="easyui-linkbutton" onclick="ProcessManagement.search();" data-options="iconCls:'icon-search'">查询</a>
 		</div>
+		<div id="processWindow" class="easyui-window" title="上传流程文件" style="width:600px;height:400px" data-options="iconCls:'icon-save',modal:true,collapsible:false,minimizable:false,maximizable:false,closable:true,closed:true">
+			<form id="uploadProcessForm" method="post">
+				<table cellpadding="0" cellspacing="0" style="table-layout:fixed;">
+					<tr>
+						<td>流程文件:</td>
+						<td><input class="easyui-filebox" style="width:300px" id="processFile" name="processFile" data-options="buttonText:'选择流程文件',prompt:''"></td>
+					</tr>
+				</table>
+			</form>
+			<div style="text-align:center;padding:5px">
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="ProcessManagement.uploadProcess();" data-options="iconCls:'icon-save'">上传</a> <a href="javascript:void(0)"
+					class="easyui-linkbutton" onclick="ProcessManagement.cancelUploadProcess();" data-options="iconCls:'icon-cancel'">取消</a>
+			</div>
+		</div>
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -52,7 +66,15 @@
 					}
 				}, {
 					field : 'key',
-					title : '流程主键',
+					title : '流程Key',
+					width : 150
+				}, {
+					field : 'deploymentId',
+					title : '部署ID',
+					width : 150
+				}, {
+					field : 'version',
+					title : '版本',
 					width : 150
 				}, {
 					field : 'name',
@@ -68,6 +90,8 @@
 					width : 250,
 					formatter : function(value, row, index) {
 						var html = "<a href=\"javascript:void(0)\" onclick=\"ProcessManagement.showView('" + row["id"] + "')\">查看流程图</a>";
+						html += "&nbsp;&nbsp;";
+						html += "<a href=\"javascript:void(0)\" onclick=\"ProcessManagement.showXml('" + row["id"] + "')\">查看XML</a>";
 						html += "&nbsp;&nbsp;";
 						html += "<a href=\"javascript:void(0)\" onclick=\"ProcessManagement.deleteProcess('" + row["id"] + "')\">删除</a>";
 						html += "&nbsp;&nbsp;";
