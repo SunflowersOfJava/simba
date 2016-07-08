@@ -84,6 +84,7 @@ public class ProcessManagementController {
       vo.setVersion(pd.getVersion());
       vo.setCategory(pd.getCategory());
       vo.setResourceName(pd.getResourceName());
+      vo.setSuspended(pd.isSuspended());
       voList.add(vo);
     });
     String message = JsonUtil.toJson(new PageGrid(NumberUtils.toInt(total + ""), voList));
@@ -175,6 +176,33 @@ public class ProcessManagementController {
   @RequestMapping
   public String batchDeleteProcess(String[] ids, ModelMap model) {
     processService.batchDeleteProcess(Arrays.asList(ids));
+    model.put("message", new JsonResult().toJson());
+    return "message";
+  }
+
+  /**
+   * 启动流程定义
+   * 
+   * @param id 流程id
+   * @param model
+   * @return
+   */
+  @RequestMapping
+  public String startProcess(String id, ModelMap model) {
+    repositoryService.activateProcessDefinitionById(id);
+    model.put("message", new JsonResult().toJson());
+    return "message";
+  }
+
+  /**
+   * 暂停流程定义
+   * 
+   * @param model
+   * @return
+   */
+  @RequestMapping
+  public String stopProcess(String id, ModelMap model) {
+    repositoryService.suspendProcessDefinitionById(id);
     model.put("message", new JsonResult().toJson());
     return "message";
   }

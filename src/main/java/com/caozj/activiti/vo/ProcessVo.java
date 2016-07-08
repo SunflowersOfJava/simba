@@ -17,6 +17,15 @@ public class ProcessVo {
   private String deploymentId;
   private String resourceName;
   private String diagramResourceName;
+  private boolean suspended;
+
+  public boolean isSuspended() {
+    return suspended;
+  }
+
+  public void setSuspended(boolean suspended) {
+    this.suspended = suspended;
+  }
 
   public String getId() {
     return id;

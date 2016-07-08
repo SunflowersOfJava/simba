@@ -101,10 +101,10 @@
 						html += "&nbsp;&nbsp;";
 						html += "<a href=\"javascript:void(0)\" onclick=\"ProcessManagement.deleteProcess('" + row["id"] + "')\">删除</a>";
 						html += "&nbsp;&nbsp;";
-						if(row.suspensionState==1){
-							html += "<a href=\"javascript:void(0)\" onclick=\"ProcessManagement.stop('" + row["id"] + "')\">暂停</a>";
-						}else{
+						if(row.suspended){
 							html += "<a href=\"javascript:void(0)\" onclick=\"ProcessManagement.start('" + row["id"] + "')\">启动</a>";
+						}else{
+							html += "<a href=\"javascript:void(0)\" onclick=\"ProcessManagement.stop('" + row["id"] + "')\">暂停</a>";
 						}
 						return html;
 					}

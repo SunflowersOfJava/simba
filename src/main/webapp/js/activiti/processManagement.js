@@ -14,28 +14,30 @@ var ProcessManagement = {
 			$.messager.alert("系统提示", "请选择要删除的流程", 'warning');
 			return false;
 		}
-		$.ajax({
-			url : contextPath + "/processManagement/batchDeleteProcess.do?json",
-			type : "post",
-			dataType : "json",
-			async : true,
-			data : {
-				ids : idArray.join(",")
-			},
-			success : function(data) {
-				if (data.code == 200) {
-					$("#table").datagrid("load", {
-						processName : $("#processName").val()
-					});
-					$.messager.alert("系统提示", "批量删除成功", 'info');
-				} else {
-					$.messager.alert("系统错误", data.msg, 'error');
-				}
-			},
-			error : function() {
-				$.messager.alert("系统错误", "批量删除失败", 'error');
-			}
-		});
+		$
+				.ajax({
+					url : contextPath
+							+ "/processManagement/batchDeleteProcess.do?json",
+					type : "post",
+					dataType : "json",
+					async : true,
+					data : {
+						ids : idArray.join(",")
+					},
+					success : function(data) {
+						if (data.code == 200) {
+							$("#table").datagrid("load", {
+								processName : $("#processName").val()
+							});
+							$.messager.alert("系统提示", "批量删除成功", 'info');
+						} else {
+							$.messager.alert("系统错误", data.msg, 'error');
+						}
+					},
+					error : function() {
+						$.messager.alert("系统错误", "批量删除失败", 'error');
+					}
+				});
 	},
 
 	"search" : function() {
@@ -69,36 +71,80 @@ var ProcessManagement = {
 	},
 
 	"deleteProcess" : function(id) {
+		$
+				.ajax({
+					url : contextPath
+							+ "/processManagement/batchDeleteProcess.do?json",
+					type : "post",
+					dataType : "json",
+					async : true,
+					data : {
+						ids : id
+					},
+					success : function(data) {
+						if (data.code == 200) {
+							$("#table").datagrid("load", {
+								processName : $("#processName").val()
+							});
+							$.messager.alert("系统提示", "删除成功", 'info');
+						} else {
+							$.messager.alert("系统错误", data.msg, 'error');
+						}
+					},
+					error : function() {
+						$.messager.alert("系统错误", "删除失败", 'error');
+					}
+				});
+	},
+
+	"stop" : function(id) {
 		$.ajax({
-			url : contextPath + "/processManagement/batchDeleteProcess.do?json",
+			url : contextPath + "/processManagement/stopProcess.do?json",
 			type : "post",
 			dataType : "json",
 			async : true,
 			data : {
-				ids : id
+				id : id
 			},
 			success : function(data) {
 				if (data.code == 200) {
-					$("#table").datagrid("load", {
+					$("#table").datagrid("reload", {
 						processName : $("#processName").val()
 					});
-					$.messager.alert("系统提示", "删除成功", 'info');
+					$.messager.alert("系统提示", "暂停成功", 'info');
 				} else {
 					$.messager.alert("系统错误", data.msg, 'error');
 				}
 			},
 			error : function() {
-				$.messager.alert("系统错误", "删除失败", 'error');
+				$.messager.alert("系统错误", "暂停失败", 'error');
 			}
 		});
 	},
 
-	"stop" : function(id) {
-
-	},
-
 	"start" : function(id) {
-
+		$.ajax({
+			url : contextPath + "/processManagement/startProcess.do?json",
+			type : "post",
+			dataType : "json",
+			async : true,
+			data : {
+				id : id
+			},
+			success : function(data) {
+				if (data.code == 200) {
+					$("#table").datagrid("reload", {
+						processName : $("#processName").val()
+					});
+					$.messager.alert("系统提示", "启动成功", 'info');
+				} else {
+					$.messager.alert("系统错误", data.msg, 'error');
+				}
+			},
+			error : function() {
+				$.messager.alert("系统错误", "启动失败", 'error');
+			}
+		});
 	},
 
 	"uploadProcessFile" : function() {
