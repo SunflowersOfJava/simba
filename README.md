@@ -1,5 +1,6 @@
 # demoWeb
 一个基于SpringMVC的web框架,初始化脚本在doc目录中，目前只提供了mysql版本，ppt有基本的使用介绍，由于时间关系并未包含所有的功能介绍。
+配置环境变量JAVA_HOME到jdk的安装目录，必须使用jdk1.8
 直接运行Jetty类的main方法，即可启动web服务
 登陆系统的入口: 
 http://localhost:8080/demo/login/toLogin.do 

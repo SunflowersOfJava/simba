@@ -32,6 +32,12 @@
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="ProcessManagement.cancelUploadProcess();" data-options="iconCls:'icon-cancel'">取消</a>
 			</div>
 		</div>
+		<div id="processXmlWindow" class="easyui-window" title="查看流程XML" style="width:750px;height:750px" data-options="modal:false,collapsible:false,minimizable:false,maximizable:false,closable:true,closed:true">
+			<textarea id="processXml" style="height:704px;width:727px;" readonly="readonly"></textarea>
+		</div>
+		<div id="processImageWindow" class="easyui-window" title="查看流程图" style="width:750px;height:750px" data-options="modal:false,collapsible:false,minimizable:false,maximizable:true,closable:true,closed:true">
+			<img alt="" src="" id="processImage"/>
+		</div>
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function() {

@@ -3,24 +3,33 @@ package com.caozj.activiti.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.zip.ZipInputStream;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.caozj.activiti.service.ProcessService;
 import com.caozj.activiti.vo.ProcessVo;
 import com.caozj.controller.form.EasyUIPageForm;
 import com.caozj.framework.model.easyui.PageGrid;
+import com.caozj.framework.model.json.JsonResult;
 import com.caozj.framework.util.common.FileUtils;
 import com.caozj.framework.util.common.JsonUtil;
 
@@ -34,8 +43,13 @@ import com.caozj.framework.util.common.JsonUtil;
 @RequestMapping("/processManagement")
 public class ProcessManagementController {
 
+  private static final Log logger = LogFactory.getLog(ProcessManagementController.class);
+
   @Autowired
   private RepositoryService repositoryService;
+
+  @Autowired
+  private ProcessService processService;
 
   @RequestMapping
   public String list(String errorMsg, ModelMap model) {
@@ -53,9 +67,10 @@ public class ProcessManagementController {
       list = processDefinitionQuery.listPage((form.getPage() - 1) * form.getRows(), form.getRows());
       total = processDefinitionQuery.count();
     } else {
-      list = processDefinitionQuery.processDefinitionNameLike("%" + processName + "%")
+      String processNameLike = "%" + processName + "%";
+      list = processDefinitionQuery.processDefinitionNameLike(processNameLike)
           .listPage((form.getPage() - 1) * form.getRows(), form.getRows());
-      total = processDefinitionQuery.processDefinitionNameLike("%" + processName + "%").count();
+      total = processDefinitionQuery.processDefinitionNameLike(processNameLike).count();
     }
     List<ProcessVo> voList = new ArrayList<>(list.size());
     list.forEach((pd) -> {
@@ -106,4 +121,61 @@ public class ProcessManagementController {
     return "redirect:/processManagement/list.do";
   }
 
+  /**
+   * 获取流程的xml内容
+   * 
+   * @param id 流程定义ID
+   * @return
+   * @throws IOException
+   */
+  @RequestMapping
+  public String getProcessXml(String id, ModelMap model) throws IOException {
+    ProcessDefinition pd =
+        repositoryService.createProcessDefinitionQuery().processDefinitionId(id).singleResult();
+    if (pd == null) {
+      throw new RuntimeException("流程不存在");
+    }
+    InputStream inputStream =
+        repositoryService.getResourceAsStream(pd.getDeploymentId(), pd.getResourceName());
+    String xml = new String(StreamUtils.copyToByteArray(inputStream));
+    model.put("message", new JsonResult(xml).toJson());
+    logger.info("流程xml内容为" + xml);
+    return "message";
+  }
+
+  /**
+   * 获取流程的图片
+   * 
+   * @param id
+   * @param response
+   * @throws IOException
+   */
+  @RequestMapping
+  public void getProcessImage(String id, HttpServletResponse response) throws IOException {
+    ProcessDefinition pd =
+        repositoryService.createProcessDefinitionQuery().processDefinitionId(id).singleResult();
+    if (pd == null) {
+      throw new RuntimeException("流程不存在");
+    }
+    if (StringUtils.isEmpty(pd.getDiagramResourceName())) {
+      throw new RuntimeException("流程图片不存在");
+    }
+    InputStream inputStream =
+        repositoryService.getResourceAsStream(pd.getDeploymentId(), pd.getDiagramResourceName());
+    IOUtils.copy(inputStream, response.getOutputStream());
+  }
+
+  /**
+   * 批量删除流程
+   * 
+   * @param ids 流程id列表
+   * @param model
+   * @return
+   */
+  @RequestMapping
+  public String batchDeleteProcess(String[] ids, ModelMap model) {
+    processService.batchDeleteProcess(Arrays.asList(ids));
+    model.put("message", new JsonResult().toJson());
+    return "message";
+  }
 }

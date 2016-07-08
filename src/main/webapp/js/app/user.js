@@ -81,7 +81,7 @@ var User = {
 			dataType : "json",
 			async : true,
 			data : {
-				accounts : accountArray
+				accounts : accountArray.join(",")
 			},
 			success : function(data) {
 				if (data.code == 200) {

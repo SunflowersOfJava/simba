@@ -5,7 +5,37 @@ var ProcessManagement = {
 	},
 
 	"batchDelete" : function() {
-
+		var idArray = new Array();
+		var selectedProcess = $("#table").datagrid("getSelections");
+		$.each(selectedProcess, function(i, process) {
+			idArray.push(process.id);
+		});
+		if (idArray.length == 0) {
+			$.messager.alert("系统提示", "请选择要删除的流程", 'warning');
+			return false;
+		}
+		$.ajax({
+			url : contextPath + "/processManagement/batchDeleteProcess.do?json",
+			type : "post",
+			dataType : "json",
+			async : true,
+			data : {
+				ids : idArray.join(",")
+			},
+			success : function(data) {
+				if (data.code == 200) {
+					$("#table").datagrid("load", {
+						processName : $("#processName").val()
+					});
+					$.messager.alert("系统提示", "批量删除成功", 'info');
+				} else {
+					$.messager.alert("系统错误", data.msg, 'error');
+				}
+			},
+			error : function() {
+				$.messager.alert("系统错误", "批量删除失败", 'error');
+			}
+		});
 	},
 
 	"search" : function() {
@@ -15,15 +45,52 @@ var ProcessManagement = {
 	},
 
 	"showView" : function(id) {
-
+		$("#processImage").attr("src",
+				contextPath + "/processManagement/getProcessImage.do?id=" + id);
+		$("#processImageWindow").window('open');
 	},
 
 	"showXml" : function(id) {
-
+		$.ajax({
+			url : contextPath + "/processManagement/getProcessXml.do?id=" + id
+					+ "&json",
+			type : "get",
+			dataType : "json",
+			async : true,
+			success : function(data) {
+				if (data.code == 200) {
+					$("#processXml").val(data.data);
+					$("#processXmlWindow").window('open');
+				} else {
+					$.messager.alert("系统提示", data.msg, "error");
+				}
+			}
+		});
 	},
 
 	"deleteProcess" : function(id) {
-
+		$.ajax({
+			url : contextPath + "/processManagement/batchDeleteProcess.do?json",
+			type : "post",
+			dataType : "json",
+			async : true,
+			data : {
+				ids : id
+			},
+			success : function(data) {
+				if (data.code == 200) {
+					$("#table").datagrid("load", {
+						processName : $("#processName").val()
+					});
+					$.messager.alert("系统提示", "删除成功", 'info');
+				} else {
+					$.messager.alert("系统错误", data.msg, 'error');
+				}
+			},
+			error : function() {
+				$.messager.alert("系统错误", "删除失败", 'error');
+			}
+		});
 	},
 
 	"stop" : function(id) {
