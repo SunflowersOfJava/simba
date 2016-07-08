@@ -18,9 +18,9 @@
 				<label>流程名称:</label> <input type="text" id="processName" name="processName" class="easyui-textbox" prompt="请输入您要查询的流程名称" /> <a
 				href="javascript:void(0);" class="easyui-linkbutton" onclick="ProcessManagement.search();" data-options="iconCls:'icon-search'">查询</a>
 		</div>
-		<div id="processWindow" class="easyui-window" title="上传流程文件" style="width:600px;height:400px" data-options="iconCls:'icon-save',modal:true,collapsible:false,minimizable:false,maximizable:false,closable:true,closed:true">
-			<form id="uploadProcessForm" method="post">
-				<table cellpadding="0" cellspacing="0" style="table-layout:fixed;">
+		<div id="processWindow" class="easyui-window" title="上传流程文件" style="width:400px;height:100px" data-options="iconCls:'icon-save',modal:true,collapsible:false,minimizable:false,maximizable:false,closable:true,closed:true">
+			<form id="uploadProcessForm" method="post" enctype="multipart/form-data">
+				<table cellpadding="0" cellspacing="0" style="table-layout:fixed;" >
 					<tr>
 						<td>流程文件:</td>
 						<td><input class="easyui-filebox" style="width:300px" id="processFile" name="processFile" data-options="buttonText:'选择流程文件',prompt:''"></td>
@@ -28,8 +28,8 @@
 				</table>
 			</form>
 			<div style="text-align:center;padding:5px">
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="ProcessManagement.uploadProcess();" data-options="iconCls:'icon-save'">上传</a> <a href="javascript:void(0)"
-					class="easyui-linkbutton" onclick="ProcessManagement.cancelUploadProcess();" data-options="iconCls:'icon-cancel'">取消</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="ProcessManagement.uploadProcessFile();" data-options="iconCls:'icon-save'">上传</a> 
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="ProcessManagement.cancelUploadProcess();" data-options="iconCls:'icon-cancel'">取消</a>
 			</div>
 		</div>
 	</div>
@@ -104,6 +104,11 @@
 					}
 				} ] ]
 			});
+			
+			var errorMsg = "${errorMsg}";
+			if(errorMsg!=""){
+				$.messager.alert("系统提示", errorMsg, 'error');
+			}
 			
 		});
 	</script>
