@@ -21,7 +21,7 @@ create table ACT_ID_USER (
     PWD_ varchar(255),
     PICTURE_ID_ varchar(64),
     primary key (ID_)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin; 
 
 create table ACT_ID_INFO (
     ID_ varchar(64),

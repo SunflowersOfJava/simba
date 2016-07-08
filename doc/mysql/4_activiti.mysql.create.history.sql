@@ -28,7 +28,7 @@ create table ACT_HI_ACTINST (
     ACT_NAME_ varchar(255),
     ACT_TYPE_ varchar(255) not null,
     ASSIGNEE_ varchar(255),
-    START_TIME_ datetime(3) not null,
+    START_TIME_ datetime(3) not null, 
     END_TIME_ datetime(3),
     DURATION_ bigint,
     TENANT_ID_ varchar(255) default '',

@@ -39,7 +39,7 @@ create table ACT_RE_MODEL (
     NAME_ varchar(255),
     KEY_ varchar(255),
     CATEGORY_ varchar(255),
-    CREATE_TIME_ timestamp(3) null,
+    CREATE_TIME_ timestamp(3) null, 
     LAST_UPDATE_TIME_ timestamp(3) null,
     VERSION_ integer,
     META_INFO_ varchar(4000),
