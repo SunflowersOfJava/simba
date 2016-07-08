@@ -106,6 +106,10 @@
 						}else{
 							html += "<a href=\"javascript:void(0)\" onclick=\"ProcessManagement.stop('" + row["id"] + "')\">暂停</a>";
 						}
+						html += "&nbsp;&nbsp;";
+						html += "<a href=\"javascript:void(0)\" onclick=\"ProcessManagement.setPros('" + row["id"] + "')\">设置属性</a>";
+						html += "&nbsp;&nbsp;";
+						html += "<a href=\"javascript:void(0)\" onclick=\"ProcessManagement.setUser('" + row["id"] + "')\">设置执行人</a>";
 						return html;
 					}
 				} ] ]

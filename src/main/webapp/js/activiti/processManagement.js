@@ -171,6 +171,14 @@ var ProcessManagement = {
 	"cancelUploadProcess" : function() {
 		$("#processWindow").window('close');
 	},
+	
+	"setPros" :function(id){
+		
+	},
+	
+	"setUser" :function(id){
+		
+	},
 
 	"end" : null
 };
