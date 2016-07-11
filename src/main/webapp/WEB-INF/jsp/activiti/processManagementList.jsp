@@ -73,15 +73,15 @@
 				}, {
 					field : 'key',
 					title : '流程Key',
-					width : 150
+					width : 100
 				}, {
 					field : 'deploymentId',
 					title : '部署ID',
-					width : 150
+					width : 100
 				}, {
 					field : 'version',
 					title : '版本',
-					width : 150
+					width : 50
 				}, {
 					field : 'name',
 					title : '名称',
@@ -89,7 +89,15 @@
 				}, {
 					field : 'description',
 					title : '描述',
-					width : 300
+					width : 200
+				}, {
+					field : 'resourceName',
+					title : 'XML资源名称',
+					width : 250
+				}, {
+					field : 'diagramResourceName',
+					title : '图片资源名称',
+					width : 250
 				}, {
 					title : "操作",
 					field : "oper",
