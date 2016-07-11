@@ -13,8 +13,9 @@
 	<div id="panel">
 		<table id="table"></table>
 		<div id="toolbar">
-				<label>流程名称:</label> <input type="text" id="processName" name="processName" class="easyui-textbox" prompt="请输入您要查询的流程名称" /> <a
-				href="javascript:void(0);" class="easyui-linkbutton" onclick="ProcessStart.search();" data-options="iconCls:'icon-search'">查询</a>
+				<label>流程名称:</label> <input type="text" id="processName" name="processName" class="easyui-textbox" prompt="请输入您要查询的流程名称" />
+				<label>任务名称:</label> <input type="text" id="taskName" name="taskName" class="easyui-textbox" prompt="请输入您要查询的任务名称" />
+				<a href="javascript:void(0);" class="easyui-linkbutton" onclick="ProcessDoing.search();" data-options="iconCls:'icon-search'">查询</a>
 		</div>
 	</div>
 	<script type="text/javascript">
@@ -30,40 +31,45 @@
 				animate : true,
 				toolbar : "#toolbar",
 				singleSelect : true,
-				pagination : false,
+				pagination : true,
 				idField : "id",
 				loadMsg : "正在加载数据，请耐心等待...",
 				rownumbers : true,
 				queryParams : {
-					processName : $("#processName").val()
+					processName : $("#processName").val(),
+					taskName : $("#taskName").val()
 				},
 				columns : [ [ {
-					field : 'processID',
-					title : '流程ID',
+					field : 'taskID',
+					title : '任务ID',
 					width : 150,
 					formatter : function(value, row, index) {
 						return row.id;
 					}
 				}, {
-					field : 'key',
-					title : '流程Key',
-					width : 150
-				}, {
-					field : 'deploymentId',
-					title : '部署ID',
-					width : 150
-				}, {
-					field : 'version',
-					title : '版本',
-					width : 150
-				}, {
 					field : 'name',
-					title : '名称',
+					title : '任务名称',
 					width : 150
+				}, {
+					field : 'createTime',
+					title : '创建时间',
+					width : 150
+				}, {
+					field : 'assignee',
+					title : '办理人',
+					width : 100
+				}, {
+					field : 'processInstanceId',
+					title : '流程实例ID',
+					width : 100
+				}, {
+					field : 'processDefinitionId',
+					title : '流程ID',
+					width : 200
 				}, {
 					field : 'description',
 					title : '描述',
-					width : 300
+					width : 150
 				}, {
 					title : "操作",
 					field : "oper",

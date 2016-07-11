@@ -43,13 +43,11 @@ public class ProcessStartController {
     List<ProcessDefinition> list = null;
     ProcessDefinitionQuery processDefinitionQuery =
         repositoryService.createProcessDefinitionQuery();
-    if (StringUtils.isEmpty(processName)) {
-      list = processDefinitionQuery.active().latestVersion().list();
-    } else {
+    if (StringUtils.isNotEmpty(processName)) {
       String processNameLike = "%" + processName + "%";
-      list = processDefinitionQuery.processDefinitionNameLike(processNameLike).active()
-          .latestVersion().list();
+      processDefinitionQuery = processDefinitionQuery.processDefinitionNameLike(processNameLike);
     }
+    list = processDefinitionQuery.active().latestVersion().list();
     List<ProcessVo> voList = new ArrayList<>(list.size());
     list.forEach((pd) -> {
       if (hasStartPermission(pd, sessAccount)) {
@@ -85,5 +83,5 @@ public class ProcessStartController {
     return true;
   }
 
- 
+
 }

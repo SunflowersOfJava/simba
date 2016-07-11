@@ -64,6 +64,20 @@ public class ProcessController {
   }
 
   /**
+   * 进入办理任务页面
+   * 
+   * @param id 流程ID
+   * @param model
+   * @param sessAccount
+   * @return
+   */
+  @RequestMapping
+  public String taskForm(String id, ModelMap model, String sessAccount) {
+
+    return "activiti/taskForm";
+  }
+
+  /**
    * 保存启动流程(启动流程，自己签收任务，可以在自己的待办任务查询到，后接着执行)
    * 
    * @param model

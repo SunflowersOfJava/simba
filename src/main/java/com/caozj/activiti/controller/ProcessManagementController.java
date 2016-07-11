@@ -63,15 +63,12 @@ public class ProcessManagementController {
     long total = 0;
     ProcessDefinitionQuery processDefinitionQuery =
         repositoryService.createProcessDefinitionQuery();
-    if (StringUtils.isEmpty(processName)) {
-      list = processDefinitionQuery.listPage((form.getPage() - 1) * form.getRows(), form.getRows());
-      total = processDefinitionQuery.count();
-    } else {
+    if (StringUtils.isNotEmpty(processName)) {
       String processNameLike = "%" + processName + "%";
-      list = processDefinitionQuery.processDefinitionNameLike(processNameLike)
-          .listPage((form.getPage() - 1) * form.getRows(), form.getRows());
-      total = processDefinitionQuery.processDefinitionNameLike(processNameLike).count();
+      processDefinitionQuery = processDefinitionQuery.processDefinitionNameLike(processNameLike);
     }
+    list = processDefinitionQuery.listPage((form.getPage() - 1) * form.getRows(), form.getRows());
+    total = processDefinitionQuery.count();
     List<ProcessVo> voList = new ArrayList<>(list.size());
     list.forEach((pd) -> {
       ProcessVo vo = new ProcessVo();
