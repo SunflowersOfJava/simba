@@ -9,6 +9,7 @@ import org.activiti.engine.FormService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.task.Task;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,10 @@ public class ProcessController {
   public String start(String id, ModelMap model, String sessAccount, String sessName) {
     ProcessDefinition pd =
         repositoryService.createProcessDefinitionQuery().processDefinitionId(id).singleResult();
+    if (pd == null) {
+      logger.error("流程不存在:" + id);
+      return "redirect:/processStart/list.do";
+    }
     Object startForm = formService.getRenderedStartForm(id);
     model.put("pd", pd);
     model.put("startForm", startForm);
@@ -73,7 +78,19 @@ public class ProcessController {
    */
   @RequestMapping
   public String taskForm(String id, ModelMap model, String sessAccount) {
-
+    Task task = taskService.createTaskQuery().taskId(id).singleResult();
+    if (task == null) {
+      logger.error("任务已经不存在:" + id);
+      return "redirect:/processDoing/list.do";
+    }
+    ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()
+        .processDefinitionId(task.getProcessDefinitionId()).singleResult();
+    Object taskForm = formService.getRenderedTaskForm(id);
+    Object startUserName = taskService.getVariable(id, "startUserName");
+    model.put("taskForm", taskForm);
+    model.put("pd", pd);
+    model.put("task", task);
+    model.put("startUserName", startUserName);
     return "activiti/taskForm";
   }
 
@@ -115,6 +132,36 @@ public class ProcessController {
   public String submitStart(ModelMap model, HttpServletRequest request, String sessAccount) {
     Map<String, String> params = buildParam(request);
     processService.submitStartProcess(params.get("processDefinitionId"), params, sessAccount);
+    model.put("message", new JsonResult().toJson());
+    return "message";
+  }
+
+  /**
+   * 保存任务
+   * 
+   * @param model
+   * @param request
+   * @param sessAccount
+   * @return
+   */
+  @RequestMapping
+  public String saveTask(ModelMap model, HttpServletRequest request, String sessAccount) {
+
+    model.put("message", new JsonResult().toJson());
+    return "message";
+  }
+
+  /**
+   * 提交任务
+   * 
+   * @param model
+   * @param request
+   * @param sessAccount
+   * @return
+   */
+  @RequestMapping
+  public String submitTask(ModelMap model, HttpServletRequest request, String sessAccount) {
+
     model.put("message", new JsonResult().toJson());
     return "message";
   }

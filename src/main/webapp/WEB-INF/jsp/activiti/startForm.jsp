@@ -50,8 +50,8 @@
 			</form>
 			<div style="text-align: center; padding: 5px">
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.saveStart();" data-options="iconCls:'icon-save'">保存</a> 
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.submitStart();" data-options="iconCls:'icon-ok'">发送</a> <a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.cancelStart();"
-					data-options="iconCls:'icon-cancel'">取消</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.submitStart();" data-options="iconCls:'icon-ok'">发送</a> 
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.cancelStart();"	data-options="iconCls:'icon-cancel'">取消</a>
 			</div>
 		</div>
 

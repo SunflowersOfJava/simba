@@ -7,6 +7,7 @@
 <%@ include file="../common/header.jsp"%>
 <%@ include file="../common/easyui.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/activiti/processDoing.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/activiti/processManagement.js"></script>
 </head>
 <body>
 	<div style="margin: 20px 0;"></div>
@@ -17,6 +18,12 @@
 				<label>任务名称:</label> <input type="text" id="taskName" name="taskName" class="easyui-textbox" prompt="请输入您要查询的任务名称" />
 				<a href="javascript:void(0);" class="easyui-linkbutton" onclick="ProcessDoing.search();" data-options="iconCls:'icon-search'">查询</a>
 		</div>
+	</div>
+	<div id="processXmlWindow" class="easyui-window" title="查看流程XML" style="width:750px;height:750px" data-options="modal:false,collapsible:false,minimizable:false,maximizable:false,closable:true,closed:true">
+		<textarea id="processXml" style="height:704px;width:727px;" readonly="readonly"></textarea>
+	</div>
+	<div id="processImageWindow" class="easyui-window" title="查看流程图" style="width:750px;height:750px" data-options="modal:false,collapsible:false,minimizable:false,maximizable:true,closable:true,closed:true">
+		<img alt="" src="" id="processImage"/>
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -76,6 +83,10 @@
 					width : 250,
 					formatter : function(value, row, index) {
 						var html = "<a href=\"javascript:void(0)\" onclick=\"ProcessDoing.toDeal('" + row["id"] + "')\">办理</a>";
+						html += "&nbsp;&nbsp;";
+						html += "<a href=\"javascript:void(0)\" onclick=\"ProcessManagement.showView('" + row["processDefinitionId"] + "')\">查看流程图</a>";
+						html += "&nbsp;&nbsp;";
+						html += "<a href=\"javascript:void(0)\" onclick=\"ProcessManagement.showXml('" + row["processDefinitionId"] + "')\">查看XML</a>";
 						return html;
 					}
 				} ] ]
