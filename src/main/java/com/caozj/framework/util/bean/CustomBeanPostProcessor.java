@@ -41,8 +41,8 @@ public class CustomBeanPostProcessor implements BeanPostProcessor {
       logger.info("注入集群方法:" + classFullPath);
     } else if (bean instanceof SendUser) {
       SendUser sendUser = (SendUser) bean;
-      SendUserData.getInstance().add(sendUser.getProcessID(), sendUser);
-      logger.info("注入工作流发送者流程:" + sendUser.getProcessID());
+      SendUserData.getInstance().add(sendUser.getProcessKey(), sendUser);
+      logger.info("注入工作流发送者流程:" + sendUser.getProcessKey());
     }
     return bean;
   }

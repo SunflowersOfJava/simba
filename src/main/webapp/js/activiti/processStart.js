@@ -7,7 +7,8 @@ var ProcessStart = {
 	},
 
 	"start" : function(id) {
-		
+		window.self.location.href = contextPath + "/process/start.do?id="
+				+ id;
 	},
 
 	"end" : null

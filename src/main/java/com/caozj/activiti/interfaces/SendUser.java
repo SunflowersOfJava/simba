@@ -10,5 +10,5 @@ public interface SendUser {
 
   String getNextUser(String currentUserAccount);
 
-  String getProcessID();
+  String getProcessKey();
 }

@@ -27,11 +27,11 @@ public class SendUserData {
 
   private Map<String, SendUser> processUserMap = new HashMap<>();
 
-  public void add(String processID, SendUser sendUser) {
-    processUserMap.put(processID, sendUser);
+  public void add(String processKey, SendUser sendUser) {
+    processUserMap.put(processKey, sendUser);
   }
 
-  public SendUser get(String processID) {
-    return processUserMap.get(processID);
+  public SendUser get(String processKey) {
+    return processUserMap.get(processKey);
   }
 }
