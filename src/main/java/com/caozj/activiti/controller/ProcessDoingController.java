@@ -49,7 +49,7 @@ public class ProcessDoingController {
     if (StringUtils.isNotEmpty(searchForm.getTaskName())) {
       query.taskNameLike("%" + searchForm.getTaskName() + "%");
     }
-    List<Task> list = query.listPage((form.getPage() - 1) * form.getRows(), form.getRows());
+    List<Task> list = query.orderByTaskCreateTime().desc().listPage((form.getPage() - 1) * form.getRows(), form.getRows());
     int total = NumberUtils.toInt(query.count() + "");
     List<TaskVo> voList = new ArrayList<>(list.size());
     SimpleDateFormat format = new SimpleDateFormat(ConstantData.TIME_FORMAT);

@@ -146,7 +146,13 @@ public class ProcessController {
    */
   @RequestMapping
   public String saveTask(ModelMap model, HttpServletRequest request, String sessAccount) {
-
+    Map<String, String> params = buildParam(request);
+    Task task = taskService.createTaskQuery().taskId(params.get("taskId")).singleResult();
+    if (task == null) {
+      logger.error("任务已经不存在:" + params.get("taskId"));
+      return "redirect:/processDoing/list.do";
+    }
+    processService.saveTask(task, params, sessAccount);
     model.put("message", new JsonResult().toJson());
     return "message";
   }
@@ -161,7 +167,13 @@ public class ProcessController {
    */
   @RequestMapping
   public String submitTask(ModelMap model, HttpServletRequest request, String sessAccount) {
-
+    Map<String, String> params = buildParam(request);
+    Task task = taskService.createTaskQuery().taskId(params.get("taskId")).singleResult();
+    if (task == null) {
+      logger.error("任务已经不存在:" + params.get("taskId"));
+      return "redirect:/processDoing/list.do";
+    }
+    processService.submitTask(task, params, sessAccount);
     model.put("message", new JsonResult().toJson());
     return "message";
   }

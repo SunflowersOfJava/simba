@@ -47,4 +47,22 @@ public interface ProcessService {
    * 
    */
   void submitStartProcess(String processID, Map<String, String> params, String account);
+
+  /**
+   * 保存任务
+   * 
+   * @param task 任务
+   * @param params 参数对象
+   * @param account 执行任务的账号
+   */
+  void saveTask(Task task, Map<String, String> params, String account);
+
+  /**
+   * 提交任务
+   * 
+   * @param task 任务
+   * @param params 参数对象
+   * @param account 执行任务的账号
+   */
+  void submitTask(Task task, Map<String, String> params, String account);
 }

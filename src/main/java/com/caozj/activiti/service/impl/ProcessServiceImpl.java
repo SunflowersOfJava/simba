@@ -9,6 +9,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +64,22 @@ public class ProcessServiceImpl implements ProcessService {
   @Override
   public void submitStartProcess(String processID, Map<String, String> params, String account) {
     Task task = this.saveStartProcess(processID, params, account);
+    formService.submitTaskFormData(task.getId(), params);
+  }
+
+  @Override
+  public void saveTask(Task task, Map<String, String> params, String account) {
+    if (StringUtils.isEmpty(task.getAssignee())) {
+      taskService.claim(task.getId(), account);
+    }
+    formService.saveFormData(task.getId(), params);
+  }
+
+  @Override
+  public void submitTask(Task task, Map<String, String> params, String account) {
+    if (StringUtils.isEmpty(task.getAssignee())) {
+      taskService.claim(task.getId(), account);
+    }
     formService.submitTaskFormData(task.getId(), params);
   }
 
