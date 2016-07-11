@@ -16,7 +16,7 @@
 					<tr>
 						<td>流程ID:</td>
 						<td>${pd.id}</td>
-					</tr>
+					</tr> 
 					<tr>
 						<td>流程Key:</td>
 						<td>${pd.key}</td>
@@ -45,6 +45,7 @@
 			<form id="processForm" method="post">
 				<input type="hidden" id="startUser" name="startUser" value="${startUser}"/>
 				<input type="hidden" id="startUserName" name="startUserName" value="${startUserName}"/>
+				<input type="hidden" id="processDefinitionId" name="processDefinitionId" value="${pd.id}"/>
 				${startForm}
 			</form>
 			<div style="text-align: center; padding: 5px">

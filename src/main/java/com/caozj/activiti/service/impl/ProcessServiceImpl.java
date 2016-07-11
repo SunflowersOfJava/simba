@@ -1,9 +1,14 @@
 package com.caozj.activiti.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
+import org.activiti.engine.FormService;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +28,12 @@ public class ProcessServiceImpl implements ProcessService {
   @Autowired
   private RepositoryService repositoryService;
 
+  @Autowired
+  private FormService formService;
+
+  @Autowired
+  private TaskService taskService;
+
   @Override
   public void batchDeleteProcess(List<String> processIDs) {
     processIDs.forEach((processID) -> {
@@ -38,6 +49,21 @@ public class ProcessServiceImpl implements ProcessService {
       return;
     }
     repositoryService.deleteDeployment(pd.getDeploymentId(), true);
+  }
+
+  @Override
+  public Task saveStartProcess(String processID, Map<String, String> params, String account) {
+    ProcessInstance processInstance = formService.submitStartFormData(processID, params);
+    Task task =
+        taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+    taskService.claim(task.getId(), account);
+    return task;
+  }
+
+  @Override
+  public void submitStartProcess(String processID, Map<String, String> params, String account) {
+    Task task = this.saveStartProcess(processID, params, account);
+    formService.submitTaskFormData(task.getId(), params);
   }
 
 }

@@ -1,6 +1,9 @@
 package com.caozj.activiti.service;
 
 import java.util.List;
+import java.util.Map;
+
+import org.activiti.engine.task.Task;
 
 /**
  * 流程Service
@@ -23,4 +26,25 @@ public interface ProcessService {
    * @param processID 流程ID
    */
   void deleteProcess(String processID);
+
+  /**
+   * 保存启动流程
+   * 
+   * @param processID 流程ID
+   * @param params 参数对象
+   * @param account 启动流程的账号
+   * 
+   * @return 第一个活动的任务
+   */
+  Task saveStartProcess(String processID, Map<String, String> params, String account);
+
+  /**
+   * 提交启动流程
+   * 
+   * @param processID 流程ID
+   * @param params 参数对象
+   * @param account 启动流程的账号
+   * 
+   */
+  void submitStartProcess(String processID, Map<String, String> params, String account);
 }
