@@ -8,8 +8,8 @@ var ProcessDone = {
 	},
 
 	"toView" : function(id) {
-		window.self.location.href = contextPath + "/process/viewTaskForm.do?id="
-				+ id;
+		window.self.location.href = contextPath
+				+ "/process/viewTaskForm.do?id=" + id + "&type=done";
 	},
 
 	"end" : null
