@@ -80,6 +80,10 @@ var Process = {
 		window.self.location.href = contextPath + "/processDoing/list.do";
 	},
 
+	"backTaskDone" : function() {
+		window.self.location.href = contextPath + "/processDone/list.do";
+	},
+
 	"end" : null
 
 };

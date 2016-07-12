@@ -71,7 +71,7 @@ public class ProcessController {
   /**
    * 进入办理任务页面
    * 
-   * @param id 流程ID
+   * @param id 任务ID
    * @param model
    * @param sessAccount
    * @return
@@ -92,6 +92,18 @@ public class ProcessController {
     model.put("task", task);
     model.put("startUserName", startUserName);
     return "activiti/taskForm";
+  }
+  
+  /**
+   * 查看任务页面
+   * @param id 任务ID
+   * @param model
+   * @return
+   */
+  @RequestMapping
+  public String viewTaskForm(String id, ModelMap model){
+    
+    return "activiti/viewTaskForm";
   }
 
   /**
