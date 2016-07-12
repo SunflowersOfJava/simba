@@ -1,5 +1,7 @@
 package com.caozj.activiti.controller;
 
+import org.activiti.engine.HistoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,9 @@ import com.caozj.controller.form.EasyUIPageForm;
 @Controller
 @RequestMapping("/processDone")
 public class ProcessDoneController {
+
+  @Autowired
+  private HistoryService historyService;
 
   @RequestMapping
   public String list() {
