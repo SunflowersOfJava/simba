@@ -1,6 +1,5 @@
 package com.caozj.activiti.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +14,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.caozj.activiti.form.TaskSearchForm;
+import com.caozj.activiti.util.ActivitiObjectUtil;
 import com.caozj.activiti.vo.TaskVo;
 import com.caozj.controller.form.EasyUIPageForm;
 import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.util.common.JsonUtil;
-import com.caozj.model.constant.ConstantData;
 
 /**
  * 待办任务
@@ -49,21 +48,12 @@ public class ProcessDoingController {
     if (StringUtils.isNotEmpty(searchForm.getTaskName())) {
       query.taskNameLike("%" + searchForm.getTaskName() + "%");
     }
-    List<Task> list = query.orderByTaskCreateTime().desc().listPage((form.getPage() - 1) * form.getRows(), form.getRows());
+    List<Task> list = query.orderByTaskCreateTime().desc()
+        .listPage((form.getPage() - 1) * form.getRows(), form.getRows());
     int total = NumberUtils.toInt(query.count() + "");
     List<TaskVo> voList = new ArrayList<>(list.size());
-    SimpleDateFormat format = new SimpleDateFormat(ConstantData.TIME_FORMAT);
     list.forEach((task) -> {
-      TaskVo vo = new TaskVo();
-      vo.setId(task.getId());
-      vo.setOwner(task.getOwner());
-      vo.setAssignee(task.getAssignee());
-      vo.setParentTaskId(task.getParentTaskId());
-      vo.setName(task.getName());
-      vo.setDescription(task.getDescription());
-      vo.setCreateTime(format.format(task.getCreateTime()));
-      vo.setProcessDefinitionId(task.getProcessDefinitionId());
-      vo.setProcessInstanceId(task.getProcessInstanceId());
+      TaskVo vo = ActivitiObjectUtil.buildTaskVo(task);
       voList.add(vo);
     });
     String message = JsonUtil.toJson(new PageGrid(total, voList));

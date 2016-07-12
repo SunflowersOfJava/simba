@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.caozj.activiti.service.ProcessService;
+import com.caozj.activiti.util.ActivitiObjectUtil;
 import com.caozj.activiti.vo.ProcessVo;
 import com.caozj.controller.form.EasyUIPageForm;
 import com.caozj.framework.model.easyui.PageGrid;
@@ -71,17 +72,7 @@ public class ProcessManagementController {
     total = processDefinitionQuery.count();
     List<ProcessVo> voList = new ArrayList<>(list.size());
     list.forEach((pd) -> {
-      ProcessVo vo = new ProcessVo();
-      vo.setId(pd.getId());
-      vo.setName(pd.getName());
-      vo.setKey(pd.getKey());
-      vo.setDeploymentId(pd.getDeploymentId());
-      vo.setDescription(pd.getDescription());
-      vo.setDiagramResourceName(pd.getDiagramResourceName());
-      vo.setVersion(pd.getVersion());
-      vo.setCategory(pd.getCategory());
-      vo.setResourceName(pd.getResourceName());
-      vo.setSuspended(pd.isSuspended());
+      ProcessVo vo = ActivitiObjectUtil.buildProcessVo(pd);
       voList.add(vo);
     });
     String message = JsonUtil.toJson(new PageGrid(NumberUtils.toInt(total + ""), voList));

@@ -6,8 +6,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.apache.commons.logging.Log;
@@ -18,6 +20,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.caozj.activiti.service.ProcessService;
+import com.caozj.activiti.util.ActivitiObjectUtil;
+import com.caozj.activiti.vo.TaskVo;
 import com.caozj.framework.model.json.JsonResult;
 import com.caozj.framework.util.common.StringUtil;
 
@@ -44,6 +48,9 @@ public class ProcessController {
 
   @Autowired
   private ProcessService processService;
+
+  @Autowired
+  private HistoryService historyService;
 
   /**
    * 启动流程
@@ -103,7 +110,30 @@ public class ProcessController {
    */
   @RequestMapping
   public String viewTaskForm(String id, ModelMap model) {
-
+    HistoricTaskInstance historyTask =
+        historyService.createHistoricTaskInstanceQuery().taskId(id).singleResult();
+    Task task = null;
+    if (historyTask == null) {
+      task = taskService.createTaskQuery().taskId(id).singleResult();
+    }
+    if (task == null && historyTask == null) {
+      logger.error("任务已经不存在:" + id);
+      return "redirect:/processDone/list.do";
+    }
+    TaskVo vo = null;
+    if (historyTask != null) {
+      vo = ActivitiObjectUtil.buildTaskVo(historyTask);
+    } else {
+      vo = ActivitiObjectUtil.buildTaskVo(task);
+    }
+    ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()
+        .processDefinitionId(vo.getProcessDefinitionId()).singleResult();
+    Object taskForm = formService.getRenderedTaskForm(id);
+    Object startUserName = taskService.getVariable(id, "startUserName");
+    model.put("taskForm", taskForm);
+    model.put("pd", pd);
+    model.put("task", vo);
+    model.put("startUserName", startUserName);
     return "activiti/viewTaskForm";
   }
 

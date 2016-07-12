@@ -1,6 +1,5 @@
 package com.caozj.activiti.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.caozj.activiti.util.ActivitiObjectUtil;
 import com.caozj.activiti.vo.ActivityVo;
 import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.model.json.JsonResult;
 import com.caozj.framework.util.common.JsonUtil;
-import com.caozj.model.constant.ConstantData;
 import com.caozj.model.permission.User;
 
 /**
@@ -61,21 +60,8 @@ public class ProcessUtilController {
         .processInstanceId(processInstanceId).list();
     int total = list.size();
     List<ActivityVo> voList = new ArrayList<>(total);
-    SimpleDateFormat format = new SimpleDateFormat(ConstantData.TIME_FORMAT);
     list.forEach((activity) -> {
-      ActivityVo vo = new ActivityVo();
-      vo.setActivityId(activity.getActivityId());
-      vo.setActivityName(activity.getActivityName());
-      vo.setActivityType(activity.getActivityType());
-      vo.setAssignee(activity.getAssignee());
-      vo.setDurationInMillis(activity.getDurationInMillis());
-      if (activity.getEndTime() != null) {
-        vo.setEndTime(format.format(activity.getEndTime()));
-      }
-      vo.setId(activity.getId());
-      vo.setProcessInstanceId(activity.getProcessInstanceId());
-      vo.setStartTime(format.format(activity.getStartTime()));
-      vo.setTaskId(activity.getTaskId());
+      ActivityVo vo = ActivitiObjectUtil.buildActivityVo(activity);
       voList.add(vo);
     });
     String message = JsonUtil.toJson(new PageGrid(total, voList));
