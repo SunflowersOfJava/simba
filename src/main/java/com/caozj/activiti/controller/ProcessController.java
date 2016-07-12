@@ -109,7 +109,7 @@ public class ProcessController {
    * @return
    */
   @RequestMapping
-  public String viewTaskForm(String id, ModelMap model) {
+  public String viewTaskForm(String id, ModelMap model,String type) {
     HistoricTaskInstance historyTask =
         historyService.createHistoricTaskInstanceQuery().taskId(id).singleResult();
     Task task = null;
@@ -128,12 +128,13 @@ public class ProcessController {
     }
     ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()
         .processDefinitionId(vo.getProcessDefinitionId()).singleResult();
-    Object taskForm = formService.getRenderedTaskForm(id);
     Object startUserName = taskService.getVariable(id, "startUserName");
+    Object taskForm = formService.getRenderedTaskForm(id);
     model.put("taskForm", taskForm);
     model.put("pd", pd);
     model.put("task", vo);
     model.put("startUserName", startUserName);
+    model.put("type", type);
     return "activiti/viewTaskForm";
   }
 
