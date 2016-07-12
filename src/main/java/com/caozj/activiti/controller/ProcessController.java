@@ -132,6 +132,8 @@ public class ProcessController {
     Object taskForm = null;
     if (task != null) {
       taskForm = formService.getRenderedTaskForm(id);
+    }else{
+      
     }
     model.put("taskForm", taskForm);
     model.put("pd", pd);
