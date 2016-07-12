@@ -77,7 +77,7 @@ public class ProcessController {
    * @return
    */
   @RequestMapping
-  public String taskForm(String id, ModelMap model, String sessAccount) {
+  public String taskForm(String id, ModelMap model) {
     Task task = taskService.createTaskQuery().taskId(id).singleResult();
     if (task == null) {
       logger.error("任务已经不存在:" + id);
@@ -93,16 +93,17 @@ public class ProcessController {
     model.put("startUserName", startUserName);
     return "activiti/taskForm";
   }
-  
+
   /**
    * 查看任务页面
+   * 
    * @param id 任务ID
    * @param model
    * @return
    */
   @RequestMapping
-  public String viewTaskForm(String id, ModelMap model){
-    
+  public String viewTaskForm(String id, ModelMap model) {
+
     return "activiti/viewTaskForm";
   }
 
