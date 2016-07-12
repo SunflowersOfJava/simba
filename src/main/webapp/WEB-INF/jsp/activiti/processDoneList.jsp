@@ -58,8 +58,12 @@
 					title : '任务名称',
 					width : 150
 				}, {
-					field : 'createTime',
-					title : '创建时间',
+					field : 'startTime',
+					title : '开始时间',
+					width : 150
+				}, {
+					field : 'endTime',
+					title : '结束时间',
 					width : 150
 				}, {
 					field : 'assignee',

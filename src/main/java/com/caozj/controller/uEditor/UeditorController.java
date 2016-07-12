@@ -44,11 +44,6 @@ public class UeditorController {
 	// 允许上传的图片类型
 	private static final String[] IMGTYPE = { ".gif", ".png", ".jpg", ".jpeg", ".bmp" };
 
-	@RequestMapping("/show.do")
-	public String show() {
-		return "ueditor/show";
-	}
-
 	/**
 	 * 远程抓取
 	 * 

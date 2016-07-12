@@ -196,5 +196,10 @@ public class TController {
 	public String reactUEditor() {
 		return "react/ueditor";
 	}
+	
+	@RequestMapping
+    public String showUEditor() {
+        return "ueditor/show";
+    }
 
 }
