@@ -41,44 +41,6 @@
 	</div>
 	<br/>
 	<br/>
-	<div class="easyui-panel" title="任务信息" style="width: 800px">
-		<div style="padding: 10px 60px 20px 60px">
-				<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
-					<tr>
-						<td>任务ID:</td>
-						<td>${task.id}</td>
-					</tr> 
-					<tr>
-						<td>任务名称:</td>
-						<td>${task.name}</td>
-					</tr>
-					<tr>
-						<td>开始时间:</td>
-						<td>${task.startTime}</td>
-					</tr>
-					<c:if test="${not empty task.endTime }">
-						<tr>
-							<td>结束时间:</td>
-							<td>${task.endTime}</td>
-						</tr>
-					</c:if>
-					<c:if test="${not empty task.assignee}">
-						<tr>
-							<td>办理人:</td>
-							<td>${task.assignee}</td>
-						</tr>
-					</c:if>
-					<c:if test="${not empty task.description}">
-						<tr>
-							<td>任务描述:</td>
-							<td>${task.description}</td>
-						</tr>
-					</c:if>
-				</table>
-		</div>
-	</div>
-	<br/>
-	<br/>
 	<div class="easyui-panel" title="活动记录" style="width: 800px">
 		<div style="padding: 0px 0px 0px 0px">
 				<table id="activityTable"></table>
@@ -92,8 +54,8 @@
 				${taskForm}
 			</form>
 			<div style="text-align: center; padding: 5px">
-				<c:if test="${type == 'done'}">
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.backTaskDone();"	data-options="iconCls:'icon-cancel'">返回</a>
+				<c:if test="${type == 'finish'}">
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.backFinish();"	data-options="iconCls:'icon-cancel'">返回</a>
 				</c:if>
 			</div>
 		</div>
@@ -111,7 +73,7 @@
 				loadMsg : "正在加载数据，请耐心等待...",
 				rownumbers : true,
 				queryParams : {
-					processInstanceId : ${task.processInstanceId}
+					processInstanceId : ${id}
 				},
 				columns : [ [
 				{

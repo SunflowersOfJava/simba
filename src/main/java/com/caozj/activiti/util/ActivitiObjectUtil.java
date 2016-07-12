@@ -3,11 +3,13 @@ package com.caozj.activiti.util;
 import java.text.SimpleDateFormat;
 
 import org.activiti.engine.history.HistoricActivityInstance;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 
 import com.caozj.activiti.vo.ActivityVo;
+import com.caozj.activiti.vo.ProcessInstanceVo;
 import com.caozj.activiti.vo.ProcessVo;
 import com.caozj.activiti.vo.TaskVo;
 import com.caozj.model.constant.ConstantData;
@@ -107,6 +109,30 @@ public class ActivitiObjectUtil {
     vo.setCategory(pd.getCategory());
     vo.setResourceName(pd.getResourceName());
     vo.setSuspended(pd.isSuspended());
+    return vo;
+  }
+
+  /**
+   * 将历史流程实例对象转化成Vo对象
+   * 
+   * @param historicProcessInstance
+   * @return
+   */
+  public static ProcessInstanceVo buildProcessInstanceVo(
+      HistoricProcessInstance historicProcessInstance) {
+    ProcessInstanceVo vo = new ProcessInstanceVo();
+    vo.setBusinessKey(historicProcessInstance.getBusinessKey());
+    vo.setDescription(historicProcessInstance.getDescription());
+    vo.setDurationInMillis(historicProcessInstance.getDurationInMillis());
+    vo.setEndTime(format.format(historicProcessInstance.getEndTime()));
+    vo.setId(historicProcessInstance.getId());
+    vo.setName(historicProcessInstance.getName());
+    vo.setProcessDefinitionId(historicProcessInstance.getProcessDefinitionId());
+    vo.setProcessDefinitionKey(historicProcessInstance.getProcessDefinitionKey());
+    vo.setProcessDefinitionName(historicProcessInstance.getProcessDefinitionName());
+    vo.setStartTime(format.format(historicProcessInstance.getStartTime()));
+    vo.setStartUserId(historicProcessInstance.getStartUserId());
+    vo.setSuperProcessInstanceId(historicProcessInstance.getSuperProcessInstanceId());
     return vo;
   }
 

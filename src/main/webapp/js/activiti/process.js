@@ -84,6 +84,10 @@ var Process = {
 		window.self.location.href = contextPath + "/processDone/list.do";
 	},
 
+	"backFinish" : function() {
+		window.self.location.href = contextPath + "/processFinish/list.do";
+	},
+
 	"end" : null
 
 };

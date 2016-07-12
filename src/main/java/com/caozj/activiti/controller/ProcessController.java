@@ -9,6 +9,7 @@ import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -149,6 +150,30 @@ public class ProcessController {
     model.put(ConstantData.START_USERNAME, startUserName);
     model.put("type", type);
     return "activiti/viewTaskForm";
+  }
+
+  /**
+   * 查看已归档的流程表单
+   * 
+   * @param id 流程实例ID
+   * @param model
+   * @param type
+   * @return
+   */
+  @RequestMapping
+  public String viewProcessForm(String id, ModelMap model, String type) {
+    HistoricProcessInstance historicProcessInstance =
+        historyService.createHistoricProcessInstanceQuery().processInstanceId(id).singleResult();
+    ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()
+        .processDefinitionId(historicProcessInstance.getProcessDefinitionId()).singleResult();
+    HistoricVariableInstance variableInstance = historyService.createHistoricVariableInstanceQuery()
+        .processInstanceId(id).variableName(ConstantData.START_USERNAME).singleResult();
+    Object startUserName = variableInstance.getValue();
+    model.put("id", id);
+    model.put("type", type);
+    model.put(ConstantData.START_USERNAME, startUserName);
+    model.put("pd", pd);
+    return "activiti/viewProcessForm";
   }
 
   /**
