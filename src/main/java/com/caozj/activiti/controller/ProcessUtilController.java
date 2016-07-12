@@ -1,10 +1,21 @@
 package com.caozj.activiti.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.history.HistoricActivityInstance;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.caozj.activiti.vo.ActivityVo;
+import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.model.json.JsonResult;
+import com.caozj.framework.util.common.JsonUtil;
+import com.caozj.model.constant.ConstantData;
 import com.caozj.model.permission.User;
 
 /**
@@ -16,6 +27,9 @@ import com.caozj.model.permission.User;
 @Controller
 @RequestMapping("/processUtil")
 public class ProcessUtilController {
+
+  @Autowired
+  private HistoryService historyService;
 
   /**
    * 获取当前用户对象
@@ -31,6 +45,41 @@ public class ProcessUtilController {
     user.setAccount(sessAccount);
     user.setName(sessName);
     model.put("message", new JsonResult(user).toJson());
+    return "message";
+  }
+
+  /**
+   * 获取流程的所有活动记录
+   * 
+   * @param processInstanceId 流程实例Id
+   * @param model
+   * @return
+   */
+  @RequestMapping
+  public String getHistoryActivity(String processInstanceId, ModelMap model) {
+    List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery()
+        .processInstanceId(processInstanceId).list();
+    int total = list.size();
+    List<ActivityVo> voList = new ArrayList<>(total);
+    SimpleDateFormat format = new SimpleDateFormat(ConstantData.TIME_FORMAT);
+    list.forEach((activity) -> {
+      ActivityVo vo = new ActivityVo();
+      vo.setActivityId(activity.getActivityId());
+      vo.setActivityName(activity.getActivityName());
+      vo.setActivityType(activity.getActivityType());
+      vo.setAssignee(activity.getAssignee());
+      vo.setDurationInMillis(activity.getDurationInMillis());
+      if (activity.getEndTime() != null) {
+        vo.setEndTime(format.format(activity.getEndTime()));
+      }
+      vo.setId(activity.getId());
+      vo.setProcessInstanceId(activity.getProcessInstanceId());
+      vo.setStartTime(format.format(activity.getStartTime()));
+      vo.setTaskId(activity.getTaskId());
+      voList.add(vo);
+    });
+    String message = JsonUtil.toJson(new PageGrid(total, voList));
+    model.put("message", message);
     return "message";
   }
 

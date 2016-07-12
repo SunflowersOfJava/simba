@@ -73,6 +73,13 @@
 	</div>
 	<br/>
 	<br/>
+	<div class="easyui-panel" title="活动记录" style="width: 800px">
+		<div style="padding: 0px 0px 0px 0px">
+				<table id="activityTable"></table>
+		</div>
+	</div>
+	<br/>
+	<br/>
 	<div class="easyui-panel" title="表单数据" style="width: 800px">
 		<div style="padding: 10px 60px 20px 60px">
 			<form id="processForm" method="post">
@@ -88,7 +95,43 @@
 
 	</div>
 	<script type="text/javascript">
-		
+		$(document).ready(function(){
+			$("#activityTable").datagrid({
+				url : contextPath + "/processUtil/getHistoryActivity.do",
+				method : "post",
+				animate : true,
+				singleSelect : true,
+				pagination : false,
+				idField : "id",
+				loadMsg : "正在加载数据，请耐心等待...",
+				rownumbers : true,
+				queryParams : {
+					processInstanceId : ${task.processInstanceId}
+				},
+				columns : [ [
+				{
+					field : 'activityName',
+					title : '活动名称',
+					width : 150
+				},{
+					field : 'assignee',
+					title : '办理人',
+					width : 150
+				},{
+					field : 'taskId',
+					title : '任务ID',
+					width : 150
+				}, {
+					field : 'startTime',
+					title : '活动开始时间',
+					width : 150
+				}, {
+					field : 'endTime',
+					title : '活动结束时间',
+					width : 150
+				} ] ]
+			});
+		});
 	</script>
 </body>
 </html>
