@@ -37,4 +37,9 @@ public interface ConstantData {
    * 默认的时间格式
    */
   String TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+  /**
+   * 流程的发起人变量名
+   */
+  String START_USERNAME = "startUserName";
 }

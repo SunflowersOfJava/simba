@@ -10,6 +10,7 @@ import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.apache.commons.logging.Log;
@@ -24,6 +25,7 @@ import com.caozj.activiti.util.ActivitiObjectUtil;
 import com.caozj.activiti.vo.TaskVo;
 import com.caozj.framework.model.json.JsonResult;
 import com.caozj.framework.util.common.StringUtil;
+import com.caozj.model.constant.ConstantData;
 
 /**
  * 流程操作的Controller
@@ -71,7 +73,7 @@ public class ProcessController {
     model.put("pd", pd);
     model.put("startForm", startForm);
     model.put("startUser", sessAccount);
-    model.put("startUserName", sessName);
+    model.put(ConstantData.START_USERNAME, sessName);
     return "activiti/startForm";
   }
 
@@ -93,11 +95,11 @@ public class ProcessController {
     ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()
         .processDefinitionId(task.getProcessDefinitionId()).singleResult();
     Object taskForm = formService.getRenderedTaskForm(id);
-    Object startUserName = taskService.getVariable(id, "startUserName");
+    Object startUserName = taskService.getVariable(id, ConstantData.START_USERNAME);
     model.put("taskForm", taskForm);
     model.put("pd", pd);
     model.put("task", task);
-    model.put("startUserName", startUserName);
+    model.put(ConstantData.START_USERNAME, startUserName);
     return "activiti/taskForm";
   }
 
@@ -128,17 +130,23 @@ public class ProcessController {
     }
     ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()
         .processDefinitionId(vo.getProcessDefinitionId()).singleResult();
-    Object startUserName = taskService.getVariable(id, "startUserName");
     Object taskForm = null;
+    Object startUserName = null;
     if (task != null) {
+      // 待办任务渲染表单
       taskForm = formService.getRenderedTaskForm(id);
-    }else{
-      
+      startUserName = taskService.getVariable(id, ConstantData.START_USERNAME);
+    } else {
+      // 已办任务渲染表单
+      HistoricVariableInstance variableInstance = historyService
+          .createHistoricVariableInstanceQuery().processInstanceId(vo.getProcessInstanceId())
+          .variableName(ConstantData.START_USERNAME).singleResult();
+      startUserName = variableInstance.getValue();
     }
     model.put("taskForm", taskForm);
     model.put("pd", pd);
     model.put("task", vo);
-    model.put("startUserName", startUserName);
+    model.put(ConstantData.START_USERNAME, startUserName);
     model.put("type", type);
     return "activiti/viewTaskForm";
   }

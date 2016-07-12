@@ -53,9 +53,15 @@
 						<td>${task.name}</td>
 					</tr>
 					<tr>
-						<td>创建时间:</td>
-						<td><fmt:formatDate value="${task.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+						<td>开始时间:</td>
+						<td>${task.startTime}</td>
 					</tr>
+					<c:if test="${not empty task.endTime }">
+						<tr>
+							<td>结束时间:</td>
+							<td>${task.endTime}</td>
+						</tr>
+					</c:if>
 					<c:if test="${not empty task.assignee}">
 						<tr>
 							<td>办理人:</td>
