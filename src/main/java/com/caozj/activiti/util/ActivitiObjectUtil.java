@@ -5,11 +5,14 @@ import java.text.SimpleDateFormat;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.impl.persistence.entity.JobEntity;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.Job;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 
 import com.caozj.activiti.vo.ActivityVo;
+import com.caozj.activiti.vo.JobVo;
 import com.caozj.activiti.vo.ProcessInstanceVo;
 import com.caozj.activiti.vo.ProcessVo;
 import com.caozj.activiti.vo.TaskVo;
@@ -154,6 +157,27 @@ public class ActivitiObjectUtil {
     vo.setProcessDefinitionName(processInstance.getProcessDefinitionName());
     vo.setActivityId(processInstance.getActivityId());
     vo.setSuspended(processInstance.isSuspended());
+    return vo;
+  }
+
+  /**
+   * 将作业对象转化成Vo对象
+   * 
+   * @param job
+   * @return
+   */
+  public static JobVo buildJobVo(Job job) {
+    JobEntity j = (JobEntity) job;
+    JobVo vo = new JobVo();
+    vo.setDuedate(format.format(job.getDuedate()));
+    vo.setExceptionMessage(job.getExceptionMessage());
+    vo.setExecutionId(job.getExecutionId());
+    vo.setId(job.getId());
+    vo.setJobHandlerType(j.getJobHandlerConfiguration());
+    vo.setJobType(j.getJobType());
+    vo.setProcessDefinitionId(j.getProcessDefinitionId());
+    vo.setProcessInstanceId(j.getProcessInstanceId());
+    vo.setRetries(j.getRetries());
     return vo;
   }
 
