@@ -78,7 +78,7 @@
 				}, {
 					title : "操作",
 					field : "oper",
-					width : 250,
+					width : 350,
 					formatter : function(value, row, index) {
 						var html = "<a href=\"javascript:void(0)\" onclick=\"ProcessFinish.toView('" + row["id"] + "')\">查看</a>";
 						html += "&nbsp;&nbsp;";

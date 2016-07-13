@@ -98,6 +98,19 @@
 					field : 'diagramResourceName',
 					title : '图片资源名称',
 					width : 250
+				},{
+					field : 'status',
+					title : '状态',
+					width : 100,
+					formatter : function(value, row, index) {
+						var html = "";
+						if(row.suspended){
+							html = "暂停";
+						}else{
+							html = "启动";
+						}
+						return html;
+					}
 				}, {
 					title : "操作",
 					field : "oper",

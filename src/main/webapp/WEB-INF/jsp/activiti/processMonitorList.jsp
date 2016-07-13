@@ -67,10 +67,23 @@
 					field : 'description',
 					title : '描述',
 					width : 300
+				},{
+					field : 'status',
+					title : '状态',
+					width : 100,
+					formatter : function(value, row, index) {
+						var html = "";
+						if(row.suspended){
+							html = "暂停";
+						}else{
+							html = "启动";
+						}
+						return html;
+					}
 				}, {
 					title : "操作",
 					field : "oper",
-					width : 250,
+					width : 350,
 					formatter : function(value, row, index) {
 						var html = "<a href=\"javascript:void(0)\" onclick=\"ProcessMonitor.toView('" + row["id"] + "')\">查看</a>";
 						html += "&nbsp;&nbsp;";
