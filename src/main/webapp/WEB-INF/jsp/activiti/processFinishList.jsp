@@ -3,7 +3,7 @@
 <!DOCTYPE html >
 <html>
 <head>
-<title>已归档任务</title>
+<title>已归档流程</title>
 <%@ include file="../common/header.jsp"%>
 <%@ include file="../common/easyui.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/activiti/processFinish.js"></script>
@@ -29,7 +29,7 @@
 			$("#panel").panel({
 				height : $(document).height() - 50,
 				width : $(document).width() - 20,
-				title : "已归档任务"
+				title : "已归档流程"
 			});
 			$("#table").datagrid({
 				url : contextPath + "/processFinish/listDataOfEasyUI.do",
@@ -44,7 +44,11 @@
 				queryParams : {
 					processName : $("#processName").val()
 				},
-				columns : [ [ {
+				columns : [ [{
+					field : 'title',
+					title : '标题',
+					width : 150
+				}, {
 					field : 'processInstanceID',
 					title : '流程实例ID',
 					width : 150,

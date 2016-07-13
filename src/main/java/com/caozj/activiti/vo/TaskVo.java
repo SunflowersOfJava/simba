@@ -19,6 +19,15 @@ public class TaskVo {
   private String processDefinitionId;
   private String startTime;
   private String endTime;
+  private String title;
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
   public String getStartTime() {
     return startTime;

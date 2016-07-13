@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
+import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import com.caozj.controller.form.EasyUIPageForm;
 import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.model.json.JsonResult;
 import com.caozj.framework.util.common.JsonUtil;
+import com.caozj.model.constant.ConstantData;
 
 /**
  * 流程监控
@@ -32,6 +35,9 @@ public class ProcessMonitorController {
 
   @Autowired
   private RuntimeService runtimeService;
+
+  @Autowired
+  private TaskService taskService;
 
   @RequestMapping
   public String list() {
@@ -50,6 +56,12 @@ public class ProcessMonitorController {
     List<ProcessInstanceVo> voList = new ArrayList<>(list.size());
     list.forEach((processInstance) -> {
       ProcessInstanceVo vo = ActivitiObjectUtil.buildProcessInstanceVo(processInstance);
+      List<Task> taskList = taskService.createTaskQuery().processInstanceId(processInstance.getId())
+          .orderByTaskCreateTime().desc().list();
+      if (taskList != null && taskList.size() > 0) {
+        Object title = taskService.getVariable(taskList.get(0).getId(), ConstantData.TITLE);
+        vo.setTitle((String) title);
+      }
       voList.add(vo);
     });
     String message = JsonUtil.toJson(new PageGrid(total, voList));

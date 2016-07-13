@@ -7,6 +7,7 @@ import java.util.List;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
+import org.activiti.engine.history.HistoricVariableInstance;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import com.caozj.activiti.vo.TaskVo;
 import com.caozj.controller.form.EasyUIPageForm;
 import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.util.common.JsonUtil;
+import com.caozj.model.constant.ConstantData;
 
 /**
  * 已办任务
@@ -58,6 +60,12 @@ public class ProcessDoneController {
     List<TaskVo> voList = new ArrayList<>(list.size());
     list.forEach((task) -> {
       TaskVo vo = ActivitiObjectUtil.buildTaskVo(task);
+      HistoricVariableInstance variableInstance = historyService
+          .createHistoricVariableInstanceQuery().processInstanceId(vo.getProcessInstanceId())
+          .variableName(ConstantData.TITLE).singleResult();
+      if (variableInstance != null) {
+        vo.setTitle(variableInstance.getValue().toString());
+      }
       voList.add(vo);
     });
     String message = JsonUtil.toJson(new PageGrid(total, voList));

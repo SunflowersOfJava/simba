@@ -42,4 +42,9 @@ public interface ConstantData {
    * 流程的发起人变量名
    */
   String START_USERNAME = "startUserName";
+
+  /**
+   * 流程的标题变量名
+   */
+  String TITLE = "title";
 }

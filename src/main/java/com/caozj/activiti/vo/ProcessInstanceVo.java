@@ -22,6 +22,15 @@ public class ProcessInstanceVo {
   private Long durationInMillis;
   private String activityId;
   private boolean suspended;
+  private String title;
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
   public boolean isSuspended() {
     return suspended;

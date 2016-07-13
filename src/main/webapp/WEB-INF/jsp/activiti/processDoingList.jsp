@@ -47,6 +47,10 @@
 					taskName : $("#taskName").val()
 				},
 				columns : [ [ {
+					field : 'title',
+					title : '标题',
+					width : 150
+				},{
 					field : 'taskID',
 					title : '任务ID',
 					width : 150,

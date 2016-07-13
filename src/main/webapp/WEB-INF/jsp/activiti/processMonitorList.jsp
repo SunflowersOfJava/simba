@@ -45,6 +45,10 @@
 					processName : $("#processName").val()
 				},
 				columns : [ [ {
+					field : 'title',
+					title : '标题',
+					width : 150
+				},{
 					field : 'processInstanceID',
 					title : '流程实例ID',
 					width : 150,

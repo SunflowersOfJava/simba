@@ -29,7 +29,7 @@
 			$("#panel").panel({
 				height : $(document).height() - 50,
 				width : $(document).width() - 20,
-				title : "流程启动"
+				title : "流程信息"
 			});
 			$("#table").datagrid({
 				url : contextPath + "/processStart/listDataOfEasyUI.do",

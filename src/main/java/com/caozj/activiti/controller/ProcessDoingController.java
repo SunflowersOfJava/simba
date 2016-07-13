@@ -19,6 +19,7 @@ import com.caozj.activiti.vo.TaskVo;
 import com.caozj.controller.form.EasyUIPageForm;
 import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.util.common.JsonUtil;
+import com.caozj.model.constant.ConstantData;
 
 /**
  * 待办任务
@@ -54,6 +55,8 @@ public class ProcessDoingController {
     List<TaskVo> voList = new ArrayList<>(list.size());
     list.forEach((task) -> {
       TaskVo vo = ActivitiObjectUtil.buildTaskVo(task);
+      Object title = taskService.getVariable(task.getId(), ConstantData.TITLE);
+      vo.setTitle((String) title);
       voList.add(vo);
     });
     String message = JsonUtil.toJson(new PageGrid(total, voList));
