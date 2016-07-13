@@ -6,6 +6,7 @@ import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 
 import com.caozj.activiti.vo.ActivityVo;
@@ -133,6 +134,26 @@ public class ActivitiObjectUtil {
     vo.setStartTime(format.format(historicProcessInstance.getStartTime()));
     vo.setStartUserId(historicProcessInstance.getStartUserId());
     vo.setSuperProcessInstanceId(historicProcessInstance.getSuperProcessInstanceId());
+    return vo;
+  }
+
+  /**
+   * 流程实例对象转化成Vo对象
+   * 
+   * @param processInstance
+   * @return
+   */
+  public static ProcessInstanceVo buildProcessInstanceVo(ProcessInstance processInstance) {
+    ProcessInstanceVo vo = new ProcessInstanceVo();
+    vo.setBusinessKey(processInstance.getBusinessKey());
+    vo.setDescription(processInstance.getDescription());
+    vo.setId(processInstance.getProcessInstanceId());
+    vo.setName(processInstance.getName());
+    vo.setProcessDefinitionKey(processInstance.getProcessDefinitionKey());
+    vo.setProcessDefinitionId(processInstance.getProcessDefinitionId());
+    vo.setProcessDefinitionName(processInstance.getProcessDefinitionName());
+    vo.setActivityId(processInstance.getActivityId());
+    vo.setSuspended(processInstance.isSuspended());
     return vo;
   }
 

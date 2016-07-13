@@ -20,7 +20,24 @@ public class ProcessInstanceVo {
   private String startTime;
   private String endTime;
   private Long durationInMillis;
+  private String activityId;
+  private boolean suspended;
 
+  public boolean isSuspended() {
+    return suspended;
+  }
+
+  public void setSuspended(boolean suspended) {
+    this.suspended = suspended;
+  }
+
+  public String getActivityId() {
+    return activityId;
+  }
+
+  public void setActivityId(String activityId) {
+    this.activityId = activityId;
+  }
 
   public String getBusinessKey() {
     return businessKey;

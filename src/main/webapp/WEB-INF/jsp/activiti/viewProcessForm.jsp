@@ -57,6 +57,9 @@
 				<c:if test="${type == 'finish'}">
 					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.backFinish();"	data-options="iconCls:'icon-cancel'">返回</a>
 				</c:if>
+				<c:if test="${type == 'monitor'}">
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.backMonitor();"	data-options="iconCls:'icon-cancel'">返回</a>
+				</c:if>
 			</div>
 		</div>
 

@@ -41,7 +41,7 @@ public class ProcessDoingController {
   @RequestMapping("/listDataOfEasyUI.do")
   public String listDataOfEasyUI(ModelMap model, EasyUIPageForm form, String sessAccount,
       TaskSearchForm searchForm) {
-    TaskQuery query = taskService.createTaskQuery().taskCandidateOrAssigned(sessAccount);
+    TaskQuery query = taskService.createTaskQuery().taskCandidateOrAssigned(sessAccount).active();
     if (StringUtils.isNotEmpty(searchForm.getProcessName())) {
       query.processDefinitionNameLike("%" + searchForm.getProcessName() + "%");
     }

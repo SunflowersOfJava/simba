@@ -63,7 +63,7 @@ public class ProcessManagementController {
     List<ProcessDefinition> list = null;
     long total = 0;
     ProcessDefinitionQuery processDefinitionQuery =
-        repositoryService.createProcessDefinitionQuery();
+        repositoryService.createProcessDefinitionQuery().latestVersion();
     if (StringUtils.isNotEmpty(processName)) {
       String processNameLike = "%" + processName + "%";
       processDefinitionQuery = processDefinitionQuery.processDefinitionNameLike(processNameLike);
