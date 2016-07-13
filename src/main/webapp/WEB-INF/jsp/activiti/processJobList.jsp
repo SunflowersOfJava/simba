@@ -42,7 +42,7 @@
 				columns : [ [ {
 					field : 'jobID',
 					title : '作业ID',
-					width : 150,
+					width : 100,
 					formatter : function(value, row, index) {
 						return row.id;
 					}
@@ -53,11 +53,11 @@
 				}, {
 					field : 'jobHandlerType',
 					title : '作业类型',
-					width : 150
+					width : 100
 				}, {
 					field : 'retries',
 					title : '可重试次数',
-					width : 100
+					width : 80
 				}, {
 					field : 'processInstanceId',
 					title : '流程实例ID',
@@ -73,7 +73,7 @@
 				}, {
 					field : 'jobHandlerConfiguration',
 					title : '作业配置信息',
-					width : 150
+					width : 200
 				}, {
 					field : 'exceptionMessage',
 					title : '异常信息',
@@ -81,7 +81,7 @@
 				}, {
 					title : "操作",
 					field : "oper",
-					width : 250,
+					width : 150,
 					formatter : function(value, row, index) {
 						var html = "<a href=\"javascript:void(0)\" onclick=\"ProcessJob.execute('" + row["id"] + "')\">执行</a>";
 						html += "&nbsp;&nbsp;";

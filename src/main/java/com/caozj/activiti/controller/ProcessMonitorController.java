@@ -84,4 +84,18 @@ public class ProcessMonitorController {
     model.put("message", new JsonResult().toJson());
     return "message";
   }
+
+  /**
+   * 删除流程实例
+   * 
+   * @param id 流程实例ID
+   * @param model
+   * @return
+   */
+  @RequestMapping
+  public String deleteProcessInstance(String id, ModelMap model, String sessAccount) {
+    runtimeService.deleteProcessInstance(id, sessAccount + "手动删除");
+    model.put("message", new JsonResult().toJson());
+    return "message";
+  }
 }

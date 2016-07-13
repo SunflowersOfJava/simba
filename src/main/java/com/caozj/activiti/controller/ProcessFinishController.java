@@ -17,6 +17,7 @@ import com.caozj.activiti.util.ActivitiObjectUtil;
 import com.caozj.activiti.vo.ProcessInstanceVo;
 import com.caozj.controller.form.EasyUIPageForm;
 import com.caozj.framework.model.easyui.PageGrid;
+import com.caozj.framework.model.json.JsonResult;
 import com.caozj.framework.util.common.JsonUtil;
 
 /**
@@ -54,6 +55,20 @@ public class ProcessFinishController {
     });
     String message = JsonUtil.toJson(new PageGrid(total, voList));
     model.put("message", message);
+    return "message";
+  }
+
+  /**
+   * 删除流程实例
+   * 
+   * @param id 流程实例ID
+   * @param model
+   * @return
+   */
+  @RequestMapping
+  public String deleteProcessInstance(String id, ModelMap model) {
+    historyService.deleteHistoricProcessInstance(id);
+    model.put("message", new JsonResult().toJson());
     return "message";
   }
 }

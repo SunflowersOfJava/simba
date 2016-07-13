@@ -80,6 +80,8 @@
 							html +="<a href=\"javascript:void(0)\" onclick=\"ProcessMonitor.stop('" + row["id"] + "')\">暂停</a>";
 						}
 						html += "&nbsp;&nbsp;";
+						html +="<a href=\"javascript:void(0)\" onclick=\"ProcessMonitor.deleteProcessInstance('" + row["id"] + "')\">删除</a>";
+						html += "&nbsp;&nbsp;";
 						html +="<a href=\"javascript:void(0)\" onclick=\"ProcessManagement.showView('" + row["processDefinitionId"] + "')\">查看流程图</a>";
 						html += "&nbsp;&nbsp;";
 						html += "<a href=\"javascript:void(0)\" onclick=\"ProcessManagement.showXml('" + row["processDefinitionId"] + "')\">查看XML</a>";
