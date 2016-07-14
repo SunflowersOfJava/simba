@@ -8,6 +8,7 @@
 <%@ include file="../common/header.jsp"%>
 <%@ include file="../common/easyui.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/activiti/process.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/lib/jqueryPlugins/ajaxfileupload.js"></script>
 </head>
 <body>
 	<div style="margin: 20px 0;"></div>
@@ -101,7 +102,9 @@
 					<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
 						<tr>
 							<td>附件:</td>
-							<td><input class="easyui-filebox" style="width:400px" id="file" name="file" data-options="buttonText:'选择附件',prompt:''"></td>
+							<td>
+								<input type="file" id="file" name="file" />
+							</td>
 							<td><a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.addAttachment();" data-options="iconCls:'icon-save'">上传</a> </td>
 						</tr>
 					</table>
