@@ -96,9 +96,11 @@ public class ProcessCommentController {
     List<CommentVo> voList = new ArrayList<>(total);
     list.forEach((c) -> {
       CommentVo vo = ActivitiObjectUtil.buildCommentVo(c);
-      vo.setUserName(userService.getDesc(vo.getUserId()));
-      vo.setTaskName(taskMap.get(vo.getTaskId()));
-      voList.add(vo);
+      if ("AddComment".equals(vo.getAction())) {
+        vo.setUserName(userService.getDesc(vo.getUserId()));
+        vo.setTaskName(taskMap.get(vo.getTaskId()));
+        voList.add(vo);
+      }
     });
     String message = JsonUtil.toJson(new PageGrid(total, voList));
     model.put("message", message);
