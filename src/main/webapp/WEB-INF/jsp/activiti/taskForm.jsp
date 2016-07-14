@@ -11,7 +11,7 @@
 </head>
 <body>
 	<div style="margin: 20px 0;"></div>
-	<div class="easyui-panel" title="流程信息" style="width: 800px">
+	<div class="easyui-panel" title="流程信息" style="width: 800px" data-options="collapsible:true">
 		<div style="padding: 10px 60px 20px 60px">
 				<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
 					<tr>
@@ -41,7 +41,7 @@
 	</div>
 	<br/>
 	<br/>
-	<div class="easyui-panel" title="任务信息" style="width: 800px">
+	<div class="easyui-panel" title="任务信息" style="width: 800px" data-options="collapsible:true">
 		<div style="padding: 10px 60px 20px 60px">
 				<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
 					<tr>
@@ -73,14 +73,14 @@
 	</div>
 	<br/>
 	<br/>
-	<div class="easyui-panel" title="活动记录" style="width: 800px">
+	<div class="easyui-panel" title="活动记录" style="width: 800px" data-options="collapsible:true">
 		<div style="padding: 0px 0px 0px 0px">
 				<table id="activityTable"></table>
 		</div>
 	</div>
 	<br/>
 	<br/>
-	<div class="easyui-panel" title="意见列表" style="width: 800px">
+	<div class="easyui-panel" title="意见列表" style="width: 800px" data-options="collapsible:true">
 		<div style="padding: 0px 0px 0px 0px">
 				<table id="commentTable"></table>
 				<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
@@ -94,7 +94,21 @@
 	</div>
 	<br/>
 	<br/> 
-	<div class="easyui-panel" title="表单数据" style="width: 800px">
+	<div class="easyui-panel" title="附件列表" style="width: 800px" data-options="collapsible:true">
+		<div style="padding: 0px 0px 0px 0px">
+				<table id="attachmentTable"></table>
+				<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+					<tr>
+						<td>附件:</td>
+						<td></td>
+						<td><a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.addAttachment();" data-options="iconCls:'icon-save'">上传</a> </td>
+					</tr>
+				</table>
+		</div>
+	</div>
+	<br/>
+	<br/> 
+	<div class="easyui-panel" title="表单数据" style="width: 800px" data-options="collapsible:true">
 		<div style="padding: 10px 60px 20px 60px">
 			<form id="processForm" method="post">
 				<input type="hidden" id="taskId" name="taskId" value="${task.id}"/>
@@ -108,7 +122,6 @@
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.cancelTask();"	data-options="iconCls:'icon-cancel'">取消</a>
 			</div>
 		</div>
-
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function(){

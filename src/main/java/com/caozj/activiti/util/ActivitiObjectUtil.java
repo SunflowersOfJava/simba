@@ -5,15 +5,18 @@ import java.text.SimpleDateFormat;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.impl.persistence.entity.AttachmentEntity;
 import org.activiti.engine.impl.persistence.entity.CommentEntity;
 import org.activiti.engine.impl.persistence.entity.JobEntity;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Job;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Attachment;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 
 import com.caozj.activiti.vo.ActivityVo;
+import com.caozj.activiti.vo.AttachmentVo;
 import com.caozj.activiti.vo.CommentVo;
 import com.caozj.activiti.vo.JobVo;
 import com.caozj.activiti.vo.ProcessInstanceVo;
@@ -202,6 +205,28 @@ public class ActivitiObjectUtil {
     vo.setTime(format.format(c.getTime()));
     vo.setType(c.getType());
     vo.setUserId(c.getUserId());
+    return vo;
+  }
+
+  /**
+   * 将附件对象转化成Vo对象
+   * 
+   * @param attachment
+   * @return
+   */
+  public static AttachmentVo buildAttachmentVo(Attachment attachment) {
+    AttachmentEntity a = (AttachmentEntity) attachment;
+    AttachmentVo vo = new AttachmentVo();
+    vo.setContentId(a.getContentId());
+    vo.setDescription(a.getDescription());
+    vo.setId(a.getId());
+    vo.setName(a.getName());
+    vo.setProcessInstanceId(a.getProcessInstanceId());
+    vo.setTaskId(a.getTaskId());
+    vo.setTime(format.format(a.getTime()));
+    vo.setType(a.getType());
+    vo.setUrl(a.getUrl());
+    vo.setUserId(a.getUserId());
     return vo;
   }
 
