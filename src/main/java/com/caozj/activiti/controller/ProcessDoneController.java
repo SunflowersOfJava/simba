@@ -22,6 +22,7 @@ import com.caozj.controller.form.EasyUIPageForm;
 import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.util.common.JsonUtil;
 import com.caozj.model.constant.ConstantData;
+import com.caozj.service.permission.UserService;
 
 /**
  * 已办任务
@@ -35,6 +36,9 @@ public class ProcessDoneController {
 
   @Autowired
   private HistoryService historyService;
+
+  @Autowired
+  private UserService userService;
 
   @RequestMapping
   public String list() {
@@ -60,6 +64,7 @@ public class ProcessDoneController {
     List<TaskVo> voList = new ArrayList<>(list.size());
     list.forEach((task) -> {
       TaskVo vo = ActivitiObjectUtil.buildTaskVo(task);
+      vo.setAssigneeName(userService.getDesc(vo.getAssignee()));
       HistoricVariableInstance variableInstance = historyService
           .createHistoricVariableInstanceQuery().processInstanceId(vo.getProcessInstanceId())
           .variableName(ConstantData.TITLE).singleResult();

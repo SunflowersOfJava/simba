@@ -20,6 +20,7 @@ import com.caozj.controller.form.EasyUIPageForm;
 import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.util.common.JsonUtil;
 import com.caozj.model.constant.ConstantData;
+import com.caozj.service.permission.UserService;
 
 /**
  * 待办任务
@@ -33,6 +34,9 @@ public class ProcessDoingController {
 
   @Autowired
   private TaskService taskService;
+  
+  @Autowired
+  private UserService userService;
 
   @RequestMapping
   public String list() {
@@ -55,6 +59,7 @@ public class ProcessDoingController {
     List<TaskVo> voList = new ArrayList<>(list.size());
     list.forEach((task) -> {
       TaskVo vo = ActivitiObjectUtil.buildTaskVo(task);
+      vo.setAssigneeName(userService.getDesc(vo.getAssignee()));
       Object title = taskService.getVariable(task.getId(), ConstantData.TITLE);
       vo.setTitle((String) title);
       voList.add(vo);

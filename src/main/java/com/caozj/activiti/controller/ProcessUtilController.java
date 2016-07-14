@@ -16,6 +16,7 @@ import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.model.json.JsonResult;
 import com.caozj.framework.util.common.JsonUtil;
 import com.caozj.model.permission.User;
+import com.caozj.service.permission.UserService;
 
 /**
  * 流程工具Controller
@@ -29,6 +30,9 @@ public class ProcessUtilController {
 
   @Autowired
   private HistoryService historyService;
+
+  @Autowired
+  private UserService userService;
 
   /**
    * 获取当前用户对象
@@ -62,6 +66,7 @@ public class ProcessUtilController {
     List<ActivityVo> voList = new ArrayList<>(total);
     list.forEach((activity) -> {
       ActivityVo vo = ActivitiObjectUtil.buildActivityVo(activity);
+      vo.setAssignee(userService.getDesc(vo.getAssignee()));
       voList.add(vo);
     });
     String message = JsonUtil.toJson(new PageGrid(total, voList));

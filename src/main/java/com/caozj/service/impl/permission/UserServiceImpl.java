@@ -95,6 +95,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User get(String account) {
+    if (StringUtils.isEmpty(account)) {
+      return null;
+    }
     return userDao.get(account);
   }
 

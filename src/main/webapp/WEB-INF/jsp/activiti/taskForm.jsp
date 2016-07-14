@@ -59,7 +59,7 @@
 					<c:if test="${not empty task.assignee}">
 						<tr>
 							<td>办理人:</td>
-							<td>${task.assignee}</td>
+							<td>${assigneeName}</td>
 						</tr>
 					</c:if>
 					<c:if test="${not empty task.description}">

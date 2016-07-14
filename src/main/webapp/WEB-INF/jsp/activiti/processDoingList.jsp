@@ -66,7 +66,7 @@
 					title : '创建时间',
 					width : 150
 				}, {
-					field : 'assignee',
+					field : 'assigneeName',
 					title : '办理人',
 					width : 100
 				}, {

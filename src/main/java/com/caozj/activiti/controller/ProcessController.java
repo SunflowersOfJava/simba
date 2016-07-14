@@ -27,6 +27,7 @@ import com.caozj.activiti.vo.TaskVo;
 import com.caozj.framework.model.json.JsonResult;
 import com.caozj.framework.util.common.StringUtil;
 import com.caozj.model.constant.ConstantData;
+import com.caozj.service.permission.UserService;
 
 /**
  * 流程操作的Controller
@@ -55,7 +56,8 @@ public class ProcessController {
   @Autowired
   private HistoryService historyService;
 
-
+  @Autowired
+  private UserService userService;
 
   /**
    * 启动流程
@@ -102,6 +104,7 @@ public class ProcessController {
     model.put("taskForm", taskForm);
     model.put("pd", pd);
     model.put("task", task);
+    model.put("assigneeName", userService.getDesc(task.getAssignee()));
     model.put(ConstantData.START_USERNAME, startUserName);
     return "activiti/taskForm";
   }
@@ -149,6 +152,7 @@ public class ProcessController {
     model.put("taskForm", taskForm);
     model.put("pd", pd);
     model.put("task", vo);
+    model.put("assigneeName", userService.getDesc(task.getAssignee()));
     model.put(ConstantData.START_USERNAME, startUserName);
     model.put("type", type);
     return "activiti/viewTaskForm";

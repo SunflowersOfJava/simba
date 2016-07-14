@@ -11,6 +11,7 @@ public class TaskVo {
   private String id;
   private String owner;
   private String assignee;
+  private String assigneeName;
   private String parentTaskId;
   private String name;
   private String description;
@@ -20,6 +21,14 @@ public class TaskVo {
   private String startTime;
   private String endTime;
   private String title;
+
+  public String getAssigneeName() {
+    return assigneeName;
+  }
+
+  public void setAssigneeName(String assigneeName) {
+    this.assigneeName = assigneeName;
+  }
 
   public String getTitle() {
     return title;
