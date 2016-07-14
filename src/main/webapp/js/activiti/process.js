@@ -92,6 +92,59 @@ var Process = {
 		window.self.location.href = contextPath + "/processMonitor/list.do";
 	},
 
+	"deleteProcessInstance" : function() {
+		$
+				.ajax({
+					url : contextPath
+							+ "/processMonitor/deleteProcessInstance.do?json",
+					type : "post",
+					dataType : "json",
+					async : true,
+					data : {
+						id : $("#processInstanceId").val()
+					},
+					success : function(data) {
+						if (data.code == 200) {
+							$.messager.alert("系统提示", "删除成功", 'info');
+							window.self.location.href = contextPath
+									+ "/processDoing/list.do";
+						} else {
+							$.messager.alert("系统错误", data.msg, 'error');
+						}
+					},
+					error : function() {
+						$.messager.alert("系统错误", "删除失败", 'error');
+					}
+				});
+	},
+
+	"addComment" : function() {
+		$.ajax({
+			url : contextPath + "/processComment/add.do?json",
+			type : "post",
+			dataType : "json",
+			async : true,
+			data : {
+				processInstanceId : $("#processInstanceId").val(),
+				taskId : $("#taskId").val(),
+				content : $("#content").val()
+			},
+			success : function(data) {
+				if (data.code == 200) {
+					$.messager.alert("系统提示", "保存意见成功", 'info');
+					$("#commentTable").datagrid("load", {
+						processInstanceId : $("#processInstanceId").val()
+					});
+				} else {
+					$.messager.alert("系统错误", data.msg, 'error');
+				}
+			},
+			error : function() {
+				$.messager.alert("系统错误", "保存意见失败", 'error');
+			}
+		});
+	},
+
 	"end" : null
 
 };

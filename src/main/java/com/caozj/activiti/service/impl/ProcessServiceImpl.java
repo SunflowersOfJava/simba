@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.activiti.engine.FormService;
+import org.activiti.engine.IdentityService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -35,6 +36,9 @@ public class ProcessServiceImpl implements ProcessService {
   @Autowired
   private TaskService taskService;
 
+  @Autowired
+  private IdentityService identityService;
+
   @Override
   public void batchDeleteProcess(List<String> processIDs) {
     processIDs.forEach((processID) -> {
@@ -54,6 +58,7 @@ public class ProcessServiceImpl implements ProcessService {
 
   @Override
   public Task saveStartProcess(String processID, Map<String, String> params, String account) {
+    identityService.setAuthenticatedUserId(account);
     ProcessInstance processInstance = formService.submitStartFormData(processID, params);
     Task task =
         taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();

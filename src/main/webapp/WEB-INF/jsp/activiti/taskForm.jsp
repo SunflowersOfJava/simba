@@ -80,15 +80,31 @@
 	</div>
 	<br/>
 	<br/>
+	<div class="easyui-panel" title="意见列表" style="width: 800px">
+		<div style="padding: 0px 0px 0px 0px">
+				<table id="commentTable"></table>
+				<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+					<tr>
+						<td>意见:</td>
+						<td><input class="easyui-textbox" type="text" id="content" name="content" data-options="required:true,multiline:true,prompt:'请输入您的意见'" style="width: 400px;height:50px"></input></td>
+						<td><a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.addComment();" data-options="iconCls:'icon-save'">保存</a> </td>
+					</tr>
+				</table>
+		</div>
+	</div>
+	<br/>
+	<br/> 
 	<div class="easyui-panel" title="表单数据" style="width: 800px">
 		<div style="padding: 10px 60px 20px 60px">
 			<form id="processForm" method="post">
 				<input type="hidden" id="taskId" name="taskId" value="${task.id}"/>
+				<input type="hidden" id="processInstanceId" name="processInstanceId" value="${task.processInstanceId}"/>
 				${taskForm}
 			</form>
 			<div style="text-align: center; padding: 5px">
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.saveTask();" data-options="iconCls:'icon-save'">保存</a> 
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.submitTask();" data-options="iconCls:'icon-ok'">发送</a> 
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.deleteProcessInstance();" data-options="iconCls:'icon-remove'">删除</a> 
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.cancelTask();"	data-options="iconCls:'icon-cancel'">取消</a>
 			</div>
 		</div>
@@ -106,7 +122,7 @@
 				loadMsg : "正在加载数据，请耐心等待...",
 				rownumbers : true,
 				queryParams : {
-					processInstanceId : ${task.processInstanceId}
+					processInstanceId : $("#processInstanceId").val()
 				},
 				columns : [ [
 				{
@@ -128,6 +144,41 @@
 				}, {
 					field : 'endTime',
 					title : '活动结束时间',
+					width : 150
+				} ] ]
+			});
+			$("#commentTable").datagrid({
+				url : contextPath + "/processComment/list.do",
+				method : "post",
+				animate : true,
+				singleSelect : true,
+				pagination : false,
+				idField : "id",
+				loadMsg : "正在加载数据，请耐心等待...",
+				rownumbers : true,
+				queryParams : {
+					processInstanceId : $("#processInstanceId").val()
+				},
+				columns : [ [
+				{
+					field : 'taskId',
+					title : '任务ID',
+					width : 150
+				},{
+					field : 'taskName',
+					title : '任务名称',
+					width : 150
+				},{
+					field : 'userName',
+					title : '提交人',
+					width : 150
+				}, {
+					field : 'time',
+					title : '提交时间',
+					width : 150
+				}, {
+					field : 'fullMessage',
+					title : '意见内容',
 					width : 150
 				} ] ]
 			});

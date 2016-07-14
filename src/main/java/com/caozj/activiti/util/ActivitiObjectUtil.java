@@ -5,13 +5,16 @@ import java.text.SimpleDateFormat;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.impl.persistence.entity.CommentEntity;
 import org.activiti.engine.impl.persistence.entity.JobEntity;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Job;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 
 import com.caozj.activiti.vo.ActivityVo;
+import com.caozj.activiti.vo.CommentVo;
 import com.caozj.activiti.vo.JobVo;
 import com.caozj.activiti.vo.ProcessInstanceVo;
 import com.caozj.activiti.vo.ProcessVo;
@@ -178,6 +181,27 @@ public class ActivitiObjectUtil {
     vo.setProcessDefinitionId(j.getProcessDefinitionId());
     vo.setProcessInstanceId(j.getProcessInstanceId());
     vo.setRetries(j.getRetries());
+    return vo;
+  }
+
+  /**
+   * 将意见对象转化成Vo对象
+   * 
+   * @param comment
+   * @return
+   */
+  public static CommentVo buildCommentVo(Comment comment) {
+    CommentEntity c = (CommentEntity) comment;
+    CommentVo vo = new CommentVo();
+    vo.setAction(c.getAction());
+    vo.setFullMessage(c.getFullMessage());
+    vo.setId(c.getId());
+    vo.setMessage(c.getMessage());
+    vo.setProcessInstanceId(c.getProcessInstanceId());
+    vo.setTaskId(c.getTaskId());
+    vo.setTime(format.format(c.getTime()));
+    vo.setType(c.getType());
+    vo.setUserId(c.getUserId());
     return vo;
   }
 

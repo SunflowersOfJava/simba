@@ -53,6 +53,13 @@ public interface UserService {
 	void updatePwd(String account, String oldPwd, String newPwd);
 
 	User get(String account);
+	
+	/**
+	 * 根据账号返回用户在页面的显示描述
+	 * @param account
+	 * @return name(account)
+	 */
+	String getDesc(String account);
 
 	List<User> page(Pager page);
 

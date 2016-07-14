@@ -48,6 +48,13 @@
 	</div>
 	<br/>
 	<br/>
+	<div class="easyui-panel" title="意见列表" style="width: 800px">
+		<div style="padding: 0px 0px 0px 0px">
+				<table id="commentTable"></table>
+		</div>
+	</div>
+	<br/>
+	<br/> 
 	<div class="easyui-panel" title="表单数据" style="width: 800px">
 		<div style="padding: 10px 60px 20px 60px">
 			<form id="processForm" method="post">
@@ -98,6 +105,41 @@
 				}, {
 					field : 'endTime',
 					title : '活动结束时间',
+					width : 150
+				} ] ]
+			});
+			$("#commentTable").datagrid({
+				url : contextPath + "/processComment/list.do",
+				method : "post",
+				animate : true,
+				singleSelect : true,
+				pagination : false,
+				idField : "id",
+				loadMsg : "正在加载数据，请耐心等待...",
+				rownumbers : true,
+				queryParams : {
+					processInstanceId : ${id}
+				},
+				columns : [ [
+				{
+					field : 'taskId',
+					title : '任务ID',
+					width : 150
+				},{
+					field : 'taskName',
+					title : '任务名称',
+					width : 150
+				},{
+					field : 'userName',
+					title : '提交人',
+					width : 150
+				}, {
+					field : 'time',
+					title : '提交时间',
+					width : 150
+				}, {
+					field : 'fullMessage',
+					title : '意见内容',
 					width : 150
 				} ] ]
 			});
