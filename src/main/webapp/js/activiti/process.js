@@ -145,6 +145,40 @@ var Process = {
 		});
 	},
 
+	"addAttachment" : function() {
+
+	},
+
+	"downloadAttachment" : function(id) {
+		window.self.location.href = contextPath
+				+ "/processAttachment/download.do?id=" + id;
+	},
+
+	"deleteAttachment" : function(id) {
+		$.ajax({
+			url : contextPath + "/processAttachment/delete.do?json",
+			type : "post",
+			dataType : "json",
+			async : true,
+			data : {
+				id : id
+			},
+			success : function(data) {
+				if (data.code == 200) {
+					$.messager.alert("系统提示", "删除附件成功", 'info');
+					$("#attachmentTable").datagrid("load", {
+						processInstanceId : $("#processInstanceId").val()
+					});
+				} else {
+					$.messager.alert("系统错误", data.msg, 'error');
+				}
+			},
+			error : function() {
+				$.messager.alert("系统错误", "删除附件失败", 'error');
+			}
+		});
+	},
+
 	"end" : null
 
 };

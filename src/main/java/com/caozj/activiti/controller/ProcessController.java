@@ -152,7 +152,7 @@ public class ProcessController {
     model.put("taskForm", taskForm);
     model.put("pd", pd);
     model.put("task", vo);
-    model.put("assigneeName", userService.getDesc(task.getAssignee()));
+    model.put("assigneeName", userService.getDesc(vo.getAssignee()));
     model.put(ConstantData.START_USERNAME, startUserName);
     model.put("type", type);
     return "activiti/viewTaskForm";

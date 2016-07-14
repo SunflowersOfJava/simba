@@ -97,13 +97,15 @@
 	<div class="easyui-panel" title="附件列表" style="width: 800px" data-options="collapsible:true">
 		<div style="padding: 0px 0px 0px 0px">
 				<table id="attachmentTable"></table>
-				<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
-					<tr>
-						<td>附件:</td>
-						<td></td>
-						<td><a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.addAttachment();" data-options="iconCls:'icon-save'">上传</a> </td>
-					</tr>
-				</table>
+				<form enctype="multipart/form-data" id="attachmentForm" name="attachmentForm" method="post" >
+					<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
+						<tr>
+							<td>附件:</td>
+							<td><input class="easyui-filebox" style="width:400px" id="file" name="file" data-options="buttonText:'选择附件',prompt:''"></td>
+							<td><a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.addAttachment();" data-options="iconCls:'icon-save'">上传</a> </td>
+						</tr>
+					</table>
+				</form>
 		</div>
 	</div>
 	<br/>
@@ -194,6 +196,43 @@
 					title : '意见内容',
 					width : 150
 				} ] ]
+			});
+			$("#attachmentTable").datagrid({
+				url : contextPath + "/processAttachment/list.do",
+				method : "post",
+				animate : true,
+				singleSelect : true,
+				pagination : false,
+				idField : "id",
+				loadMsg : "正在加载数据，请耐心等待...",
+				rownumbers : true,
+				queryParams : {
+					processInstanceId : $("#processInstanceId").val()
+				},
+				columns : [ [
+				{
+					field : 'name',
+					title : '文件名',
+					width : 210
+				},{
+					field : 'userName',
+					title : '上传者',
+					width : 150
+				},{
+					field : 'time',
+					title : '上传时间',
+					width : 180
+				}, {
+					title : "操作",
+					field : "oper",
+					width : 150,
+					formatter : function(value, row, index) {
+						var html = "<a href=\"javascript:void(0)\" onclick=\"Process.downloadAttachment('" + row["id"] + "')\">下载</a>";
+						html += "&nbsp;&nbsp;";
+						html += "<a href=\"javascript:void(0)\" onclick=\"Process.deleteAttachment('" + row["id"] + "')\">删除</a>";
+						return html;
+					}
+				}] ]
 			});
 		});
 	</script>
