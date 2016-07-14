@@ -120,7 +120,7 @@ var Process = {
 
 	"addComment" : function() {
 		var content = $("#content").val();
-		if(!content){
+		if (!content) {
 			$.messager.alert("系统提示", "意见不能为空", 'warning');
 			return false;
 		}
@@ -151,28 +151,17 @@ var Process = {
 	},
 
 	"addAttachment" : function() {
-		$.ajaxFileUpload({
-			url : contextPath + '/processAttachment/add.do?json', // 用于文件上传的服务器端请求地址
-			secureuri : false, // 是否需要安全协议，一般设置为false
-			fileElementId : 'file', // 文件上传域的ID
-			dataType : 'json', // 返回值类型 一般设置为json
-			data:{
-				processInstanceId : $("#processInstanceId").val(),
-				taskId : $("#taskId").val()
-			},
-			success : function(data, status) {// 服务器成功响应处理函数
-				if (data.code == 200) {
-					$.messager.alert("系统提示", "上传附件成功", 'info');
-					$("#attachmentTable").datagrid("load", {
-						processInstanceId : $("#processInstanceId").val()
-					});
-				} else {
-					$.messager.alert("系统错误", data.msg, 'error');
-				}
-			},
-			error : function(data, status, e) {// 服务器响应失败处理函数
-				$.messager.alert("系统错误", "上传附件失败", 'error');
-			}
+		$('#file').fileupload({
+			url : contextPath + '/processAttachment/add.do?json',
+			sequentialUploads : true,
+			
+		}).complete(function(result, textStatus, jqXHR) {
+			$.messager.alert("系统提示", "上传附件成功", 'info');
+			$("#attachmentTable").datagrid("load", {
+				processInstanceId : $("#processInstanceId").val()
+			});
+		}).error(function(jqXHR, textStatus, errorThrown) {
+			$.messager.alert("系统错误", "上传附件失败", 'error');
 		});
 	},
 

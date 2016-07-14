@@ -8,7 +8,7 @@
 <%@ include file="../common/header.jsp"%>
 <%@ include file="../common/easyui.jsp"%>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/activiti/process.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/lib/jqueryPlugins/ajaxfileupload.js"></script>
+
 </head>
 <body>
 	<div style="margin: 20px 0;"></div>
