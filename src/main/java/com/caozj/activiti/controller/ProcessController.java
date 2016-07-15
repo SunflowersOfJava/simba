@@ -1,5 +1,6 @@
 package com.caozj.activiti.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +25,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.caozj.activiti.service.ProcessService;
 import com.caozj.activiti.util.ActivitiObjectUtil;
+import com.caozj.activiti.util.FreemarkerRenderFormUtil;
 import com.caozj.activiti.vo.TaskVo;
 import com.caozj.framework.model.json.JsonResult;
 import com.caozj.framework.util.common.StringUtil;
 import com.caozj.model.constant.ConstantData;
 import com.caozj.service.permission.UserService;
+
+import freemarker.core.ParseException;
+import freemarker.template.MalformedTemplateNameException;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateNotFoundException;
 
 /**
  * 流程操作的Controller
@@ -75,7 +82,7 @@ public class ProcessController {
       logger.error("流程不存在:" + id);
       return "redirect:/processStart/list.do";
     }
-    Object startForm = formService.getRenderedStartForm(id);
+    Object startForm = formService.getRenderedStartForm(id, ConstantData.FREEMARKER_FORMENGINE);
     model.put("pd", pd);
     model.put("startForm", startForm);
     model.put("startUser", sessAccount);
@@ -100,7 +107,7 @@ public class ProcessController {
     }
     ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()
         .processDefinitionId(task.getProcessDefinitionId()).singleResult();
-    Object taskForm = formService.getRenderedTaskForm(id);
+    Object taskForm = formService.getRenderedTaskForm(id, ConstantData.FREEMARKER_FORMENGINE);
     Object startUserName = taskService.getVariable(id, ConstantData.START_USERNAME);
     model.put("taskForm", taskForm);
     model.put("pd", pd);
@@ -116,9 +123,12 @@ public class ProcessController {
    * @param id 任务ID
    * @param model
    * @return
+   * @throws IOException
+   * @throws TemplateException
    */
   @RequestMapping
-  public String viewTaskForm(String id, ModelMap model, String type) {
+  public String viewTaskForm(String id, ModelMap model, String type)
+      throws IOException, TemplateException {
     HistoricTaskInstance historyTask =
         historyService.createHistoricTaskInstanceQuery().taskId(id).singleResult();
     Task task = null;
@@ -141,14 +151,19 @@ public class ProcessController {
     Object startUserName = null;
     if (task != null) {
       // 待办任务渲染表单
-      taskForm = formService.getRenderedTaskForm(id);
+      taskForm = formService.getRenderedTaskForm(id, ConstantData.FREEMARKER_FORMENGINE);
       startUserName = taskService.getVariable(id, ConstantData.START_USERNAME);
     } else {
       // 已办任务渲染表单
-      HistoricVariableInstance variableInstance = historyService
-          .createHistoricVariableInstanceQuery().processInstanceId(vo.getProcessInstanceId())
-          .variableName(ConstantData.START_USERNAME).singleResult();
-      startUserName = variableInstance.getValue();
+      List<HistoricVariableInstance> vList = historyService.createHistoricVariableInstanceQuery()
+          .processInstanceId(vo.getProcessInstanceId()).list();
+      Map<String, Object> properties = new HashMap<>(vList.size());
+      vList.forEach((v) -> {
+        properties.put(v.getVariableName(), v.getValue());
+      });
+      startUserName = properties.get(ConstantData.START_USERNAME);
+      taskForm = FreemarkerRenderFormUtil.renderForm(repositoryService, properties,
+          historyTask.getFormKey(), pd.getDeploymentId());
     }
     model.put("taskForm", taskForm);
     model.put("pd", pd);
@@ -166,9 +181,16 @@ public class ProcessController {
    * @param model
    * @param type
    * @return
+   * @throws TemplateException
+   * @throws IOException
+   * @throws ParseException
+   * @throws MalformedTemplateNameException
+   * @throws TemplateNotFoundException
    */
   @RequestMapping
-  public String viewProcessForm(String id, ModelMap model, String type) {
+  public String viewProcessForm(String id, ModelMap model, String type)
+      throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException,
+      TemplateException {
     HistoricProcessInstance historicProcessInstance =
         historyService.createHistoricProcessInstanceQuery().processInstanceId(id).singleResult();
     ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()
@@ -184,9 +206,22 @@ public class ProcessController {
       task = taskList.get(0);
     }
     if (task != null) {
-      taskForm = formService.getRenderedTaskForm(task.getId());
+      // 待办任务渲染表单
+      taskForm = formService.getRenderedTaskForm(task.getId(), ConstantData.FREEMARKER_FORMENGINE);
     } else {
-
+      // 已办任务渲染表单
+      List<HistoricVariableInstance> vList =
+          historyService.createHistoricVariableInstanceQuery().processInstanceId(id).list();
+      Map<String, Object> properties = new HashMap<>(vList.size());
+      vList.forEach((v) -> {
+        properties.put(v.getVariableName(), v.getValue());
+      });
+      List<HistoricTaskInstance> historyTaskList =
+          historyService.createHistoricTaskInstanceQuery().processInstanceId(id).list();
+      if (historyTaskList != null && historyTaskList.size() > 0) {
+        taskForm = FreemarkerRenderFormUtil.renderForm(repositoryService, properties,
+            historyTaskList.get(0).getFormKey(), pd.getDeploymentId());
+      }
     }
     model.put("taskForm", taskForm);
     model.put("id", id);

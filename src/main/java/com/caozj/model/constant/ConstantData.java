@@ -47,4 +47,9 @@ public interface ConstantData {
    * 流程的标题变量名
    */
   String TITLE = "title";
+
+  /**
+   * 自定义的freemarker流程表单引擎
+   */
+  String FREEMARKER_FORMENGINE = "freemarker";
 }
