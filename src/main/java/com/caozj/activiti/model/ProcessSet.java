@@ -19,6 +19,19 @@ public class ProcessSet {
    */
   private String sendType;
 
+  /**
+   * 是否所有人员都可以启动流程
+   */
+  private int allStart;
+
+  public int getAllStart() {
+    return allStart;
+  }
+
+  public void setAllStart(int allStart) {
+    this.allStart = allStart;
+  }
+
   public String getId() {
     return id;
   }

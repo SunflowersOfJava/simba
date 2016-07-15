@@ -14,5 +14,4 @@ insert into menu(text,parentID,url,orderNo) values('启动流程',-1,'/processStart/
 insert into menu(text,parentID,url,orderNo) values('流程监控',-1,'/processMonitor/list.do',14);
 insert into menu(text,parentID,url,orderNo) values('代办设置',-1,'/processAgencySet/list.do',15);
 insert into menu(text,parentID,url,orderNo) values('已归档流程',-1,'/processFinish/list.do',16);
-insert into menu(text,parentID,url,orderNo) values('运行中流程',-1,'/processRunning/list.do',17);
 insert into menu(text,parentID,url,orderNo) values('作业管理',-1,'/processJob/list.do',18);

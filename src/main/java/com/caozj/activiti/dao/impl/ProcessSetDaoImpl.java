@@ -23,14 +23,15 @@ public class ProcessSetDaoImpl implements ProcessSetDao {
 
   @Override
   public void add(ProcessSet processSet) {
-    String sql = "insert into " + table + "( sendType) values(?)";
-    jdbc.updateForBoolean(sql, processSet.getSendType());
+    String sql = "insert into " + table + "( sendType,allStart) values(?,?)";
+    jdbc.updateForBoolean(sql, processSet.getSendType(), processSet.getAllStart());
   }
 
   @Override
   public void update(ProcessSet processSet) {
-    String sql = "update " + table + " set  sendType = ?  where id = ?  ";
-    jdbc.updateForBoolean(sql, processSet.getSendType(), processSet.getId());
+    String sql = "update " + table + " set  sendType = ? ,allStart=?  where id = ?  ";
+    jdbc.updateForBoolean(sql, processSet.getSendType(), processSet.getAllStart(),
+        processSet.getId());
   }
 
   @Override

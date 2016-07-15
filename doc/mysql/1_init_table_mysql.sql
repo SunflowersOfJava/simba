@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016/6/10 星期五 11:15:26                       */
+/* Created on:     2016-07-15  星期五 10:39:30                     */
 /*==============================================================*/
 
 
@@ -17,6 +17,10 @@ drop table if exists org;
 drop table if exists orgExt;
 
 drop table if exists permission;
+
+drop table if exists processAgencySet;
+
+drop table if exists processSet;
 
 drop table if exists registryTable;
 
@@ -124,6 +128,34 @@ create table permission
    parentID             int not null,
    primary key (id)
 );
+
+/*==============================================================*/
+/* Table: processAgencySet                                      */
+/*==============================================================*/
+create table processAgencySet
+(
+   id                   int not null auto_increment,
+   startTime            varchar(32) not null comment '开始时间',
+   endTime              varchar(32) not null comment '结束时间',
+   account              varchar(64) not null comment '设置人',
+   agencyAccount        varchar(64) not null comment '代理人',
+   primary key (id)
+);
+
+alter table processAgencySet comment '流程代办设置';
+
+/*==============================================================*/
+/* Table: processSet                                            */
+/*==============================================================*/
+create table processSet
+(
+   id                   varchar(16) not null comment '流程ID',
+   sendType             varchar(32) binary not null comment '发送类型',
+   allStart             tinyint not null comment '是否所有人员都可以启动流程',
+   primary key (id)
+);
+
+alter table processSet comment '流程设置';
 
 /*==============================================================*/
 /* Table: registryTable                                         */
