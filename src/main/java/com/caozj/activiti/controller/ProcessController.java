@@ -60,7 +60,7 @@ public class ProcessController {
   private UserService userService;
 
   /**
-   * 启动流程
+   * 启动流程页面
    * 
    * @param id 流程ID
    * @param model
@@ -159,7 +159,7 @@ public class ProcessController {
   }
 
   /**
-   * 查看已归档的流程表单
+   * 查看流程表单
    * 
    * @param id 流程实例ID
    * @param model
