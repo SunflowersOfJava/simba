@@ -185,6 +185,8 @@
 					}
 				}] ]
 			});
+			
+			$("#processForm").find("input").attr("readonly","readonly");
 		});
 	</script>
 </body>

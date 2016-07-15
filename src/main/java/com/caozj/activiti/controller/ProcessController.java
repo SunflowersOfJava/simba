@@ -1,6 +1,7 @@
 package com.caozj.activiti.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -175,6 +176,19 @@ public class ProcessController {
     HistoricVariableInstance variableInstance = historyService.createHistoricVariableInstanceQuery()
         .processInstanceId(id).variableName(ConstantData.START_USERNAME).singleResult();
     Object startUserName = variableInstance.getValue();
+    Task task = null;
+    Object taskForm = null;
+    List<Task> taskList = taskService.createTaskQuery().processInstanceId(id).active()
+        .orderByTaskCreateTime().desc().list();
+    if (taskList != null && taskList.size() > 0) {
+      task = taskList.get(0);
+    }
+    if (task != null) {
+      taskForm = formService.getRenderedTaskForm(task.getId());
+    } else {
+
+    }
+    model.put("taskForm", taskForm);
     model.put("id", id);
     model.put("type", type);
     model.put(ConstantData.START_USERNAME, startUserName);
