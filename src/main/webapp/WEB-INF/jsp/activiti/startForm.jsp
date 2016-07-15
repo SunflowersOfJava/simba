@@ -10,7 +10,7 @@
 </head>
 <body>
 	<div style="margin: 20px 0;"></div>
-	<div class="easyui-panel" title="流程信息" style="width: 800px" data-options="collapsible:true">
+	<div class="easyui-panel" title="流程信息" style="width: 800px" data-options="collapsible:true,collapsed:true">
 		<div style="padding: 10px 60px 20px 60px">
 				<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
 					<tr>

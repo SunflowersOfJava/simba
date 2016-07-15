@@ -12,7 +12,7 @@
 </head>
 <body>
 	<div style="margin: 20px 0;"></div>
-	<div class="easyui-panel" title="流程信息" style="width: 800px" data-options="collapsible:true">
+	<div class="easyui-panel" title="流程信息" style="width: 800px" data-options="collapsible:true,collapsed:true">
 		<div style="padding: 10px 60px 20px 60px">
 				<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
 					<tr>
@@ -42,7 +42,7 @@
 	</div>
 	<br/>
 	<br/>
-	<div class="easyui-panel" title="任务信息" style="width: 800px" data-options="collapsible:true">
+	<div class="easyui-panel" title="任务信息" style="width: 800px" data-options="collapsible:true,collapsed:true">
 		<div style="padding: 10px 60px 20px 60px">
 				<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
 					<tr>
@@ -74,14 +74,14 @@
 	</div>
 	<br/>
 	<br/>
-	<div class="easyui-panel" title="活动记录" style="width: 800px" data-options="collapsible:true">
+	<div class="easyui-panel" title="活动记录" style="width: 800px" data-options="collapsible:true,collapsed:true">
 		<div style="padding: 0px 0px 0px 0px">
 				<table id="activityTable"></table>
 		</div>
 	</div>
 	<br/>
 	<br/>
-	<div class="easyui-panel" title="意见列表" style="width: 800px" data-options="collapsible:true">
+	<div class="easyui-panel" title="意见列表" style="width: 800px" data-options="collapsible:true,collapsed:true">
 		<div style="padding: 0px 0px 0px 0px">
 				<table id="commentTable"></table>
 				<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
@@ -95,10 +95,13 @@
 	</div>
 	<br/>
 	<br/> 
-	<div class="easyui-panel" title="附件列表" style="width: 800px" data-options="collapsible:true">
+	<div class="easyui-panel" title="附件列表" style="width: 800px" data-options="collapsible:true,collapsed:true">
 		<div style="padding: 0px 0px 0px 0px">
 				<table id="attachmentTable"></table>
-				<form enctype="multipart/form-data" id="attachmentForm" name="attachmentForm" method="post" >
+				<iframe id="uploadframe" name="uploadframe" style="visibility:hidden;height:1px;"></iframe>
+				<form enctype="multipart/form-data" id="attachmentForm" name="attachmentForm" method="post"  target="uploadframe">
+					<input type="hidden" id="attachmentTaskId" name="attachmentTaskId" value="${task.id}"/>
+					<input type="hidden" id="attachmentProcessInstanceId" name="attachmentProcessInstanceId" value="${task.processInstanceId}"/>
 					<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
 						<tr>
 							<td>附件:</td>
@@ -236,6 +239,22 @@
 						return html;
 					}
 				}] ]
+			});
+			
+			$("#uploadframe").load(function(){
+				var data = $("#uploadframe").contents().find("body").html().trim();
+				if(data==""){
+					return false;
+				}
+				var json = $.parseJSON(data);
+				if(json.code == 200){
+					$.messager.alert("系统提示", "上传附件成功", 'info');
+					$("#attachmentTable").datagrid("load", {
+						processInstanceId : $("#processInstanceId").val()
+					});
+				}else{
+					$.messager.alert("系统错误", json.msg, 'error');
+				}
 			});
 		});
 	</script>

@@ -151,18 +151,8 @@ var Process = {
 	},
 
 	"addAttachment" : function() {
-		$('#file').fileupload({
-			url : contextPath + '/processAttachment/add.do?json',
-			sequentialUploads : true,
-			
-		}).complete(function(result, textStatus, jqXHR) {
-			$.messager.alert("系统提示", "上传附件成功", 'info');
-			$("#attachmentTable").datagrid("load", {
-				processInstanceId : $("#processInstanceId").val()
-			});
-		}).error(function(jqXHR, textStatus, errorThrown) {
-			$.messager.alert("系统错误", "上传附件失败", 'error');
-		});
+		$("#attachmentForm").attr("action",contextPath + "/processAttachment/add.do?json");
+		$("#attachmentForm").submit();
 	},
 
 	"downloadAttachment" : function(id) {

@@ -71,19 +71,20 @@ public class ProcessAttachmentController {
    * 
    * @param model
    * @param file
-   * @param taskId 任务ID
-   * @param processInstanceId 流程实例ID
+   * @param attachmentTaskId 任务ID
+   * @param attachmentProcessInstanceId 流程实例ID
    * @param sessAccount
    * @return
    * @throws IOException
    */
-  public String add(ModelMap model, MultipartFile file, String taskId, String processInstanceId,
+  @RequestMapping
+  public String add(ModelMap model, MultipartFile file, String attachmentTaskId, String attachmentProcessInstanceId,
       String sessAccount) throws IOException {
     String fileName = file.getOriginalFilename();
     String fileExt = FileUtils.getFileExt(fileName).substring(1);
     String attachmentType = file.getContentType() + ";" + fileExt;
     identityService.setAuthenticatedUserId(sessAccount);
-    taskService.createAttachment(attachmentType, taskId, processInstanceId, fileName, fileName,
+    taskService.createAttachment(attachmentType, attachmentTaskId, attachmentProcessInstanceId, fileName, fileName,
         file.getInputStream());
     model.put("message", new JsonResult().toJson());
     return "message";
@@ -117,7 +118,7 @@ public class ProcessAttachmentController {
     String contentType = attachment.getType().split(";")[0];
     response.addHeader("Content-Type", contentType + ";charset=UTF-8");
     String fileName = attachment.getName();
-    response.setHeader("Content-Disposition", "attachement;filename=" + fileName);
+    response.setHeader("Content-Disposition", "attachement;filename=" + new String(fileName.getBytes(),"ISO8859-1"));
     IoUtils.copy(content, response.getOutputStream());
   }
 }

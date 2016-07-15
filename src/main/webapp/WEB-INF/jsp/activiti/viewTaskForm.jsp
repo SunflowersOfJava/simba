@@ -11,7 +11,7 @@
 </head>
 <body>
 	<div style="margin: 20px 0;"></div>
-	<div class="easyui-panel" title="流程信息" style="width: 800px" data-options="collapsible:true">
+	<div class="easyui-panel" title="流程信息" style="width: 800px" data-options="collapsible:true,collapsed:true">
 		<div style="padding: 10px 60px 20px 60px">
 				<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
 					<tr>
@@ -41,7 +41,7 @@
 	</div>
 	<br/>
 	<br/>
-	<div class="easyui-panel" title="任务信息" style="width: 800px" data-options="collapsible:true">
+	<div class="easyui-panel" title="任务信息" style="width: 800px" data-options="collapsible:true,collapsed:true">
 		<div style="padding: 10px 60px 20px 60px">
 				<table cellpadding="0" cellspacing="0" style="table-layout: fixed;">
 					<tr>
@@ -79,20 +79,27 @@
 	</div>
 	<br/>
 	<br/>
-	<div class="easyui-panel" title="活动记录" style="width: 800px" data-options="collapsible:true">
+	<div class="easyui-panel" title="活动记录" style="width: 800px" data-options="collapsible:true,collapsed:true">
 		<div style="padding: 0px 0px 0px 0px">
 				<table id="activityTable"></table>
 		</div>
 	</div>
 	<br/>
 	<br/>
-	<div class="easyui-panel" title="意见列表" style="width: 800px" data-options="collapsible:true">
+	<div class="easyui-panel" title="意见列表" style="width: 800px" data-options="collapsible:true,collapsed:true">
 		<div style="padding: 0px 0px 0px 0px">
 				<table id="commentTable"></table>
 		</div>
 	</div>
 	<br/>
 	<br/> 
+	<div class="easyui-panel" title="附件列表" style="width: 800px" data-options="collapsible:true,collapsed:true">
+		<div style="padding: 0px 0px 0px 0px">
+				<table id="attachmentTable"></table>
+		</div>
+	</div>
+	<br/>
+	<br/>
 	<div class="easyui-panel" title="表单数据" style="width: 800px" data-options="collapsible:true">
 		<div style="padding: 10px 60px 20px 60px">
 			<form id="processForm" method="post">
@@ -177,6 +184,41 @@
 					title : '意见内容',
 					width : 150
 				} ] ]
+			});
+			$("#attachmentTable").datagrid({
+				url : contextPath + "/processAttachment/list.do",
+				method : "post",
+				animate : true,
+				singleSelect : true,
+				pagination : false,
+				idField : "id",
+				loadMsg : "正在加载数据，请耐心等待...",
+				rownumbers : true,
+				queryParams : {
+					processInstanceId : ${task.processInstanceId}
+				},
+				columns : [ [
+				{
+					field : 'name',
+					title : '文件名',
+					width : 210
+				},{
+					field : 'userName',
+					title : '上传者',
+					width : 150
+				},{
+					field : 'time',
+					title : '上传时间',
+					width : 180
+				}, {
+					title : "操作",
+					field : "oper",
+					width : 150,
+					formatter : function(value, row, index) {
+						var html = "<a href=\"javascript:void(0)\" onclick=\"Process.downloadAttachment('" + row["id"] + "')\">下载</a>";
+						return html;
+					}
+				}] ]
 			});
 		});
 	</script>
