@@ -31,7 +31,7 @@ public class ProcessAgencySetController {
 
   @RequestMapping("/list.do")
   public String list(ModelMap model) {
-    return "listProcessAgencySet.jsp";
+    return "activiti/listProcessAgencySet";
   }
 
   @RequestMapping("/listDataOfEasyUI.do")
@@ -45,14 +45,14 @@ public class ProcessAgencySetController {
 
   @RequestMapping("/toAdd.do")
   public String toAdd() {
-    return "addProcessAgencySet.jsp";
+    return "activiti/addProcessAgencySet";
   }
 
   @RequestMapping("/toUpdate.do")
   public String toUpdate(int id, ModelMap model) {
     ProcessAgencySet processAgencySet = processAgencySetService.get(id);
     model.put("processAgencySet", processAgencySet);
-    return "updateProcessAgencySet.jsp";
+    return "activiti/updateProcessAgencySet";
   }
 
   @RequestMapping("/add.do")

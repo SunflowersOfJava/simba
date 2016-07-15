@@ -16,11 +16,11 @@
 				<table cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 					<tr>
 						<td>开始时间:</td>
-						<td><input class="easyui-textbox" type="text" id="startTime" name="startTime" data-options="required:true" style="width:200px"></input></td>
+						<td><input class="easyui-datetimebox" type="text" id="startTime" name="startTime" data-options="required:true" style="width:200px"></input></td>
 					</tr>
 					<tr>
 						<td>结束时间:</td>
-						<td><input class="easyui-textbox" type="text" id="endTime" name="endTime" data-options="required:true" style="width:200px"></input></td>
+						<td><input class="easyui-datetimebox" type="text" id="endTime" name="endTime" data-options="required:true" style="width:200px"></input></td>
 					</tr>
 					<tr>
 						<td>代办人:</td>
