@@ -1,5 +1,7 @@
 package com.caozj.activiti.impl;
 
+import java.util.HashMap;
+
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.form.StartFormData;
@@ -33,7 +35,7 @@ public class FreemarkerFormEngine implements FormEngine {
     try {
       RepositoryService repositoryService =
           (RepositoryService) ApplicationContextUtil.getBean("repositoryService");
-      return FreemarkerRenderFormUtil.renderForm(repositoryService, startForm.getFormProperties(),
+      return FreemarkerRenderFormUtil.renderForm(repositoryService, new HashMap<String, Object>(),
           startForm.getFormKey(), startForm.getDeploymentId());
     } catch (Exception e) {
       logger.error("freemark渲染表单异常", e);
