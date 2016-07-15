@@ -107,7 +107,7 @@
 			</form>
 			<div style="text-align: center; padding: 5px">
 				<c:if test="${type == 'done'}">
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.backTaskDone();"	data-options="iconCls:'icon-cancel'">返回</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.backTaskDone();"	data-options="iconCls:'icon-back'">返回</a>
 				</c:if>
 			</div>
 		</div>

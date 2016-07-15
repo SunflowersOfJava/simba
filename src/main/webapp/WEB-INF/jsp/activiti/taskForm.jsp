@@ -127,7 +127,7 @@
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.saveTask();" data-options="iconCls:'icon-save'">保存</a> 
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.submitTask();" data-options="iconCls:'icon-ok'">发送</a> 
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.deleteProcessInstance();" data-options="iconCls:'icon-remove'">删除</a> 
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.cancelTask();"	data-options="iconCls:'icon-cancel'">取消</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Process.cancelTask();"	data-options="iconCls:'icon-back'">返回</a>
 			</div>
 		</div>
 	</div>
