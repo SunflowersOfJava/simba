@@ -107,6 +107,7 @@ Redis发布订阅功能
 mycat集成
 TODO
 流程特送，退回，任务转办，设置流程属性，执行人，发送选择人
+界面配置定时器，可以监控操作定时器任务
 1.2.2
 在线绘制流程
 。。。工作流相关
@@ -114,6 +115,6 @@ TODO
 异步框架
 highchart集成统计图形
 1.3.1
-集成mongodb，solr，spring 动态定时器
+集成mongodb，solr
 1.3.2
 hadoop lucense

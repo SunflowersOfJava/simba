@@ -5,7 +5,7 @@ import org.quartz.SchedulerException;
 /**
  * Spring定时器工具类
  * 
- * @author Administrator
+ * @author caozj
  *
  */
 public class ScheduleUtil {
