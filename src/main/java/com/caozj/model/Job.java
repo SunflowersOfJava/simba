@@ -23,7 +23,7 @@ public class Job {
    * 描述
    */
   @DescAnnotation(desc = "描述")
-  private String desc;
+  private String description;
 
   /**
    * cron表达式
@@ -127,12 +127,13 @@ public class Job {
     this.name = name;
   }
 
-  public String getDesc() {
-    return desc;
+
+  public String getDescription() {
+    return description;
   }
 
-  public void setDesc(String desc) {
-    this.desc = desc;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public String getCronExpression() {
@@ -175,6 +176,35 @@ public class Job {
     this.status = status;
   }
 
-
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append("Job [id=");
+    builder.append(id);
+    builder.append(", name=");
+    builder.append(name);
+    builder.append(", description=");
+    builder.append(description);
+    builder.append(", cronExpression=");
+    builder.append(cronExpression);
+    builder.append(", startTime=");
+    builder.append(startTime);
+    builder.append(", endTime=");
+    builder.append(endTime);
+    builder.append(", exeCount=");
+    builder.append(exeCount);
+    builder.append(", status=");
+    builder.append(status);
+    builder.append(", className=");
+    builder.append(className);
+    builder.append(", methodName=");
+    builder.append(methodName);
+    builder.append(", delayTime=");
+    builder.append(delayTime);
+    builder.append(", intervalTime=");
+    builder.append(intervalTime);
+    builder.append("]");
+    return builder.toString();
+  }
 
 }

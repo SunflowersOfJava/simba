@@ -52,4 +52,9 @@ public interface ConstantData {
    * 自定义的freemarker流程表单引擎
    */
   String FREEMARKER_FORMENGINE = "freemarker";
+
+  /**
+   * 定时器使用的线程池数
+   */
+  int SCHEDULE_POLL_SIZE = 100;
 }

@@ -14,7 +14,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Controller;
@@ -26,6 +25,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.caozj.annotation.TimeAnnotation;
 import com.caozj.dubbo.provider.DubboServiceInterface;
 import com.caozj.framework.util.jdbc.Jdbc;
+import com.caozj.framework.util.schedule.AsyncUtil;
 
 @Controller
 @RequestMapping("/test")
@@ -41,6 +41,9 @@ public class TController {
 
   @Resource
   private DubboServiceInterface dubboRemoteService;
+
+  @Autowired
+  private AsyncUtil asyncUtil;
 
   private final ConcurrentTaskScheduler ct =
       new ConcurrentTaskScheduler(Executors.newScheduledThreadPool(100));
@@ -212,6 +215,16 @@ public class TController {
       logger.info("async");
     }
     model.put("message", "async successfully!!!");
+    return "message";
+  }
+
+  @RequestMapping
+  public String asyncUtil(ModelMap model) {
+    asyncUtil.execute("com.caozj.test.JobExecute", "execute");
+    for (int i = 0; i < 100; i++) {
+      logger.info("asyncUtil");
+    }
+    model.put("message", "asyncUtil successfully!!!");
     return "message";
   }
 

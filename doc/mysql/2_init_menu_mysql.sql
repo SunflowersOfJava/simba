@@ -15,3 +15,4 @@ insert into menu(id,text,parentID,url,orderNo) values(10013,'流程监控',-1,'/proc
 insert into menu(id,text,parentID,url,orderNo) values(10014,'代办设置',-1,'/processAgencySet/list.do',15);
 insert into menu(id,text,parentID,url,orderNo) values(10015,'已归档流程',-1,'/processFinish/list.do',16);
 insert into menu(id,text,parentID,url,orderNo) values(10016,'作业管理',-1,'/processJob/list.do',18);
+insert into menu(id,text,parentID,url,orderNo) values(10017,'任务管理',-1,'/job/list.do',19);
