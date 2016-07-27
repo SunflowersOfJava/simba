@@ -3,6 +3,8 @@ package com.caozj.test;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledFuture;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -12,6 +14,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +25,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.caozj.annotation.TimeAnnotation;
 import com.caozj.dubbo.provider.DubboServiceInterface;
-import com.caozj.framework.util.ApplicationContextUtil;
 import com.caozj.framework.util.jdbc.Jdbc;
-import com.caozj.framework.util.schedule.ScheduleUtil;
 
 @Controller
 @RequestMapping("/test")
@@ -38,6 +41,9 @@ public class TController {
 
   @Resource
   private DubboServiceInterface dubboRemoteService;
+
+  private final ConcurrentTaskScheduler ct =
+      new ConcurrentTaskScheduler(Executors.newScheduledThreadPool(100));
 
 
   @TimeAnnotation(overtime = 30)
@@ -99,22 +105,6 @@ public class TController {
   @RequestMapping("/showMove.do")
   public String showMove() {
     return "test/move";
-  }
-
-  @RequestMapping
-  public String addJob(ModelMap model) throws SchedulerException {
-    ScheduleUtil.addJob("job1", TestSchedule.class, "test", "0 0/1 * * * * ");
-    ScheduleUtil.addJob("job2", TestSchedule.class, "test", "30 0/1 * * * * ");
-    model.put("message", "job add success!!!");
-    return "message";
-  }
-
-  @RequestMapping
-  public String exeJob(ModelMap model) {
-    TestSchedule t = (TestSchedule) ApplicationContextUtil.getBean("job1");
-    t.test();
-    model.put("message", "execute add success!!!");
-    return "message";
   }
 
   @RequestMapping
@@ -207,7 +197,21 @@ public class TController {
   }
 
   @RequestMapping
-  public String showJobs() throws SchedulerException {
+  public String addJob(ModelMap model) throws SchedulerException {
+    ScheduledFuture<?> scheduledFuture = ct.schedule(() -> {
+      logger.info("==================exe!!!!!!!");
+    }, new CronTrigger("30 0/1 * * * *"));
+    model.put("message", "addJob successfully!!!");
+    return "message";
+  }
+
+  @RequestMapping
+  public String async(ModelMap model) throws SchedulerException {
+    testService.async();
+    for (int i = 0; i < 100; i++) {
+      logger.info("async");
+    }
+    model.put("message", "async successfully!!!");
     return "message";
   }
 

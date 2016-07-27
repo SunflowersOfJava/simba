@@ -67,6 +67,34 @@ public class Job {
   @DescAnnotation(desc = "执行类方法名")
   private String methodName;
 
+  /**
+   * 延迟时间
+   */
+  @DescAnnotation(desc = "延迟时间")
+  private int delayTime;
+
+  /**
+   * 间隔时间
+   */
+  @DescAnnotation(desc = "间隔时间")
+  private int intervalTime;
+
+  public int getDelayTime() {
+    return delayTime;
+  }
+
+  public void setDelayTime(int delayTime) {
+    this.delayTime = delayTime;
+  }
+
+  public int getIntervalTime() {
+    return intervalTime;
+  }
+
+  public void setIntervalTime(int intervalTime) {
+    this.intervalTime = intervalTime;
+  }
+
   public String getClassName() {
     return className;
   }

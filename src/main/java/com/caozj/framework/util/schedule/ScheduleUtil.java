@@ -11,7 +11,8 @@ import org.quartz.SchedulerException;
 public class ScheduleUtil {
 
 
-	public static void addJob(String jobName, Class<?> jobClass, String methodName, String cronExpression) throws SchedulerException {
-		
-	}
+  public static void addJob(String jobName, String jobClass, String methodName,
+      String cronExpression) throws SchedulerException {
+
+  }
 }
