@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016-07-15  星期五 10:39:30                     */
+/* Created on:     2016-07-28  星期四 09:44:46                     */
 /*==============================================================*/
 
 
@@ -9,6 +9,8 @@ drop table if exists buss;
 drop table if exists chatRecord;
 
 drop table if exists installPackage;
+
+drop table if exists job;
 
 drop table if exists menu;
 
@@ -76,6 +78,28 @@ create table installPackage
    publishDate          varchar(32) not null,
    primary key (installVersion)
 );
+
+/*==============================================================*/
+/* Table: job                                                   */
+/*==============================================================*/
+create table job
+(
+   id                   int not null auto_increment,
+   name                 varchar(64) not null comment '名称',
+   description          varchar(256) comment '描述',
+   cronExpression       varchar(128) comment 'cron表达式',
+   startTime            varchar(64) comment '开始执行时间',
+   endTime              varchar(64) comment '结束执行时间',
+   exeCount             int comment '执行次数',
+   status               varchar(16) comment '状态',
+   className            varchar(256) not null comment '完整类路径',
+   methodName           varchar(128) not null comment '执行类方法名',
+   delayTime            int comment '延迟时间',
+   intervalTime         int comment '间隔时间',
+   primary key (id)
+);
+
+alter table job comment '任务';
 
 /*==============================================================*/
 /* Table: menu                                                  */

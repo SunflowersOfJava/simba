@@ -1,6 +1,9 @@
 package com.caozj.framework.util.schedule;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledFuture;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,6 +25,8 @@ public class ScheduleUtil {
 
   private ConcurrentTaskScheduler ct = null;
 
+  private Map<Integer, ScheduledFuture<?>> SCHEDULED_FUTURE = null;
+
   private ScheduleUtil() {
     init();
   }
@@ -29,6 +34,7 @@ public class ScheduleUtil {
   private void init() {
     ct = new ConcurrentTaskScheduler(
         Executors.newScheduledThreadPool(ConstantData.SCHEDULE_POLL_SIZE));
+    SCHEDULED_FUTURE = new HashMap<Integer, ScheduledFuture<?>>();
   }
 
   private static final class ScheduleUtilHolder {
