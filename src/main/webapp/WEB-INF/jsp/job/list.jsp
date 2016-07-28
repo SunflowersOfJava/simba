@@ -71,6 +71,11 @@
 					width : 150
 				}
 				, {
+					field : 'maxExeCount',
+					title : '最大执行次数',
+					width : 150
+				}
+				, {
 					field : 'status',
 					title : '状态',
 					width : 150

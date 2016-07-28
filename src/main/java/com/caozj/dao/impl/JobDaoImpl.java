@@ -27,14 +27,14 @@ public class JobDaoImpl implements JobDao {
 
 	@Override
 	public void add(Job job) {
-		String sql = "insert into " + table + "( name, description, cronExpression, startTime, endTime, exeCount, status, className, methodName, delayTime, intervalTime) values(?,?,?,?,?,?,?,?,?,?,?)";
-		jdbc.updateForBoolean(sql, job.getName(),job.getDescription(),job.getCronExpression(),job.getStartTime(),job.getEndTime(),job.getExeCount(),job.getStatus(),job.getClassName(),job.getMethodName(),job.getDelayTime(),job.getIntervalTime());
+		String sql = "insert into " + table + "( name, description, cronExpression, startTime, endTime, exeCount, maxExeCount, status, className, methodName, delayTime, intervalTime) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+		jdbc.updateForBoolean(sql, job.getName(),job.getDescription(),job.getCronExpression(),job.getStartTime(),job.getEndTime(),job.getExeCount(),job.getMaxExeCount(),job.getStatus(),job.getClassName(),job.getMethodName(),job.getDelayTime(),job.getIntervalTime());
 	}
 
 	@Override
 	public void update(Job job) {
-		String sql = "update " + table + " set  name = ? , description = ? , cronExpression = ? , startTime = ? , endTime = ? , exeCount = ? , status = ? , className = ? , methodName = ? , delayTime = ? , intervalTime = ?  where id = ?  ";
-		jdbc.updateForBoolean(sql,job.getName(),job.getDescription(),job.getCronExpression(),job.getStartTime(),job.getEndTime(),job.getExeCount(),job.getStatus(),job.getClassName(),job.getMethodName(),job.getDelayTime(),job.getIntervalTime(), job.getId());
+		String sql = "update " + table + " set  name = ? , description = ? , cronExpression = ? , startTime = ? , endTime = ? , exeCount = ? , maxExeCount = ? , status = ? , className = ? , methodName = ? , delayTime = ? , intervalTime = ?  where id = ?  ";
+		jdbc.updateForBoolean(sql,job.getName(),job.getDescription(),job.getCronExpression(),job.getStartTime(),job.getEndTime(),job.getExeCount(),job.getMaxExeCount(),job.getStatus(),job.getClassName(),job.getMethodName(),job.getDelayTime(),job.getIntervalTime(), job.getId());
 	}
 
 	@Override

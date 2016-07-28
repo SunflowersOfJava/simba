@@ -50,6 +50,12 @@ public class Job {
   private int exeCount;
 
   /**
+   * 最大执行次数
+   */
+  @DescAnnotation(desc = "最大执行次数")
+  private int maxExeCount;
+
+  /**
    * 状态
    */
   @DescAnnotation(desc = "状态")
@@ -176,6 +182,14 @@ public class Job {
     this.status = status;
   }
 
+  public int getMaxExeCount() {
+    return maxExeCount;
+  }
+
+  public void setMaxExeCount(int maxExeCount) {
+    this.maxExeCount = maxExeCount;
+  }
+
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
@@ -193,6 +207,8 @@ public class Job {
     builder.append(endTime);
     builder.append(", exeCount=");
     builder.append(exeCount);
+    builder.append(", maxExeCount=");
+    builder.append(maxExeCount);
     builder.append(", status=");
     builder.append(status);
     builder.append(", className=");

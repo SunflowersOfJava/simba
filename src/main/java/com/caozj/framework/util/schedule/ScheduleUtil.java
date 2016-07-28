@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.SchedulerException;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
+import org.springframework.scheduling.support.CronTrigger;
 
 import com.caozj.model.Job;
 import com.caozj.model.constant.ConstantData;
@@ -47,7 +48,19 @@ public class ScheduleUtil {
 
 
 
+  /**
+   * 新增任务
+   * 
+   * @param job 任务对象
+   * @throws SchedulerException
+   */
   public void addJob(Job job) throws SchedulerException {
 
+    ScheduledFuture<?> scheduledFuture = ct.schedule(() -> {
+
+    }, new CronTrigger(job.getCronExpression()));
+    SCHEDULED_FUTURE.put(job.getId(), scheduledFuture);
   }
+
+
 }

@@ -40,6 +40,10 @@
 						<td><input class="easyui-textbox" type="text" id="exeCount" name="exeCount" data-options="required:true" style="width:200px" value="${job.exeCount}"></input></td>
 					</tr>
 					<tr>
+						<td>最大执行次数:</td>
+						<td><input class="easyui-textbox" type="text" id="maxExeCount" name="maxExeCount" data-options="required:true" style="width:200px" value="${job.maxExeCount}"></input></td>
+					</tr>
+					<tr>
 						<td>状态:</td>
 						<td><input class="easyui-textbox" type="text" id="status" name="status" data-options="required:true" style="width:200px" value="${job.status}"></input></td>
 					</tr>

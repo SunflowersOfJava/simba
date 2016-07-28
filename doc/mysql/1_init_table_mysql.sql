@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016-07-28  星期四 09:44:46                     */
+/* Created on:     2016-07-28  星期四 10:46:08                     */
 /*==============================================================*/
 
 
@@ -91,6 +91,7 @@ create table job
    startTime            varchar(64) comment '开始执行时间',
    endTime              varchar(64) comment '结束执行时间',
    exeCount             int comment '执行次数',
+   maxExeCount          int comment '最大执行次数',
    status               varchar(16) comment '状态',
    className            varchar(256) not null comment '完整类路径',
    methodName           varchar(128) not null comment '执行类方法名',
