@@ -13,38 +13,38 @@ import com.caozj.model.Job;
  */
 public interface JobDao {
 
-	void add(Job job);
+  void add(Job job);
 
-	void update(Job job);
+  void update(Job job);
 
-	void delete(int id);
+  void delete(int id);
 
-	List<Job> listAll();
+  List<Job> listAll();
 
-	int count();
-	
-	int countBy(String field, Object value);
-	
-	List<Job> page(Pager page);
+  int count();
 
-	Job get(int id);
-	
-	Job getBy(String field, Object value);
+  int countBy(String field, Object value);
 
-	Job getByAnd(String field1, Object value1, String field2, Object value2);
+  List<Job> page(Pager page);
 
-	Job getByOr(String field1, Object value1, String field2, Object value2);
+  Job get(int id);
 
-	List<Job> listBy(String field, Object value);
+  Job getBy(String field, Object value);
 
-	List<Job> listByAnd(String field1, Object value1, String field2, Object value2);
+  Job getByAnd(String field1, Object value1, String field2, Object value2);
 
-	List<Job> listByOr(String field1, Object value1, String field2, Object value2);
+  Job getByOr(String field1, Object value1, String field2, Object value2);
 
-	List<Job> pageBy(String field, Object value, Pager page);
+  List<Job> listBy(String field, Object value);
 
-	List<Job> pageByAnd(String field1, Object value1, String field2, Object value2, Pager page);
+  List<Job> listByAnd(String field1, Object value1, String field2, Object value2);
 
-	List<Job> pageByOr(String field1, Object value1, String field2, Object value2, Pager page);
+  List<Job> listByOr(String field1, Object value1, String field2, Object value2);
+
+  List<Job> pageBy(String field, Object value, Pager page);
+
+  List<Job> pageByAnd(String field1, Object value1, String field2, Object value2, Pager page);
+
+  List<Job> pageByOr(String field1, Object value1, String field2, Object value2, Pager page);
 
 }

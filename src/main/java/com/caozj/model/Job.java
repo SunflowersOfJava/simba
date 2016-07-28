@@ -1,5 +1,7 @@
 package com.caozj.model;
 
+import java.io.Serializable;
+
 import com.caozj.codegenerate.DescAnnotation;
 
 /**
@@ -9,7 +11,9 @@ import com.caozj.codegenerate.DescAnnotation;
  *
  */
 @DescAnnotation(desc = "任务")
-public class Job {
+public class Job implements Serializable {
+
+  private static final long serialVersionUID = -1355826321809119668L;
 
   private int id;
 

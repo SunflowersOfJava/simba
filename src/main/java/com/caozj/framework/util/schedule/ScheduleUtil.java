@@ -1,18 +1,25 @@
 package com.caozj.framework.util.schedule;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.SchedulerException;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 
+import com.caozj.framework.util.ApplicationContextUtil;
 import com.caozj.model.Job;
 import com.caozj.model.constant.ConstantData;
+import com.caozj.service.JobService;
 
 /**
  * Spring定时器工具类(单例)
@@ -26,7 +33,9 @@ public class ScheduleUtil {
 
   private ConcurrentTaskScheduler ct = null;
 
-  private Map<Integer, ScheduledFuture<?>> SCHEDULED_FUTURE = null;
+  private Map<Integer, ScheduledFuture<?>> scheduledFutrueMap = null;
+
+  private SimpleDateFormat format = new SimpleDateFormat(ConstantData.TIME_FORMAT);
 
   private ScheduleUtil() {
     init();
@@ -35,7 +44,7 @@ public class ScheduleUtil {
   private void init() {
     ct = new ConcurrentTaskScheduler(
         Executors.newScheduledThreadPool(ConstantData.SCHEDULE_POLL_SIZE));
-    SCHEDULED_FUTURE = new HashMap<Integer, ScheduledFuture<?>>();
+    scheduledFutrueMap = new HashMap<Integer, ScheduledFuture<?>>();
   }
 
   private static final class ScheduleUtilHolder {
@@ -46,21 +55,118 @@ public class ScheduleUtil {
     return ScheduleUtilHolder.instance;
   }
 
-
-
   /**
    * 新增任务
    * 
    * @param job 任务对象
    * @throws SchedulerException
+   * @throws ParseException
    */
-  public void addJob(Job job) throws SchedulerException {
-
-    ScheduledFuture<?> scheduledFuture = ct.schedule(() -> {
-
-    }, new CronTrigger(job.getCronExpression()));
-    SCHEDULED_FUTURE.put(job.getId(), scheduledFuture);
+  public void addJob(Job job) throws SchedulerException, ParseException {
+    if (needExecute(job)) {
+      // 启动任务
+      startJob(job);
+      logger.info("启动任务成功:" + job.getName());
+    }
   }
 
+  /**
+   * 删除任务
+   * 
+   * @param job 任务对象
+   */
+  public void deleteJob(Job job) {
+    this.deleteJob(job.getId());
+  }
+
+  /**
+   * 删除任务
+   * 
+   * @param id 任务id
+   */
+  public void deleteJob(int id) {
+    ScheduledFuture<?> scheduledFuture = scheduledFutrueMap.get(id);
+    if (scheduledFuture != null) {
+      if (!scheduledFuture.isCancelled()) {
+        /** false 表示当前任务若正在执行，则待其执行结束，再结束此任务. */
+        scheduledFuture.cancel(false);
+        scheduledFutrueMap.remove(id);
+        logger.info("删除任务成功:" + id);
+      }
+    }
+  }
+
+
+  /**
+   * 返回所有正在运行的Job的id列表
+   * 
+   * @return
+   */
+  public Set<Integer> getAllRunningJobs() {
+    return scheduledFutrueMap.keySet();
+  }
+
+  private void startJob(Job job) throws ParseException {
+    ScheduledFuture<?> scheduledFuture = null;
+    if (StringUtils.isNotEmpty(job.getCronExpression())) {
+      scheduledFuture = startCronJob(job);
+    } else {
+      scheduledFuture = startIntervalJob(job);
+    }
+    scheduledFutrueMap.put(job.getId(), scheduledFuture);
+  }
+
+  private ScheduledFuture<?> startIntervalJob(Job job) throws ParseException {
+    ScheduledFuture<?> scheduledFuture;
+    String startTime = job.getStartTime();
+    long start = System.currentTimeMillis();
+    if (StringUtils.isNotEmpty(startTime)) {
+      start = format.parse(startTime).getTime();
+    }
+    start = start + job.getDelayTime();
+    int intervalTime = job.getIntervalTime();
+    Date startDate = new Date(start);
+    if (intervalTime > 0) {
+      scheduledFuture = ct.scheduleAtFixedRate(() -> {
+        ApplicationContextUtil.getBean(JobService.class).execute(job);
+      }, startDate, intervalTime);
+    } else {
+      scheduledFuture = ct.schedule(() -> {
+        ApplicationContextUtil.getBean(JobService.class).execute(job);
+      }, startDate);
+    }
+    return scheduledFuture;
+  }
+
+  private ScheduledFuture<?> startCronJob(Job job) {
+    ScheduledFuture<?> scheduledFuture = ct.schedule(() -> {
+      ApplicationContextUtil.getBean(JobService.class).execute(job);
+    }, new CronTrigger(job.getCronExpression()));
+    return scheduledFuture;
+  }
+
+  private boolean needExecute(Job job) throws ParseException {
+    if (getAllRunningJobs().contains(job.getId())) {
+      return false;
+    }
+    if (job.getMaxExeCount() > 0 && job.getMaxExeCount() <= job.getExeCount()) {
+      return false;
+    }
+    long now = System.currentTimeMillis();
+    String startTime = job.getStartTime();
+    String endTime = job.getEndTime();
+    long start = 0;
+    long end = Long.MAX_VALUE;
+    if (StringUtils.isNotEmpty(startTime)) {
+      start = format.parse(startTime).getTime();
+    }
+    if (StringUtils.isNotEmpty(endTime)) {
+      end = format.parse(endTime).getTime();
+    }
+    if (now > end || now < start) {
+      return false;
+    }
+    return true;
+  }
 
 }

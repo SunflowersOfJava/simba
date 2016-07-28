@@ -1,51 +1,76 @@
-package  com.caozj.service;
+package com.caozj.service;
 
+import java.text.ParseException;
 import java.util.List;
+
+import org.quartz.SchedulerException;
 
 import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.model.Job;
 
 /**
- *任务 Service
+ * 任务 Service
  * 
  * @author caozj
  * 
  */
 public interface JobService {
 
-	void add(Job job);
+  /**
+   * 执行
+   * 
+   * @param job
+   */
+  void execute(Job job);
 
-	void update(Job job);
+  /**
+   * 把所有可以启动的待启动任务启动
+   */
+  void startAllJobs();
 
-	void delete(int id);
+  /**
+   * 初始化要执行的任务对象数据
+   */
+  void initJobData();
 
-	List<Job> listAll();
+  /**
+   * 启动所有可以启动的任务
+   */
+  void initStartJobs();
 
-	int count();
-	
-	int countBy(String field, Object value);
-	
-	List<Job> page(Pager page);
+  void add(Job job) throws SchedulerException, ParseException;
 
-	Job get(int id);
-	
-	void batchDelete(List<Integer> idList);
+  void update(Job job) throws SchedulerException, ParseException;
 
-	Job getBy(String field, Object value);
+  void delete(int id);
 
-	Job getByAnd(String field1, Object value1, String field2, Object value2);
+  List<Job> listAll();
 
-	Job getByOr(String field1, Object value1, String field2, Object value2);
+  int count();
 
-	List<Job> listBy(String field, Object value);
+  int countBy(String field, Object value);
 
-	List<Job> listByAnd(String field1, Object value1, String field2, Object value2);
+  List<Job> page(Pager page);
 
-	List<Job> listByOr(String field1, Object value1, String field2, Object value2);
+  Job get(int id);
 
-	List<Job> pageBy(String field, Object value, Pager page);
+  void batchDelete(List<Integer> idList);
 
-	List<Job> pageByAnd(String field1, Object value1, String field2, Object value2, Pager page);
+  Job getBy(String field, Object value);
 
-	List<Job> pageByOr(String field1, Object value1, String field2, Object value2, Pager page);
+  Job getByAnd(String field1, Object value1, String field2, Object value2);
+
+  Job getByOr(String field1, Object value1, String field2, Object value2);
+
+  List<Job> listBy(String field, Object value);
+
+  List<Job> listByAnd(String field1, Object value1, String field2, Object value2);
+
+  List<Job> listByOr(String field1, Object value1, String field2, Object value2);
+
+  List<Job> pageBy(String field, Object value, Pager page);
+
+  List<Job> pageByAnd(String field1, Object value1, String field2, Object value2, Pager page);
+
+  List<Job> pageByOr(String field1, Object value1, String field2, Object value2, Pager page);
 }

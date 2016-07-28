@@ -1,4 +1,4 @@
-package com.caozj.jobs;
+package com.caozj.test;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
