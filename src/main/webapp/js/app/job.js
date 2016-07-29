@@ -1,7 +1,63 @@
 var Job = {
 
 	"toAdd" : function() {
-			window.self.location.href = contextPath + "/job/toAdd.do";
+		window.self.location.href = contextPath + "/job/toAdd.do";
+	},
+
+	"search" : function() {
+		$("#jobTable").datagrid("load", {
+			name : $("#name").val()
+		});
+	},
+
+	"start" : function(id) {
+		$.ajax({
+			url : contextPath + "/job/start.do?json",
+			type : "post",
+			dataType : "json",
+			async : true,
+			data : {
+				id : id
+			},
+			success : function(data) {
+				if (data.code == 200) {
+					$("#jobTable").datagrid("reload", {
+						name : $("#name").val()
+					});
+					$.messager.alert("系统提示", "启动成功", 'info');
+				} else {
+					$.messager.alert("系统错误", data.msg, 'error');
+				}
+			},
+			error : function() {
+				$.messager.alert("系统错误", "启动失败", 'error');
+			}
+		});
+	},
+
+	"stop" : function(id) {
+		$.ajax({
+			url : contextPath + "/job/stop.do?json",
+			type : "post",
+			dataType : "json",
+			async : true,
+			data : {
+				id : id
+			},
+			success : function(data) {
+				if (data.code == 200) {
+					$("#jobTable").datagrid("reload", {
+						name : $("#name").val()
+					});
+					$.messager.alert("系统提示", "暂停成功", 'info');
+				} else {
+					$.messager.alert("系统错误", data.msg, 'error');
+				}
+			},
+			error : function() {
+				$.messager.alert("系统错误", "暂停失败", 'error');
+			}
+		});
 	},
 
 	"batchDelete" : function() {
@@ -24,7 +80,9 @@ var Job = {
 			},
 			success : function(data) {
 				if (data.code == 200) {
-						$("#jobTable").datagrid("load",{});
+					$("#jobTable").datagrid("load", {
+						name : $("#name").val()
+					});
 					$.messager.alert("系统提示", "删除成功", 'info');
 				} else {
 					$.messager.alert("系统错误", data.msg, 'error');
@@ -50,7 +108,9 @@ var Job = {
 			},
 			success : function(data) {
 				if (data.code == 200) {
-						$("#jobTable").datagrid("load",{});
+					$("#jobTable").datagrid("load", {
+						name : $("#name").val()
+					});
 					$.messager.alert("系统提示", "删除成功", 'info');
 				} else {
 					$.messager.alert("系统错误", data.msg, 'error');
@@ -63,6 +123,10 @@ var Job = {
 	},
 
 	"add" : function() {
+		if ($("#cronExpression").val() == "" && $("#intervalTime").val() == "") {
+			$.messager.alert("系统提示", "间隔时间和cron表达式不能同时为空", 'warning');
+			return false;
+		}
 		$("#jobForm").form('submit', {
 			url : contextPath + "/job/add.do?json",
 			onSubmit : function() {
@@ -80,6 +144,10 @@ var Job = {
 	},
 
 	"update" : function() {
+		if ($("#cronExpression").val() == "" && $("#intervalTime").val() == "") {
+			$.messager.alert("系统提示", "间隔时间和cron表达式不能同时为空", 'warning');
+			return false;
+		}
 		$("#jobForm").form('submit', {
 			url : contextPath + "/job/update.do?json",
 			onSubmit : function() {
@@ -97,7 +165,7 @@ var Job = {
 	},
 
 	"toList" : function() {
-			window.self.location.href = contextPath + "/job/list.do";
+		window.self.location.href = contextPath + "/job/list.do";
 	},
 
 	"end" : null

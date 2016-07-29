@@ -16,6 +16,8 @@
 		<div id="jobToolbar">
 			<a href="javascript:void(0);" class="easyui-linkbutton" onclick="Job.toAdd();" data-options="iconCls:'icon-add'">新增</a> <a href="javascript:void(0);" class="easyui-linkbutton"
 				onclick="Job.batchDelete();" data-options="iconCls:'icon-remove'">删除</a>
+				<input type="text" id="name" name="name" class="easyui-textbox" prompt="请输入您要查询的任务名称" /> <a
+				href="javascript:void(0);" class="easyui-linkbutton" onclick="Job.search();" data-options="iconCls:'icon-search'">查询</a>
 		</div>
 	</div>
 	<script type="text/javascript">
@@ -32,6 +34,9 @@
 				toolbar : "#jobToolbar",
 				singleSelect : false,
 				pagination : true,
+				queryParams : {
+					name : $("#name").val()
+				},
 				idField : "id",
 				loadMsg : "正在加载数据，请耐心等待...",
 				rownumbers : true,
@@ -68,37 +73,52 @@
 				, {
 					field : 'exeCount',
 					title : '执行次数',
-					width : 150
+					width : 80
 				}
 				, {
 					field : 'maxExeCount',
 					title : '最大执行次数',
-					width : 150
-				}
-				, {
-					field : 'status',
-					title : '状态',
-					width : 150
+					width : 80
 				}
 				, {
 					field : 'className',
 					title : '完整类路径',
-					width : 150
+					width : 200
 				}
 				, {
 					field : 'methodName',
 					title : '执行类方法名',
-					width : 150
+					width : 100
 				}
 				, {
 					field : 'delayTime',
 					title : '延迟时间',
-					width : 150
+					width : 100
 				}
 				, {
 					field : 'intervalTime',
 					title : '间隔时间',
-					width : 150
+					width : 100
+				}
+				, {
+					field : 'status',
+					title : '状态',
+					width : 150,
+					formatter : function(value, row, index) {
+						var html = "";
+						if("waiting" == value ){
+							html = "未启动";
+						}else if("running" == value ){
+							html = "运行中";
+						}else if("error" == value ){
+							html = "运行异常";
+						}else if("finish" == value ){
+							html = "运行完成";
+						}else if("suspend" == value ){
+							html = "暂停";
+						}
+						return html;
+					}
 				}
 				, {
 					title : "操作",
@@ -108,6 +128,13 @@
 						var html = "<a href=\"javascript:void(0)\" onclick=\"Job.toUpdate('" + row["id"] + "')\">修改</a>";
 						html += "&nbsp;&nbsp;";
 						html += "<a href=\"javascript:void(0)\" onclick=\"Job.deleteJob('" + row["id"] + "')\">删除</a>";
+						if("suspend" == row["status"] ){
+							html += "&nbsp;&nbsp;";
+							html += "<a href=\"javascript:void(0)\" onclick=\"Job.start('" + row["id"] + "')\">启动</a>";
+						}else if("running" == row["status"]||"waiting" == row["status"]||"running" == row["error"]){
+							html += "&nbsp;&nbsp;";
+							html += "<a href=\"javascript:void(0)\" onclick=\"Job.stop('" + row["id"] + "')\">暂停</a>";
+						}
 						return html;
 					}
 				} ] ]

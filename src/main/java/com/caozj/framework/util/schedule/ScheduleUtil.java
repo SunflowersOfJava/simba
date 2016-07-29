@@ -19,6 +19,7 @@ import org.springframework.scheduling.support.CronTrigger;
 import com.caozj.framework.util.ApplicationContextUtil;
 import com.caozj.model.Job;
 import com.caozj.model.constant.ConstantData;
+import com.caozj.model.enums.JobStatus;
 import com.caozj.service.JobService;
 
 /**
@@ -150,6 +151,10 @@ public class ScheduleUtil {
       return false;
     }
     if (job.getMaxExeCount() > 0 && job.getMaxExeCount() <= job.getExeCount()) {
+      return false;
+    }
+    if (job.getStatus().equals(JobStatus.SUSPEND.getName())
+        || job.getStatus().equals(JobStatus.FINISH.getName())) {
       return false;
     }
     long now = System.currentTimeMillis();

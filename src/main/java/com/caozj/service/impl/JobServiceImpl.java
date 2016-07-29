@@ -1,8 +1,10 @@
 package com.caozj.service.impl;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.SchedulerException;
@@ -21,6 +23,7 @@ import com.caozj.framework.util.common.ReflectUtil;
 import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.framework.util.schedule.ScheduleUtil;
 import com.caozj.model.Job;
+import com.caozj.model.constant.ConstantData;
 import com.caozj.model.constant.JobData;
 import com.caozj.model.enums.JobStatus;
 import com.caozj.service.JobService;
@@ -46,11 +49,28 @@ public class JobServiceImpl implements JobService {
   @Autowired
   private DistributedUtil distributedUtil;
 
+  private SimpleDateFormat format = new SimpleDateFormat(ConstantData.TIME_FORMAT);
+
   @Override
   public void add(Job job) throws SchedulerException, ParseException {
+    checkJob(job);
     job.setStatus(JobStatus.WAITING.getName());
     jobDao.add(job);
     executeJobDataCluster(new JobClusterData(job, "add"));
+  }
+
+  /**
+   * 检查任务是否填写正确
+   * 
+   * @param job
+   */
+  private void checkJob(Job job) {
+    if (StringUtils.isEmpty(job.getName())) {
+      throw new RuntimeException("任务名称不能为空");
+    }
+    if (StringUtils.isEmpty(job.getCronExpression()) || job.getIntervalTime() < 1) {
+      throw new RuntimeException("间隔时间和cron表达式不能同时为空");
+    }
   }
 
   @Override
@@ -92,6 +112,7 @@ public class JobServiceImpl implements JobService {
 
   @Override
   public void update(Job job) throws SchedulerException, ParseException {
+    checkJob(job);
     Job oldJob = this.get(job.getId());
     job.setExeCount(oldJob.getExeCount());
     job.setStatus(oldJob.getStatus());
@@ -100,8 +121,10 @@ public class JobServiceImpl implements JobService {
         || job.getStatus().equals(JobStatus.SUSPEND.getName())) {
       return;
     }
-    executeJobScheduleCluster(new JobClusterData(job, "remove"));
-    executeJobDataCluster(new JobClusterData(job, "add"));
+    if (!job.getStatus().equals(JobStatus.WAITING.getName())) {
+      executeJobScheduleCluster(new JobClusterData(job, "remove"));
+      executeJobDataCluster(new JobClusterData(job, "add"));
+    }
   }
 
   @Override
@@ -169,9 +192,84 @@ public class JobServiceImpl implements JobService {
 
   @Override
   public void execute(Job job) {
+    long end = getEndTime(job);
+    if (!checkExecuteJob(job, end)) {
+      return;
+    }
     try {
+      if (job.getStatus().equals(JobStatus.WAITING.getName())) {
+        job.setStatus(JobStatus.RUNNING.getName());
+      }
       ReflectUtil.invokeObjectMethod(job.getClassName(), job.getMethodName());
-    } catch (Exception e) {}
+    } catch (Exception e) {
+      logger.info("执行任务异常:" + job.toString(), e);
+      job.setStatus(JobStatus.ERROR.getName());
+    }
+    job.setExeCount(job.getExeCount() + 1);
+    if (job.getExeCount() == job.getMaxExeCount() || System.currentTimeMillis() >= end) {
+      deleteFinishJob(job);
+    } else {
+      jobDao.update(job);
+    }
+  }
+
+  /**
+   * 获取任务的结束执行时间
+   * 
+   * @param job
+   * @return
+   */
+  private long getEndTime(Job job) {
+    String endTime = job.getEndTime();
+    long end = Long.MAX_VALUE;
+    if (StringUtils.isNotEmpty(endTime)) {
+      try {
+        end = format.parse(endTime).getTime();
+      } catch (ParseException e) {
+        logger.error("解析任务结束执行时间异常", e);
+      }
+    }
+    return end;
+  }
+
+  /**
+   * 检查任务是否能被执行
+   * 
+   * @param job
+   * @param end
+   * @return
+   */
+  private boolean checkExecuteJob(Job job, long end) {
+    if (System.currentTimeMillis() > end || job.getStatus().equals(JobStatus.FINISH.getName())) {
+      deleteFinishJob(job);
+      return false;
+    }
+    if (job.getStatus().equals(JobStatus.SUSPEND.getName())) {
+      throw new RuntimeException("不能执行任务:" + job.toString());
+    }
+    if (job.getMaxExeCount() > 0 && job.getExeCount() == job.getMaxExeCount()) {
+      logger.info("已经达到最大执行次数:" + job.toString());
+      deleteFinishJob(job);
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * 删除已经执行完成的任务
+   * 
+   * @param job
+   */
+  private void deleteFinishJob(Job job) {
+    try {
+      executeJobScheduleCluster(new JobClusterData(job, "remove"));
+    } catch (Exception e) {
+      logger.error("任务执行完成,删除定时任务异常", e);
+    }
+    if (!job.getStatus().equals(JobStatus.FINISH.getName())) {
+      job.setStatus(JobStatus.FINISH.getName());
+      jobDao.update(job);
+    }
   }
 
   @Override
@@ -186,6 +284,13 @@ public class JobServiceImpl implements JobService {
     });
   }
 
+  /**
+   * 执行任务的集群处理
+   * 
+   * @param clustData
+   * @throws SchedulerException
+   * @throws ParseException
+   */
   private void executeJobScheduleCluster(JobClusterData clustData)
       throws SchedulerException, ParseException {
     if (!"true".equalsIgnoreCase(distributedEnable)) {
@@ -200,6 +305,11 @@ public class JobServiceImpl implements JobService {
     }
   }
 
+  /**
+   * 任务数据的集群处理
+   * 
+   * @param clustData
+   */
   private void executeJobDataCluster(JobClusterData clustData) {
     if (!"true".equalsIgnoreCase(distributedEnable)) {
       if (clustData.getMethod().equals("add")) {
@@ -241,7 +351,7 @@ public class JobServiceImpl implements JobService {
       throw new RuntimeException("任务已经达到最大执行次数");
     }
     job.setStatus(JobStatus.WAITING.getName());
-    this.update(job);
+    jobDao.update(job);
     executeJobDataCluster(new JobClusterData(job, "add"));
   }
 
@@ -253,7 +363,7 @@ public class JobServiceImpl implements JobService {
       throw new RuntimeException("任务不能暂停");
     }
     job.setStatus(JobStatus.SUSPEND.getName());
-    this.update(job);
+    jobDao.update(job);
     executeJobDataCluster(new JobClusterData(job, "remove"));
     executeJobScheduleCluster(new JobClusterData(job, "remove"));
   }

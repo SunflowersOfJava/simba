@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,9 +38,14 @@ public class JobController {
   }
 
   @RequestMapping("/listDataOfEasyUI.do")
-  public String listDataOfEasyUI(ModelMap model, EasyUIPageForm form) {
+  public String listDataOfEasyUI(ModelMap model, EasyUIPageForm form, String name) {
     Pager page = new Pager((form.getPage() - 1) * form.getRows(), form.getRows());
-    List<Job> list = jobService.page(page);
+    List<Job> list = null;
+    if (StringUtils.isEmpty(name)) {
+      list = jobService.page(page);
+    } else {
+      list = jobService.pageBy("name", name, page);
+    }
     String message = JsonUtil.toJson(new PageGrid(page.getTotalCount(), list));
     model.put("message", message);
     return "message";
