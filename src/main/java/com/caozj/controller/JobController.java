@@ -74,7 +74,8 @@ public class JobController {
   }
 
   @RequestMapping("/batchDelete.do")
-  public String batchDelete(Integer[] ids, ModelMap model) {
+  public String batchDelete(Integer[] ids, ModelMap model)
+      throws SchedulerException, ParseException {
     List<Integer> idList = Arrays.asList(ids);
     jobService.batchDelete(idList);
     model.put("message", new JsonResult().toJson());
@@ -82,7 +83,7 @@ public class JobController {
   }
 
   @RequestMapping("/delete.do")
-  public String delete(int id, ModelMap model) {
+  public String delete(int id, ModelMap model) throws SchedulerException, ParseException {
     jobService.delete(id);
     model.put("message", JsonUtil.successJson());
     return "message";
@@ -102,4 +103,35 @@ public class JobController {
     return "message";
   }
 
+  /**
+   * 启动任务
+   * 
+   * @param id
+   * @param model
+   * @return
+   * @throws ParseException
+   * @throws SchedulerException
+   */
+  @RequestMapping
+  public String start(int id, ModelMap model) throws SchedulerException, ParseException {
+    jobService.startJob(id);
+    model.put("message", new JsonResult().toJson());
+    return "message";
+  }
+
+  /**
+   * 暂停任务
+   * 
+   * @param id
+   * @param model
+   * @return
+   * @throws ParseException
+   * @throws SchedulerException
+   */
+  @RequestMapping
+  public String stop(int id, ModelMap model) throws SchedulerException, ParseException {
+    jobService.stopJob(id);
+    model.put("message", new JsonResult().toJson());
+    return "message";
+  }
 }

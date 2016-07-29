@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.caozj.cluster.job.JobClusterData;
 import com.caozj.cluster.job.JobClusterExecute;
+import com.caozj.cluster.job.JobScheduleClusterExecute;
 import com.caozj.dao.JobDao;
 import com.caozj.framework.distributed.ClusterMessage;
 import com.caozj.framework.distributed.DistributedUtil;
@@ -49,14 +50,14 @@ public class JobServiceImpl implements JobService {
   public void add(Job job) throws SchedulerException, ParseException {
     job.setStatus(JobStatus.WAITING.getName());
     jobDao.add(job);
-    executeCluster(new JobClusterData(job, "add"));
+    executeJobDataCluster(new JobClusterData(job, "add"));
   }
 
   @Override
-  public void delete(int id) {
+  public void delete(int id) throws SchedulerException, ParseException {
     jobDao.delete(id);
-    ScheduleUtil.getInstance().deleteJob(id);
-    executeCluster(new JobClusterData(id, "remove"));
+    executeJobDataCluster(new JobClusterData(id, "remove"));
+    executeJobScheduleCluster(new JobClusterData(id, "remove"));
   }
 
   @Override
@@ -91,13 +92,20 @@ public class JobServiceImpl implements JobService {
 
   @Override
   public void update(Job job) throws SchedulerException, ParseException {
+    Job oldJob = this.get(job.getId());
+    job.setExeCount(oldJob.getExeCount());
+    job.setStatus(oldJob.getStatus());
     jobDao.update(job);
-    ScheduleUtil.getInstance().deleteJob(job);
-    ScheduleUtil.getInstance().addJob(job);
+    if (job.getStatus().equals(JobStatus.FINISH.getName())
+        || job.getStatus().equals(JobStatus.SUSPEND.getName())) {
+      return;
+    }
+    executeJobScheduleCluster(new JobClusterData(job, "remove"));
+    executeJobDataCluster(new JobClusterData(job, "add"));
   }
 
   @Override
-  public void batchDelete(List<Integer> idList) {
+  public void batchDelete(List<Integer> idList) throws SchedulerException, ParseException {
     for (Integer id : idList) {
       this.delete(id);
     }
@@ -167,7 +175,7 @@ public class JobServiceImpl implements JobService {
   }
 
   @Override
-  public void startAllJobs() {
+  public void startAllWaitingJobs() {
     List<Job> allJobs = JobData.getInstance().getAll();
     allJobs.forEach((job) -> {
       try {
@@ -178,7 +186,21 @@ public class JobServiceImpl implements JobService {
     });
   }
 
-  private void executeCluster(JobClusterData clustData) {
+  private void executeJobScheduleCluster(JobClusterData clustData)
+      throws SchedulerException, ParseException {
+    if (!"true".equalsIgnoreCase(distributedEnable)) {
+      if (clustData.getMethod().equals("add")) {
+        ScheduleUtil.getInstance().addJob(clustData.getJob());
+      } else if (clustData.getMethod().equals("remove")) {
+        ScheduleUtil.getInstance().deleteJob(clustData.getJob());
+      }
+    } else {
+      distributedUtil.executeInCluster(
+          new ClusterMessage(JobScheduleClusterExecute.class.getCanonicalName(), clustData));
+    }
+  }
+
+  private void executeJobDataCluster(JobClusterData clustData) {
     if (!"true".equalsIgnoreCase(distributedEnable)) {
       if (clustData.getMethod().equals("add")) {
         JobData.getInstance().add(clustData.getJob());
@@ -207,6 +229,33 @@ public class JobServiceImpl implements JobService {
         logger.error("启动任务异常:" + job.toString(), e);
       }
     });
+  }
+
+  @Override
+  public void startJob(int id) throws SchedulerException, ParseException {
+    Job job = this.get(id);
+    if (!job.getStatus().equals(JobStatus.SUSPEND.getName())) {
+      throw new RuntimeException("任务状态不是暂停，不需要重新启动");
+    }
+    if (job.getMaxExeCount() > 0 && job.getMaxExeCount() <= job.getExeCount()) {
+      throw new RuntimeException("任务已经达到最大执行次数");
+    }
+    job.setStatus(JobStatus.WAITING.getName());
+    this.update(job);
+    executeJobDataCluster(new JobClusterData(job, "add"));
+  }
+
+  @Override
+  public void stopJob(int id) throws SchedulerException, ParseException {
+    Job job = this.get(id);
+    if (job.getStatus().equals(JobStatus.FINISH.getName())
+        || job.getStatus().equals(JobStatus.SUSPEND.getName())) {
+      throw new RuntimeException("任务不能暂停");
+    }
+    job.setStatus(JobStatus.SUSPEND.getName());
+    this.update(job);
+    executeJobDataCluster(new JobClusterData(job, "remove"));
+    executeJobScheduleCluster(new JobClusterData(job, "remove"));
   }
 
 }

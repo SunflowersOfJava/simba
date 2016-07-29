@@ -26,7 +26,7 @@ public interface JobService {
   /**
    * 把所有可以启动的待启动任务启动
    */
-  void startAllJobs();
+  void startAllWaitingJobs();
 
   /**
    * 初始化要执行的任务对象数据
@@ -38,11 +38,25 @@ public interface JobService {
    */
   void initStartJobs();
 
+  /**
+   * 启动任务
+   * 
+   * @param id
+   */
+  void startJob(int id) throws SchedulerException, ParseException;
+
+  /**
+   * 暂停任务
+   * 
+   * @param id
+   */
+  void stopJob(int id) throws SchedulerException, ParseException;
+
   void add(Job job) throws SchedulerException, ParseException;
 
   void update(Job job) throws SchedulerException, ParseException;
 
-  void delete(int id);
+  void delete(int id) throws SchedulerException, ParseException;
 
   List<Job> listAll();
 
@@ -54,7 +68,7 @@ public interface JobService {
 
   Job get(int id);
 
-  void batchDelete(List<Integer> idList);
+  void batchDelete(List<Integer> idList) throws SchedulerException, ParseException;
 
   Job getBy(String field, Object value);
 

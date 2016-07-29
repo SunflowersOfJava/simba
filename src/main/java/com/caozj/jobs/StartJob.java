@@ -20,7 +20,7 @@ public class StartJob {
 
   @Scheduled(fixedDelay = 60000, fixedRate = 1000)
   private void initJobs() {
-    jobService.startAllJobs();
+    jobService.startAllWaitingJobs();
   }
 
 }
