@@ -18,7 +18,7 @@ public class StartJob {
   @Autowired
   private JobService jobService;
 
-  @Scheduled(fixedDelay = 60000, fixedRate = 1000)
+  @Scheduled(fixedRate = 1000, initialDelay = 60000)
   private void initJobs() {
     jobService.startAllWaitingJobs();
   }
