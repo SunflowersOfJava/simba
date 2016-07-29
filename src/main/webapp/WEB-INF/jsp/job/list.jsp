@@ -131,7 +131,7 @@
 						if("suspend" == row["status"] ){
 							html += "&nbsp;&nbsp;";
 							html += "<a href=\"javascript:void(0)\" onclick=\"Job.start('" + row["id"] + "')\">启动</a>";
-						}else if("running" == row["status"]||"waiting" == row["status"]||"running" == row["error"]){
+						}else if("running" == row["status"]||"waiting" == row["status"]||"error" == row["status"]){
 							html += "&nbsp;&nbsp;";
 							html += "<a href=\"javascript:void(0)\" onclick=\"Job.stop('" + row["id"] + "')\">暂停</a>";
 						}
