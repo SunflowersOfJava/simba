@@ -15,7 +15,7 @@ public class Job implements Serializable {
 
   private static final long serialVersionUID = -1355826321809119668L;
 
-  private int id;
+  private Integer id;
 
   /**
    * 名称
@@ -51,13 +51,13 @@ public class Job implements Serializable {
    * 执行次数
    */
   @DescAnnotation(desc = "执行次数")
-  private int exeCount;
+  private Integer exeCount = 0;
 
   /**
    * 最大执行次数
    */
   @DescAnnotation(desc = "最大执行次数")
-  private int maxExeCount;
+  private Integer maxExeCount = 0;
 
   /**
    * 状态
@@ -81,27 +81,27 @@ public class Job implements Serializable {
    * 延迟时间
    */
   @DescAnnotation(desc = "延迟时间")
-  private int delayTime;
+  private Integer delayTime = 0;
 
   /**
    * 间隔时间
    */
   @DescAnnotation(desc = "间隔时间")
-  private int intervalTime;
+  private Integer intervalTime = 0;
 
-  public int getDelayTime() {
-    return delayTime;
+  public Integer getDelayTime() {
+    return delayTime == null ? 0 : delayTime;
   }
 
-  public void setDelayTime(int delayTime) {
+  public void setDelayTime(Integer delayTime) {
     this.delayTime = delayTime;
   }
 
-  public int getIntervalTime() {
-    return intervalTime;
+  public Integer getIntervalTime() {
+    return intervalTime == null ? 0 : intervalTime;
   }
 
-  public void setIntervalTime(int intervalTime) {
+  public void setIntervalTime(Integer intervalTime) {
     this.intervalTime = intervalTime;
   }
 
@@ -121,11 +121,11 @@ public class Job implements Serializable {
     this.methodName = methodName;
   }
 
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -170,11 +170,11 @@ public class Job implements Serializable {
     this.endTime = endTime;
   }
 
-  public int getExeCount() {
-    return exeCount;
+  public Integer getExeCount() {
+    return exeCount == null ? 0 : exeCount;
   }
 
-  public void setExeCount(int exeCount) {
+  public void setExeCount(Integer exeCount) {
     this.exeCount = exeCount;
   }
 
@@ -186,11 +186,11 @@ public class Job implements Serializable {
     this.status = status;
   }
 
-  public int getMaxExeCount() {
-    return maxExeCount;
+  public Integer getMaxExeCount() {
+    return maxExeCount == null ? 0 : maxExeCount;
   }
 
-  public void setMaxExeCount(int maxExeCount) {
+  public void setMaxExeCount(Integer maxExeCount) {
     this.maxExeCount = maxExeCount;
   }
 

@@ -2,6 +2,7 @@ package com.caozj.dao.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -29,10 +30,11 @@ public class JobDaoImpl implements JobDao {
   public void add(Job job) {
     String sql = "insert into " + table
         + "( name, description, cronExpression, startTime, endTime, exeCount, maxExeCount, status, className, methodName, delayTime, intervalTime) values(?,?,?,?,?,?,?,?,?,?,?,?)";
-    jdbc.updateForBoolean(sql, job.getName(), job.getDescription(), job.getCronExpression(),
-        job.getStartTime(), job.getEndTime(), job.getExeCount(), job.getMaxExeCount(),
-        job.getStatus(), job.getClassName(), job.getMethodName(), job.getDelayTime(),
-        job.getIntervalTime());
+    Number id = jdbc.updateForGeneratedKey(sql, job.getName(), job.getDescription(),
+        job.getCronExpression(), job.getStartTime(), job.getEndTime(), job.getExeCount(),
+        job.getMaxExeCount(), job.getStatus(), job.getClassName(), job.getMethodName(),
+        job.getDelayTime(), job.getIntervalTime());
+    job.setId(NumberUtils.toInt(id + ""));
   }
 
   @Override

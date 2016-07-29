@@ -48,7 +48,7 @@
 				, {
 					field : 'name',
 					title : '名称',
-					width : 150
+					width : 120
 				}
 				, {
 					field : 'description',
@@ -58,17 +58,17 @@
 				, {
 					field : 'cronExpression',
 					title : 'cron表达式',
-					width : 150
+					width : 100
 				}
 				, {
 					field : 'startTime',
 					title : '开始执行时间',
-					width : 150
+					width : 120
 				}
 				, {
 					field : 'endTime',
 					title : '结束执行时间',
-					width : 150
+					width : 120
 				}
 				, {
 					field : 'exeCount',
@@ -88,17 +88,17 @@
 				, {
 					field : 'methodName',
 					title : '执行类方法名',
-					width : 100
+					width : 80
 				}
 				, {
 					field : 'delayTime',
 					title : '延迟时间',
-					width : 100
+					width : 80
 				}
 				, {
 					field : 'intervalTime',
 					title : '间隔时间',
-					width : 100
+					width : 80
 				}
 				, {
 					field : 'status',

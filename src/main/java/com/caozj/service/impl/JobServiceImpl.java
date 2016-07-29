@@ -68,7 +68,7 @@ public class JobServiceImpl implements JobService {
     if (StringUtils.isEmpty(job.getName())) {
       throw new RuntimeException("任务名称不能为空");
     }
-    if (StringUtils.isEmpty(job.getCronExpression()) || job.getIntervalTime() < 1) {
+    if (StringUtils.isEmpty(job.getCronExpression()) && job.getIntervalTime() < 1) {
       throw new RuntimeException("间隔时间和cron表达式不能同时为空");
     }
   }
