@@ -129,20 +129,19 @@ public class Job implements Serializable {
    * @return
    */
   public long getStartTimeL() {
-    if (startTimeL == 0) {
-
+    if (startTimeL != null) {
+      return startTimeL;
     }
-
+    startTimeL = 0L;
     String startTime = this.getStartTime();
-    long start = 0;
     if (StringUtils.isNotEmpty(startTime)) {
       try {
-        start = ConstantData.format.parse(startTime).getTime();
+        startTimeL = ConstantData.format.parse(startTime).getTime();
       } catch (ParseException e) {
         e.printStackTrace();
       }
     }
-    return start;
+    return startTimeL;
   }
 
   public Integer getDelayTime() {
