@@ -60,15 +60,18 @@ public class ScheduleUtil {
    * 新增任务
    * 
    * @param job 任务对象
+   * @return
    * @throws SchedulerException
    * @throws ParseException
    */
-  public void addJob(Job job) throws SchedulerException, ParseException {
+  public boolean addJob(Job job) throws SchedulerException, ParseException {
     if (needExecute(job)) {
       // 启动任务
       startJob(job);
       logger.info("启动任务成功:" + job.getName());
+      return true;
     }
+    return false;
   }
 
   /**
@@ -158,17 +161,12 @@ public class ScheduleUtil {
       return false;
     }
     long now = System.currentTimeMillis();
-    String startTime = job.getStartTime();
-    String endTime = job.getEndTime();
-    long start = 0;
-    long end = Long.MAX_VALUE;
-    if (StringUtils.isNotEmpty(startTime)) {
-      start = format.parse(startTime).getTime();
+    long start = job.getStartTimeL();
+    long end = job.getEndTimeL();
+    if (now > end) {
+      return false;
     }
-    if (StringUtils.isNotEmpty(endTime)) {
-      end = format.parse(endTime).getTime();
-    }
-    if (now > end || now < start) {
+    if (now < start) {
       return false;
     }
     return true;

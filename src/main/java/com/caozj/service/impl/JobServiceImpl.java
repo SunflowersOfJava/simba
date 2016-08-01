@@ -1,7 +1,7 @@
 package com.caozj.service.impl;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -23,7 +23,6 @@ import com.caozj.framework.util.common.ReflectUtil;
 import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.framework.util.schedule.ScheduleUtil;
 import com.caozj.model.Job;
-import com.caozj.model.constant.ConstantData;
 import com.caozj.model.constant.JobData;
 import com.caozj.model.enums.JobStatus;
 import com.caozj.service.JobService;
@@ -49,14 +48,144 @@ public class JobServiceImpl implements JobService {
   @Autowired
   private DistributedUtil distributedUtil;
 
-  private SimpleDateFormat format = new SimpleDateFormat(ConstantData.TIME_FORMAT);
-
   @Override
   public void add(Job job) throws SchedulerException, ParseException {
     checkJob(job);
+    long now = System.currentTimeMillis();
+    if (now > job.getEndTimeL()) {
+      throw new RuntimeException("任务的结束执行时间不能早于当前时间");
+    }
     job.setStatus(JobStatus.WAITING.getName());
     jobDao.add(job);
     executeJobDataCluster(new JobClusterData(job, "add"));
+  }
+
+  @Override
+  public void update(Job job) throws SchedulerException, ParseException {
+    checkJob(job);
+    Job oldJob = this.get(job.getId());
+    job.setExeCount(oldJob.getExeCount());
+    long now = System.currentTimeMillis();
+    if (job.getStatus().equals(JobStatus.SUSPEND.getName())) {
+      if (now > job.getEndTimeL()
+          || (job.getMaxExeCount() > 0 && job.getMaxExeCount() <= job.getExeCount())) {
+        job.setStatus(JobStatus.FINISH.getName());
+      } else {
+        job.setStatus(JobStatus.SUSPEND.getName());
+      }
+    } else if (job.getStatus().equals(JobStatus.FINISH.getName())) {
+      if ((job.getMaxExeCount() < 1 || job.getMaxExeCount() > job.getExeCount())
+          && (now <= job.getEndTimeL())) {
+        job.setStatus(JobStatus.WAITING.getName());
+        executeJobDataCluster(new JobClusterData(job, "add"));
+      } else {
+        job.setStatus(JobStatus.FINISH.getName());
+      }
+    } else {
+      if ((job.getMaxExeCount() > 1 && job.getMaxExeCount() <= job.getExeCount())
+          || now > job.getEndTimeL()) {
+        job.setStatus(JobStatus.FINISH.getName());
+        executeJobDataCluster(new JobClusterData(job, "remove"));
+        executeJobScheduleCluster(new JobClusterData(job, "remove"));
+      } else {
+        job.setStatus(JobStatus.WAITING.getName());
+        if (job.getStatus().equals(JobStatus.RUNNING.getName())
+            || job.getStatus().equals(JobStatus.ERROR.getName())) {
+          executeJobScheduleCluster(new JobClusterData(job, "remove"));
+        } else {
+          executeJobDataCluster(new JobClusterData(job, "remove"));
+        }
+        executeJobDataCluster(new JobClusterData(job, "add"));
+      }
+    }
+    jobDao.update(job);
+  }
+
+  @Override
+  public void execute(Job job) {
+    long end = job.getEndTimeL();
+    if (!checkExecuteJob(job, end)) {
+      return;
+    }
+    try {
+      if (job.getStatus().equals(JobStatus.WAITING.getName())) {
+        job.setStatus(JobStatus.RUNNING.getName());
+      }
+      ReflectUtil.invokeObjectMethod(job.getClassName(), job.getMethodName());
+    } catch (Exception e) {
+      logger.info("执行任务异常:" + job.toString(), e);
+      job.setStatus(JobStatus.ERROR.getName());
+    }
+    job.setExeCount(job.getExeCount() + 1);
+    if (job.getExeCount() == job.getMaxExeCount() || System.currentTimeMillis() >= end) {
+      deleteFinishJob(job);
+    } else {
+      jobDao.update(job);
+    }
+  }
+
+  @Override
+  public void startAllWaitingJobs() {
+    List<Job> allJobs = JobData.getInstance().getAll();
+    startJobs(allJobs);
+  }
+
+  @Override
+  public void initJobData() {
+    List<Job> list = this.listBy("status", JobStatus.WAITING.getName());
+    JobData.getInstance().add(list);
+  }
+
+  @Override
+  public void initStartJobs() {
+    List<Job> allJobs = this.listAll();
+    startJobs(allJobs);
+  }
+
+  private void startJobs(List<Job> allJobs) {
+    List<Job> successJobs = new ArrayList<>(allJobs.size());
+    allJobs.forEach((job) -> {
+      try {
+        if (ScheduleUtil.getInstance().addJob(job)) {
+          successJobs.add(job);
+        }
+      } catch (Exception e) {
+        logger.error("启动任务异常:" + job.toString(), e);
+      }
+    });
+    successJobs.forEach((job) -> {
+      JobData.getInstance().remove(job);
+    });
+  }
+
+  @Override
+  public void startJob(int id) throws SchedulerException, ParseException {
+    Job job = this.get(id);
+    if (!job.getStatus().equals(JobStatus.SUSPEND.getName())) {
+      throw new RuntimeException("任务状态不是暂停，不需要重新启动");
+    }
+    if (job.getMaxExeCount() > 0 && job.getMaxExeCount() <= job.getExeCount()) {
+      throw new RuntimeException("任务已经达到最大执行次数");
+    }
+    if (job.getEndTimeL() < System.currentTimeMillis()) {
+      throw new RuntimeException("任务已经结束,不能启动");
+    }
+    job.setStatus(JobStatus.WAITING.getName());
+    jobDao.update(job);
+    executeJobDataCluster(new JobClusterData(job, "add"));
+  }
+
+  @Override
+  public void stopJob(int id) throws SchedulerException, ParseException {
+    Job job = this.get(id);
+    if (job.getStatus().equals(JobStatus.FINISH.getName())
+        || job.getStatus().equals(JobStatus.SUSPEND.getName())) {
+      throw new RuntimeException("任务不能暂停");
+    }
+    job.setStatus(JobStatus.SUSPEND.getName());
+    jobDao.update(job);
+    executeJobDataCluster(new JobClusterData(job, "remove"));
+    executeJobScheduleCluster(new JobClusterData(job, "remove"));
   }
 
   /**
@@ -108,23 +237,6 @@ public class JobServiceImpl implements JobService {
   @Transactional(readOnly = true)
   public List<Job> listAll() {
     return jobDao.listAll();
-  }
-
-  @Override
-  public void update(Job job) throws SchedulerException, ParseException {
-    checkJob(job);
-    Job oldJob = this.get(job.getId());
-    job.setExeCount(oldJob.getExeCount());
-    job.setStatus(oldJob.getStatus());
-    jobDao.update(job);
-    if (job.getStatus().equals(JobStatus.FINISH.getName())
-        || job.getStatus().equals(JobStatus.SUSPEND.getName())) {
-      return;
-    }
-    if (!job.getStatus().equals(JobStatus.WAITING.getName())) {
-      executeJobScheduleCluster(new JobClusterData(job, "remove"));
-      executeJobDataCluster(new JobClusterData(job, "add"));
-    }
   }
 
   @Override
@@ -190,48 +302,6 @@ public class JobServiceImpl implements JobService {
     return jobDao.pageByOr(field1, value1, field2, value2, page);
   }
 
-  @Override
-  public void execute(Job job) {
-    long end = getEndTime(job);
-    if (!checkExecuteJob(job, end)) {
-      return;
-    }
-    try {
-      if (job.getStatus().equals(JobStatus.WAITING.getName())) {
-        job.setStatus(JobStatus.RUNNING.getName());
-      }
-      ReflectUtil.invokeObjectMethod(job.getClassName(), job.getMethodName());
-    } catch (Exception e) {
-      logger.info("执行任务异常:" + job.toString(), e);
-      job.setStatus(JobStatus.ERROR.getName());
-    }
-    job.setExeCount(job.getExeCount() + 1);
-    if (job.getExeCount() == job.getMaxExeCount() || System.currentTimeMillis() >= end) {
-      deleteFinishJob(job);
-    } else {
-      jobDao.update(job);
-    }
-  }
-
-  /**
-   * 获取任务的结束执行时间
-   * 
-   * @param job
-   * @return
-   */
-  private long getEndTime(Job job) {
-    String endTime = job.getEndTime();
-    long end = Long.MAX_VALUE;
-    if (StringUtils.isNotEmpty(endTime)) {
-      try {
-        end = format.parse(endTime).getTime();
-      } catch (ParseException e) {
-        logger.error("解析任务结束执行时间异常", e);
-      }
-    }
-    return end;
-  }
-
   /**
    * 检查任务是否能被执行
    * 
@@ -272,18 +342,6 @@ public class JobServiceImpl implements JobService {
     }
   }
 
-  @Override
-  public void startAllWaitingJobs() {
-    List<Job> allJobs = JobData.getInstance().getAll();
-    allJobs.forEach((job) -> {
-      try {
-        ScheduleUtil.getInstance().addJob(job);
-      } catch (Exception e) {
-        logger.error("启动任务异常:" + job.toString(), e);
-      }
-    });
-  }
-
   /**
    * 执行任务的集群处理
    * 
@@ -321,51 +379,6 @@ public class JobServiceImpl implements JobService {
       distributedUtil.executeInCluster(
           new ClusterMessage(JobClusterExecute.class.getCanonicalName(), clustData));
     }
-  }
-
-  @Override
-  public void initJobData() {
-    List<Job> list = this.listBy("status", JobStatus.WAITING.getName());
-    JobData.getInstance().add(list);
-  }
-
-  @Override
-  public void initStartJobs() {
-    List<Job> allJobs = this.listAll();
-    allJobs.forEach((job) -> {
-      try {
-        ScheduleUtil.getInstance().addJob(job);
-      } catch (Exception e) {
-        logger.error("启动任务异常:" + job.toString(), e);
-      }
-    });
-  }
-
-  @Override
-  public void startJob(int id) throws SchedulerException, ParseException {
-    Job job = this.get(id);
-    if (!job.getStatus().equals(JobStatus.SUSPEND.getName())) {
-      throw new RuntimeException("任务状态不是暂停，不需要重新启动");
-    }
-    if (job.getMaxExeCount() > 0 && job.getMaxExeCount() <= job.getExeCount()) {
-      throw new RuntimeException("任务已经达到最大执行次数");
-    }
-    job.setStatus(JobStatus.WAITING.getName());
-    jobDao.update(job);
-    executeJobDataCluster(new JobClusterData(job, "add"));
-  }
-
-  @Override
-  public void stopJob(int id) throws SchedulerException, ParseException {
-    Job job = this.get(id);
-    if (job.getStatus().equals(JobStatus.FINISH.getName())
-        || job.getStatus().equals(JobStatus.SUSPEND.getName())) {
-      throw new RuntimeException("任务不能暂停");
-    }
-    job.setStatus(JobStatus.SUSPEND.getName());
-    jobDao.update(job);
-    executeJobDataCluster(new JobClusterData(job, "remove"));
-    executeJobScheduleCluster(new JobClusterData(job, "remove"));
   }
 
 }

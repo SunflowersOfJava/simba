@@ -1,5 +1,7 @@
 package com.caozj.model.constant;
 
+import java.text.SimpleDateFormat;
+
 /**
  * 常量类
  * 
@@ -57,4 +59,9 @@ public interface ConstantData {
    * 定时器使用的线程池数
    */
   int SCHEDULE_POLL_SIZE = 100;
+
+  /**
+   * 时间格式化
+   */
+  SimpleDateFormat format = new SimpleDateFormat(ConstantData.TIME_FORMAT);
 }

@@ -1,8 +1,12 @@
 package com.caozj.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.caozj.codegenerate.DescAnnotation;
+import com.caozj.model.constant.ConstantData;
 
 /**
  * 定时任务对象
@@ -88,6 +92,58 @@ public class Job implements Serializable {
    */
   @DescAnnotation(desc = "间隔时间")
   private Integer intervalTime = 0;
+
+  /**
+   * 以下是扩展属性，不保存到数据库，只是临时使用
+   */
+  private Long startTimeL;
+
+  private Long endTimeL;
+
+  /**
+   * 获取任务的结束执行时间
+   * 
+   * @param job
+   * @return
+   */
+  public long getEndTimeL() {
+    if (endTimeL != null) {
+      return endTimeL;
+    }
+    endTimeL = Long.MAX_VALUE;
+    String endTime = this.getEndTime();
+    if (StringUtils.isNotEmpty(endTime)) {
+      try {
+        endTimeL = ConstantData.format.parse(endTime).getTime();
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
+    }
+    return endTimeL;
+  }
+
+  /**
+   * 获取任务的开始执行时间
+   * 
+   * @param job
+   * @return
+   */
+  public long getStartTimeL() {
+    if (startTimeL == 0) {
+
+    }
+
+    String startTime = this.getStartTime();
+    long start = 0;
+    if (StringUtils.isNotEmpty(startTime)) {
+      try {
+        start = ConstantData.format.parse(startTime).getTime();
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
+    }
+    return start;
+  }
 
   public Integer getDelayTime() {
     return delayTime == null ? 0 : delayTime;
@@ -193,6 +249,8 @@ public class Job implements Serializable {
   public void setMaxExeCount(Integer maxExeCount) {
     this.maxExeCount = maxExeCount;
   }
+
+
 
   @Override
   public String toString() {
