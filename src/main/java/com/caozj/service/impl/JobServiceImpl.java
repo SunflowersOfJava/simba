@@ -104,20 +104,23 @@ public class JobServiceImpl implements JobService {
     if (!checkExecuteJob(job, end)) {
       return;
     }
+    boolean updateStatus = false;
     try {
       if (job.getStatus().equals(JobStatus.WAITING.getName())) {
         job.setStatus(JobStatus.RUNNING.getName());
+        updateStatus = true;
       }
       ReflectUtil.invokeObjectMethod(job.getClassName(), job.getMethodName());
     } catch (Exception e) {
       logger.info("执行任务异常:" + job.toString(), e);
       job.setStatus(JobStatus.ERROR.getName());
+      updateStatus = true;
     }
     job.setExeCount(job.getExeCount() + 1);
     jobDao.incrExeCount(job.getId());
     if (job.getExeCount() == job.getMaxExeCount() || System.currentTimeMillis() >= end) {
       deleteFinishJob(job);
-    } else {
+    } else if (updateStatus) {
       jobDao.updateStatus(job.getId(), job.getStatus());
     }
   }
