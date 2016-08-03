@@ -65,6 +65,7 @@ public class JobServiceImpl implements JobService {
     checkJob(job);
     Job oldJob = this.get(job.getId());
     job.setStatus(oldJob.getStatus());
+    job.setExeCount(oldJob.getExeCount());
     long now = System.currentTimeMillis();
     if (job.getStatus().equals(JobStatus.SUSPEND.getName())) {
       if (now > job.getEndTimeL()
