@@ -48,6 +48,16 @@ public class JobDaoImpl implements JobDao {
   }
 
   @Override
+  public void updateWithoutExeCount(Job job) {
+    String sql = "update " + table
+        + " set  name = ? , description = ? , cronExpression = ? , startTime = ? , endTime = ? ,maxExeCount = ? , status = ? , className = ? , methodName = ? , delayTime = ? , intervalTime = ?  where id = ?  ";
+    jdbc.updateForBoolean(sql, job.getName(), job.getDescription(), job.getCronExpression(),
+        job.getStartTime(), job.getEndTime(), job.getMaxExeCount(), job.getStatus(),
+        job.getClassName(), job.getMethodName(), job.getDelayTime(), job.getIntervalTime(),
+        job.getId());
+  }
+
+  @Override
   public void delete(int id) {
     String sql = "delete from " + table + " where id = ? ";
     jdbc.updateForBoolean(sql, id);
@@ -145,6 +155,18 @@ public class JobDaoImpl implements JobDao {
   public int countBy(String field, Object value) {
     String sql = "select count(*) from " + table + " where " + field + " = ? ";
     return jdbc.queryForInt(sql, value);
+  }
+
+  @Override
+  public void updateStatus(int id, String status) {
+    String sql = "update " + table + " set status = ? where id = ? ";
+    jdbc.updateForBoolean(sql, status, id);
+  }
+
+  @Override
+  public void incrExeCount(int id) {
+    String sql = "update " + table + " set exeCount = exeCount + 1 where id = ? ";
+    jdbc.updateForBoolean(sql, id);
   }
 
 }

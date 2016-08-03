@@ -1,7 +1,6 @@
 package com.caozj.framework.util.schedule;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,8 +34,6 @@ public class ScheduleUtil {
   private ConcurrentTaskScheduler ct = null;
 
   private Map<Integer, ScheduledFuture<?>> scheduledFutrueMap = null;
-
-  private SimpleDateFormat format = new SimpleDateFormat(ConstantData.TIME_FORMAT);
 
   private ScheduleUtil() {
     init();
@@ -122,24 +119,31 @@ public class ScheduleUtil {
 
   private ScheduledFuture<?> startIntervalJob(Job job) throws ParseException {
     ScheduledFuture<?> scheduledFuture;
-    String startTime = job.getStartTime();
-    long start = System.currentTimeMillis();
-    if (StringUtils.isNotEmpty(startTime)) {
-      start = format.parse(startTime).getTime();
+    long start = job.getStartTimeL();
+    long now = System.currentTimeMillis();
+    if (start <= now) {
+      start = now;
     }
-    start = start + job.getDelayTime();
-    int intervalTime = job.getIntervalTime();
+    start = start + job.getDelayTime() * 1000;
+    int intervalTime = job.getIntervalTime() * 1000;
     Date startDate = new Date(start);
     if (intervalTime > 0) {
       scheduledFuture = ct.scheduleAtFixedRate(() -> {
-        ApplicationContextUtil.getBean(JobService.class).execute(job);
+        executeJob(job);
       }, startDate, intervalTime);
     } else {
       scheduledFuture = ct.schedule(() -> {
-        ApplicationContextUtil.getBean(JobService.class).execute(job);
+        executeJob(job);
       }, startDate);
     }
     return scheduledFuture;
+  }
+
+  private void executeJob(Job job) {
+    JobService jobService = ApplicationContextUtil.getBean(JobService.class);
+    if (jobService != null) {
+      jobService.execute(job);
+    }
   }
 
   private ScheduledFuture<?> startCronJob(Job job) {

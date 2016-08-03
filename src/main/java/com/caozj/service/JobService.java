@@ -52,6 +52,11 @@ public interface JobService {
    */
   void stopJob(int id) throws SchedulerException, ParseException;
 
+  /**
+   * 处理所有已经完成的任务
+   */
+  void dealFinishJob();
+
   void add(Job job) throws SchedulerException, ParseException;
 
   void update(Job job) throws SchedulerException, ParseException;

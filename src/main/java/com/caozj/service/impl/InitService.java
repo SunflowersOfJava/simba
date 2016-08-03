@@ -45,6 +45,7 @@ public class InitService {
     userService.checkAndCreateUserExt();
     orgService.checkAndCreateOrgExt();
     registryTableService.init();
+    jobService.dealFinishJob();
     jobService.initJobData();
     jobService.initStartJobs();
     printlnlog();

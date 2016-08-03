@@ -17,7 +17,13 @@ public interface JobDao {
 
   void update(Job job);
 
+  void updateWithoutExeCount(Job job);
+
   void delete(int id);
+
+  void updateStatus(int id, String status);
+
+  void incrExeCount(int id);
 
   List<Job> listAll();
 

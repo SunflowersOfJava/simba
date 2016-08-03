@@ -64,7 +64,7 @@ public class JobServiceImpl implements JobService {
   public void update(Job job) throws SchedulerException, ParseException {
     checkJob(job);
     Job oldJob = this.get(job.getId());
-    job.setExeCount(oldJob.getExeCount());
+    job.setStatus(oldJob.getStatus());
     long now = System.currentTimeMillis();
     if (job.getStatus().equals(JobStatus.SUSPEND.getName())) {
       if (now > job.getEndTimeL()
@@ -89,16 +89,12 @@ public class JobServiceImpl implements JobService {
         executeJobScheduleCluster(new JobClusterData(job, "remove"));
       } else {
         job.setStatus(JobStatus.WAITING.getName());
-        if (job.getStatus().equals(JobStatus.RUNNING.getName())
-            || job.getStatus().equals(JobStatus.ERROR.getName())) {
-          executeJobScheduleCluster(new JobClusterData(job, "remove"));
-        } else {
-          executeJobDataCluster(new JobClusterData(job, "remove"));
-        }
+        executeJobDataCluster(new JobClusterData(job, "remove"));
+        executeJobScheduleCluster(new JobClusterData(job, "remove"));
         executeJobDataCluster(new JobClusterData(job, "add"));
       }
     }
-    jobDao.update(job);
+    jobDao.updateWithoutExeCount(job);
   }
 
   @Override
@@ -117,10 +113,11 @@ public class JobServiceImpl implements JobService {
       job.setStatus(JobStatus.ERROR.getName());
     }
     job.setExeCount(job.getExeCount() + 1);
+    jobDao.incrExeCount(job.getId());
     if (job.getExeCount() == job.getMaxExeCount() || System.currentTimeMillis() >= end) {
       deleteFinishJob(job);
     } else {
-      jobDao.update(job);
+      jobDao.updateStatus(job.getId(), job.getStatus());
     }
   }
 
@@ -140,6 +137,23 @@ public class JobServiceImpl implements JobService {
   public void initStartJobs() {
     List<Job> allJobs = this.listAll();
     startJobs(allJobs);
+  }
+
+  @Override
+  public void dealFinishJob() {
+    List<Job> allJobs = this.listAll();
+    allJobs.forEach((job) -> {
+      if (!job.getStatus().equals(JobStatus.FINISH.getName())) {
+        if (job.getMaxExeCount() > 0 && job.getMaxExeCount() <= job.getExeCount()) {
+          job.setStatus(JobStatus.FINISH.getName());
+        } else if (System.currentTimeMillis() > job.getEndTimeL()) {
+          job.setStatus(JobStatus.FINISH.getName());
+        }
+        if (job.getStatus().equals(JobStatus.FINISH.getName())) {
+          jobDao.updateStatus(job.getId(), job.getStatus());
+        }
+      }
+    });
   }
 
   private void startJobs(List<Job> allJobs) {
@@ -171,7 +185,7 @@ public class JobServiceImpl implements JobService {
       throw new RuntimeException("任务已经结束,不能启动");
     }
     job.setStatus(JobStatus.WAITING.getName());
-    jobDao.update(job);
+    jobDao.updateStatus(job.getId(), job.getStatus());
     executeJobDataCluster(new JobClusterData(job, "add"));
   }
 
@@ -183,7 +197,7 @@ public class JobServiceImpl implements JobService {
       throw new RuntimeException("任务不能暂停");
     }
     job.setStatus(JobStatus.SUSPEND.getName());
-    jobDao.update(job);
+    jobDao.updateStatus(job.getId(), job.getStatus());
     executeJobDataCluster(new JobClusterData(job, "remove"));
     executeJobScheduleCluster(new JobClusterData(job, "remove"));
   }
@@ -338,7 +352,7 @@ public class JobServiceImpl implements JobService {
     }
     if (!job.getStatus().equals(JobStatus.FINISH.getName())) {
       job.setStatus(JobStatus.FINISH.getName());
-      jobDao.update(job);
+      jobDao.updateStatus(job.getId(), job.getStatus());
     }
   }
 
@@ -380,5 +394,7 @@ public class JobServiceImpl implements JobService {
           new ClusterMessage(JobClusterExecute.class.getCanonicalName(), clustData));
     }
   }
+
+
 
 }
