@@ -16,6 +16,7 @@
 
 	<bean:bean id="jobRepository"
 		class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
+		<bean:property name="transactionManager" ref="transactionManager"  />
 	</bean:bean>
 
 	<bean:bean id="jobLauncher"
@@ -23,17 +24,13 @@
 		<bean:property name="jobRepository" ref="jobRepository" />
 	</bean:bean>
 
-	<bean:bean id="batchTransactionManager"
-		class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
-
-
 	<!-- 
 	<job id="helloWorldJob">
 		<step id="step_hello" next="step_world">
-			<tasklet ref="testTasklet" transaction-manager="batchTransactionManager"></tasklet>
+			<tasklet ref="testTasklet" />
 		</step>
 		<step id="step_world">
-			<tasklet ref="testTasklet" transaction-manager="batchTransactionManager"></tasklet>
+			<tasklet ref="testTasklet" />
 		</step>
 	</job>
 	 -->
