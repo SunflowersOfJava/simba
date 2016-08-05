@@ -683,7 +683,7 @@
 		<dependency>
 			<groupId>org.springframework.integration</groupId>
 			<artifactId>spring-integration-core</artifactId>
-			<version>${spring.batch.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
