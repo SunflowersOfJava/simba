@@ -1,7 +1,7 @@
 package com.caozj.controller.vo;
 
-import com.caozj.model.permission.Org;
-import com.caozj.model.permission.OrgExt;
+import com.caozj.permission.model.Org;
+import com.caozj.permission.model.OrgExt;
 
 public class OrgVo {
 

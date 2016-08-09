@@ -3,7 +3,7 @@ package com.caozj.test;
 import com.caozj.codegenerate.DescAnnotation;
 import com.caozj.framework.util.common.AnnotationUtil;
 import com.caozj.model.RegistryTable;
-import com.caozj.model.permission.User;
+import com.caozj.permission.model.User;
 
 public class TA {
 

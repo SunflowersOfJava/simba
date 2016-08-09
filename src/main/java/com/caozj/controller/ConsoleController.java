@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.caozj.controller.form.GroovyExecuteForm;
 import com.caozj.exception.ForbidException;
 import com.caozj.framework.model.json.JsonResult;
-import com.caozj.framework.util.common.EncryptUtil;
+import com.caozj.framework.util.code.EncryptUtil;
 import com.caozj.framework.util.groovy.GroovyUtil;
 
 /**

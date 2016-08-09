@@ -11,12 +11,12 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 
 import com.caozj.framework.util.common.PathUtil;
-import com.caozj.model.permission.Org;
-import com.caozj.model.permission.OrgExt;
-import com.caozj.model.permission.Permission;
-import com.caozj.model.permission.Role;
-import com.caozj.model.permission.User;
-import com.caozj.model.permission.UserExt;
+import com.caozj.permission.model.Org;
+import com.caozj.permission.model.OrgExt;
+import com.caozj.permission.model.Permission;
+import com.caozj.permission.model.Role;
+import com.caozj.permission.model.User;
+import com.caozj.permission.model.UserExt;
 
 /**
  * Session工具类

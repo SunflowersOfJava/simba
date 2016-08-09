@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.caozj.framework.util.common.ListUtil;
+import com.caozj.framework.util.collection.ListUtil;
 import com.caozj.test.A;
 
 public class TEight {

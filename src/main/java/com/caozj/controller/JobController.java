@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.caozj.controller.form.EasyUIPageForm;
 import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.model.json.JsonResult;
-import com.caozj.framework.util.common.JsonUtil;
 import com.caozj.framework.util.jdbc.Pager;
+import com.caozj.framework.util.json.JsonUtil;
 import com.caozj.model.Job;
 import com.caozj.service.JobService;
 

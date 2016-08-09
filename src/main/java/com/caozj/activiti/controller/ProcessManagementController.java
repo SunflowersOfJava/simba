@@ -31,8 +31,8 @@ import com.caozj.activiti.vo.ProcessVo;
 import com.caozj.controller.form.EasyUIPageForm;
 import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.model.json.JsonResult;
-import com.caozj.framework.util.common.FileUtils;
-import com.caozj.framework.util.common.JsonUtil;
+import com.caozj.framework.util.file.FileUtils;
+import com.caozj.framework.util.json.JsonUtil;
 
 /**
  * 流程管理Controller

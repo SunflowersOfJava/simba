@@ -8,9 +8,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.caozj.common.CustomizedPropertyPlaceholderConfigurer;
-import com.caozj.framework.util.common.JsonUtil;
-import com.caozj.framework.util.common.PropertiesUtil;
+import com.caozj.framework.util.file.PropertiesUtil;
 import com.caozj.framework.util.http.HttpClientUtil;
+import com.caozj.framework.util.json.JsonUtil;
 
 /**
  * 快递查询工具类

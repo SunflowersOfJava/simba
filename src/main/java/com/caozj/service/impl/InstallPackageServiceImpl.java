@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.caozj.dao.InstallPackageDao;
-import com.caozj.framework.util.common.DateUtil;
+import com.caozj.framework.util.date.DateUtil;
 import com.caozj.model.InstallPackage;
 import com.caozj.service.InstallPackageService;
 

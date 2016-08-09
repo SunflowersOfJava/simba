@@ -30,7 +30,7 @@ import com.caozj.activiti.vo.TaskVo;
 import com.caozj.framework.model.json.JsonResult;
 import com.caozj.framework.util.common.StringUtil;
 import com.caozj.model.constant.ConstantData;
-import com.caozj.service.permission.UserService;
+import com.caozj.permission.service.UserService;
 
 import freemarker.core.ParseException;
 import freemarker.template.MalformedTemplateNameException;

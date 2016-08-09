@@ -21,9 +21,9 @@ import com.caozj.activiti.util.ActivitiObjectUtil;
 import com.caozj.activiti.vo.AttachmentVo;
 import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.model.json.JsonResult;
-import com.caozj.framework.util.common.FileUtils;
-import com.caozj.framework.util.common.JsonUtil;
-import com.caozj.service.permission.UserService;
+import com.caozj.framework.util.file.FileUtils;
+import com.caozj.framework.util.json.JsonUtil;
+import com.caozj.permission.service.UserService;
 
 /**
  * 流程附件Controller

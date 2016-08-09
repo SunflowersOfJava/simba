@@ -8,7 +8,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
-import com.caozj.framework.util.common.PropertiesUtil;
+import com.caozj.framework.util.file.PropertiesUtil;
 
 /**
  * 自定义PropertyPlaceholderConfigurer返回properties内容

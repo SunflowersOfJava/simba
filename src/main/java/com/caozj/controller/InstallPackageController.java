@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.caozj.framework.model.json.JsonResult;
-import com.caozj.framework.util.common.JsonUtil;
 import com.caozj.framework.util.common.ServerUtil;
+import com.caozj.framework.util.json.JsonUtil;
 import com.caozj.model.InstallPackage;
 import com.caozj.service.InstallPackageService;
 

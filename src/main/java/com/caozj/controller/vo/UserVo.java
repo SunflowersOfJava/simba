@@ -1,7 +1,7 @@
 package com.caozj.controller.vo;
 
-import com.caozj.model.permission.User;
-import com.caozj.model.permission.UserExt;
+import com.caozj.permission.model.User;
+import com.caozj.permission.model.UserExt;
 
 public class UserVo {
 

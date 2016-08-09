@@ -7,8 +7,6 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.caozj.activiti.util.ActivitiObjectUtil;
 import com.caozj.activiti.vo.ProcessVo;
 import com.caozj.framework.model.easyui.PageGrid;
-import com.caozj.framework.util.common.JsonUtil;
+import com.caozj.framework.util.json.JsonUtil;
 
 /**
  * 启动流程
@@ -28,8 +26,6 @@ import com.caozj.framework.util.common.JsonUtil;
 @Controller
 @RequestMapping("/processStart")
 public class ProcessStartController {
-
-  private static final Log logger = LogFactory.getLog(ProcessStartController.class);
 
   @Autowired
   private RepositoryService repositoryService;

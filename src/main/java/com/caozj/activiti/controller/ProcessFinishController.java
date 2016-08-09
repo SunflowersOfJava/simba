@@ -19,7 +19,7 @@ import com.caozj.activiti.vo.ProcessInstanceVo;
 import com.caozj.controller.form.EasyUIPageForm;
 import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.model.json.JsonResult;
-import com.caozj.framework.util.common.JsonUtil;
+import com.caozj.framework.util.json.JsonUtil;
 import com.caozj.model.constant.ConstantData;
 
 /**

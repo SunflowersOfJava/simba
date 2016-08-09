@@ -5,8 +5,8 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.caozj.framework.util.common.JsonUtil;
 import com.caozj.framework.util.http.HttpClientUtil;
+import com.caozj.framework.util.json.JsonUtil;
 import com.caozj.model.constant.ConstantData;
 
 /**

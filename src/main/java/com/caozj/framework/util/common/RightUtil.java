@@ -9,6 +9,8 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Component;
 
+import com.caozj.framework.util.code.DesUtil;
+
 @Component
 public class RightUtil {
 

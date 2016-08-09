@@ -20,9 +20,9 @@ import com.caozj.activiti.util.ActivitiObjectUtil;
 import com.caozj.activiti.vo.TaskVo;
 import com.caozj.controller.form.EasyUIPageForm;
 import com.caozj.framework.model.easyui.PageGrid;
-import com.caozj.framework.util.common.JsonUtil;
+import com.caozj.framework.util.json.JsonUtil;
 import com.caozj.model.constant.ConstantData;
-import com.caozj.service.permission.UserService;
+import com.caozj.permission.service.UserService;
 
 /**
  * 已办任务

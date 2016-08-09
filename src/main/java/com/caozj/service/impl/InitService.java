@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.caozj.annotation.TimeAnnotation;
 import com.caozj.framework.util.upload.UploadUtil;
+import com.caozj.permission.service.OrgService;
+import com.caozj.permission.service.UserService;
 import com.caozj.service.JobService;
 import com.caozj.service.RegistryTableService;
-import com.caozj.service.permission.OrgService;
-import com.caozj.service.permission.UserService;
 
 /**
  * 初始化类

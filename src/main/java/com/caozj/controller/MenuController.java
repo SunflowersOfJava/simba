@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.caozj.framework.model.json.JsonResult;
 import com.caozj.framework.session.SessionUtil;
-import com.caozj.framework.util.common.JsonUtil;
+import com.caozj.framework.util.json.JsonUtil;
 import com.caozj.model.Menu;
 import com.caozj.model.constant.ConstantData;
 import com.caozj.service.MenuService;

@@ -14,9 +14,9 @@ import com.caozj.activiti.util.ActivitiObjectUtil;
 import com.caozj.activiti.vo.ActivityVo;
 import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.model.json.JsonResult;
-import com.caozj.framework.util.common.JsonUtil;
-import com.caozj.model.permission.User;
-import com.caozj.service.permission.UserService;
+import com.caozj.framework.util.json.JsonUtil;
+import com.caozj.permission.model.User;
+import com.caozj.permission.service.UserService;
 
 /**
  * 流程工具Controller

@@ -14,9 +14,9 @@ import org.springframework.web.socket.WebSocketSession;
 import com.caozj.chat.util.ChatCache;
 import com.caozj.framework.session.SessionUtil;
 import com.caozj.framework.util.ApplicationContextUtil;
-import com.caozj.framework.util.common.JsonUtil;
+import com.caozj.framework.util.json.JsonUtil;
 import com.caozj.model.ChatRecord;
-import com.caozj.model.permission.User;
+import com.caozj.permission.model.User;
 import com.caozj.service.ChatRecordService;
 
 /**
