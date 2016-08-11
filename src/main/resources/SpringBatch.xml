@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bean:beans xmlns="http://www.springframework.org/schema/batch"
-    xmlns:bean="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
-    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	xmlns:bean="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
 	http://www.springframework.org/schema/tx 
 	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd  
@@ -16,7 +16,7 @@
 
 	<bean:bean id="jobRepository"
 		class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
-		<bean:property name="transactionManager" ref="transactionManager"  />
+		<bean:property name="transactionManager" ref="transactionManager" />
 	</bean:bean>
 
 	<bean:bean id="jobLauncher"
@@ -24,14 +24,37 @@
 		<bean:property name="jobRepository" ref="jobRepository" />
 	</bean:bean>
 
-	<!-- 
-	<job id="helloWorldJob">
-		<step id="step_hello" next="step_world">
-			<tasklet ref="testTasklet" />
-		</step>
-		<step id="step_world">
-			<tasklet ref="testTasklet" />
+	<!-- <job id="helloWorldJob"> <step id="step_hello" next="step_world"> <tasklet 
+		ref="testTasklet" /> </step> <step id="step_world"> <tasklet ref="testTasklet" 
+		/> </step> </job> -->
+	<bean:bean id="reader"
+		class="org.springframework.batch.item.file.FlatFileItemReader">
+		<bean:property name="resource" value="file:d:/reader.txt" />
+		<bean:property name="linesToSkip" value="1" />
+		<bean:property name="lineMapper">
+			<bean:bean
+				class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+				<bean:property name="lineTokenizer">
+					<bean:bean
+						class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+						<bean:property name="names"
+							value="id,code,value,typeID,description" />
+					</bean:bean>
+				</bean:property>
+				<bean:property name="fieldSetMapper">
+					<bean:bean class="com.caozj.test.batch.TestFieldSetMapper" />
+				</bean:property>
+			</bean:bean>
+		</bean:property>
+	</bean:bean>
+
+	<bean:bean id="writer" class="com.caozj.test.batch.ItemWriter" />
+
+	<job id="testJob">
+		<step id="testStep">
+			<tasklet>
+				<chunk reader="reader" writer="writer" commit-interval="2" />
+			</tasklet>
 		</step>
 	</job>
-	 -->
 </bean:beans>
