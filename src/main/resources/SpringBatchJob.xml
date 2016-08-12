@@ -22,8 +22,14 @@
 	<job id="testJob">
 		<step id="testStep">
 			<tasklet>
-				<chunk reader="reader" writer="writer" commit-interval="2" />
+				<chunk reader="reader" writer="writer" commit-interval="2"
+					skip-limit="5">
+					<skippable-exception-classes>
+						<include
+							class="org.springframework.batch.item.file.FlatFileParseException" />
+					</skippable-exception-classes>
+				</chunk>
 			</tasklet>
-		</step> 
+		</step>
 	</job>
 </bean:beans>
