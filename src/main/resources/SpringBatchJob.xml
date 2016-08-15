@@ -20,14 +20,24 @@
 		/> </step> </job> -->
 
 	<job id="testJob">
+		<listeners>
+			<listener ref="testJobListener" />
+		</listeners>
 		<step id="testStep">
 			<tasklet>
-				<chunk reader="reader" writer="writer" commit-interval="2"
+				<listeners>
+					<listener ref="testStepListener"/>
+					<listener ref="testRetryListener"/>
+				</listeners>
+				<chunk reader="reader" writer="writer" commit-interval="2" processor="process"
 					skip-limit="5">
 					<skippable-exception-classes>
 						<include
 							class="org.springframework.batch.item.file.FlatFileParseException" />
 					</skippable-exception-classes>
+					<listeners>
+						<listener ref="testChunkListener"/>	
+					</listeners>
 				</chunk>
 			</tasklet>
 		</step>
