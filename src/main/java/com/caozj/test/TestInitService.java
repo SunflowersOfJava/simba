@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -37,9 +36,11 @@ public class TestInitService {
   @PostConstruct
   private void init() throws IOException, URISyntaxException, JobExecutionAlreadyRunningException,
       JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
-    JobExecution result = jobLauncher.run(testJob, new JobParametersBuilder().addLong("date", System.currentTimeMillis()).toJobParameters());
-    System.out.println("******1****************" + result.toString());
-    JobExecution result2 = jobLauncher.run(testJob, new JobParametersBuilder().addLong("date", System.currentTimeMillis()).toJobParameters());
+    // JobExecution result = jobLauncher.run(testJob, new JobParametersBuilder().addLong("date",
+    // System.currentTimeMillis()).toJobParameters());
+    // System.out.println("******1****************" + result.toString());
+    JobExecution result2 = jobLauncher.run(testJob,
+        new JobParametersBuilder().addLong("date", System.currentTimeMillis()).toJobParameters());
     // /* 处理结束，控制台打印处理结果 */
     System.out.println("*******2***************" + result2.toString());
   }

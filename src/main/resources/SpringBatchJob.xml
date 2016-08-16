@@ -28,6 +28,11 @@
 				<listeners>
 					<listener ref="testStepListener"/>
 					<listener ref="testRetryListener"/>
+					<listener ref="testItemReaderListener"/>
+					<listener ref="testItemWriterListener"/>
+					<listener ref="testItemProcessListener"/>
+					<listener ref="testSkipListener"/>
+					<listener ref="testRepeatListener"/>
 				</listeners>
 				<chunk reader="reader" writer="writer" commit-interval="2" processor="process"
 					skip-limit="5">
