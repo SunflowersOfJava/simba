@@ -24,6 +24,8 @@
 	<bean id="jobLauncher"
 		class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
 		<property name="jobRepository" ref="jobRepository" />
+		<!-- async to execute job -->
+		<property name="taskExecutor" ref="taskExecutor" />
 	</bean>
 
 	<bean id="reader" class="org.springframework.batch.item.file.FlatFileItemReader">
