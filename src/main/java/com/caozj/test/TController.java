@@ -228,4 +228,10 @@ public class TController {
     return "message";
   }
 
+  @RequestMapping
+  public String device(String sessDeviceType, ModelMap model) {
+    model.put("message", sessDeviceType);
+    return "message";
+  }
+
 }

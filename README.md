@@ -109,6 +109,7 @@ mycat集成
 异步框架
 1.2.2
 Spring Batch
+Spring Mobile
 TODO
 流程特送，退回，任务转办，设置流程属性，执行人，发送选择人
 在线绘制流程

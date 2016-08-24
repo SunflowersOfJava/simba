@@ -8,7 +8,10 @@ package com.caozj.framework.session.page;
  */
 public interface SessionKey {
 
-	String userAccountKey = "sessAccount";
+  String userAccountKey = "sessAccount";
 
-	String userNameKey = "sessName";
+  String userNameKey = "sessName";
+
+  String deviceTypeKey = "sessDeviceType";
+
 }
