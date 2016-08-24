@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.caozj.annotation.MobileViewAnnotation;
 import com.caozj.annotation.TimeAnnotation;
 import com.caozj.dubbo.provider.DubboServiceInterface;
 import com.caozj.framework.util.jdbc.Jdbc;
 import com.caozj.framework.util.schedule.AsyncUtil;
+
 
 @Controller
 @RequestMapping("/test")
@@ -229,8 +231,9 @@ public class TController {
   }
 
   @RequestMapping
-  public String device(String sessDeviceType, ModelMap model) {
-    model.put("message", sessDeviceType);
+  @MobileViewAnnotation
+  public String device(String sessDeviceType, String sessMobileType, ModelMap model) {
+    model.put("message", sessDeviceType + "," + sessMobileType);
     return "message";
   }
 

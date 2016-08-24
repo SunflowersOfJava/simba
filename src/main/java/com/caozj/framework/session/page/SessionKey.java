@@ -14,4 +14,6 @@ public interface SessionKey {
 
   String deviceTypeKey = "sessDeviceType";
 
+  String mobileTypeKey = "sessMobileType";
+
 }

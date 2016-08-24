@@ -6,7 +6,7 @@
 <meta http-equiv="keywords" content="">
 <meta http-equiv="description" content="">
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9">
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/lib/jquery/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/lib/jquery/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/common/common.js"></script>
 <script type="text/javascript">
 	var contextPath = "<%=request.getContextPath()%>";
