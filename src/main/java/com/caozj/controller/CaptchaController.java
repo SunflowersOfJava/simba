@@ -60,7 +60,7 @@ public class CaptchaController {
     // 画边框。
     g.setColor(Color.BLACK);
     g.drawRect(0, 0, width - 1, height - 1);
-    // 随机产生160条干扰线，使图象中的认证码不易被其它程序探测到。
+    // 随机产生10条干扰线，使图象中的认证码不易被其它程序探测到。
     g.setColor(Color.BLACK);
     // 创建一个随机数生成器类
     Random random = new Random();
