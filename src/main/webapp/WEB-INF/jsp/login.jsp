@@ -117,6 +117,10 @@ body {
 		$("form").submit();
 	}
 	
+	function refreshCaptcha(){
+		$("#captchaImage").attr("src","<%=request.getContextPath()%>/captcha/getCaptcha.do?"+Math.random());
+	}
+	
 	<c:if test="${not empty top}">
 		top.location.href = contextPath + "/login/toLogin.do";
 	</c:if>
@@ -137,6 +141,10 @@ body {
 					<div class="password">
 						<span>密 码</span><input type="password" value="${password }" id="password" name="password" />
 					</div>
+					<c:if test="${'true'==captchaEnabled}">
+						<span>验证码</span><input type="text" id="captcha" name="captcha" value="" /><br/><br/>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img alt="点击刷新" title="点击刷新" src="<%=request.getContextPath()%>/captcha/getCaptcha.do" onclick="refreshCaptcha()" id="captchaImage" style="width:160px;heigh:30px;">
+					</c:if>
 				<div id="tip" style="color: red">${errMsg}</div>
 			</div>
 			<div id="loginBtnBg" onclick="login()" onmouseover="mouseOver()" onmouseout="mouseOut()">

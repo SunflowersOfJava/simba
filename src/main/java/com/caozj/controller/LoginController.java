@@ -40,6 +40,9 @@ public class LoginController {
   @Value("${administrator.password}")
   private String adminPassword;
 
+  @Value("${login.captcha.enabled}")
+  private String captchaEnabled;
+
   @Value("${key}")
   private String key;
 
@@ -55,10 +58,11 @@ public class LoginController {
    * @return
    */
   @RequestMapping("/toLogin.do")
-  public String toLogin(HttpServletRequest request) {
+  public String toLogin(HttpServletRequest request, ModelMap model) {
     if (SessionUtil.isLogin(request.getSession())) {
       return "index";
     }
+    model.put("captchaEnabled", captchaEnabled);
     return "login";
   }
 
@@ -78,7 +82,10 @@ public class LoginController {
       return "index";
     }
     String view = null;
-    if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
+    if ("true".equals(captchaEnabled) && !checkCaptcha(request)) {
+      view = "login";
+      model.put("errMsg", "验证码错误");
+    } else if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
       view = "login";
       model.put("errMsg", "用户名和密码不能为空");
     } else if (checkAccount(userName, password, request.getSession())) {
@@ -89,7 +96,18 @@ public class LoginController {
     }
     model.put("userName", userName);
     model.put("password", password);
+    model.put("captchaEnabled", captchaEnabled);
     return view;
+  }
+
+  /**
+   * 检查验证码是否正确
+   * 
+   * @param request
+   * @return
+   */
+  private boolean checkCaptcha(HttpServletRequest request) {
+    return SessionUtil.checkCaptcha(request.getSession(), request.getParameter("captcha"));
   }
 
   /**
@@ -99,8 +117,9 @@ public class LoginController {
    * @return
    */
   @RequestMapping("/logout.do")
-  public String logout(HttpServletRequest request) {
+  public String logout(HttpServletRequest request, ModelMap model) {
     SessionUtil.clearSession(request.getSession());
+    model.put("captchaEnabled", captchaEnabled);
     return "login";
   }
 
