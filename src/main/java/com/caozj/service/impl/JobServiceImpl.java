@@ -335,7 +335,10 @@ public class JobServiceImpl implements JobService {
     if (job.getStatus().equals(JobStatus.SUSPEND.getName())) {
       throw new RuntimeException("不能执行任务:" + job.toString());
     }
-    if (job.getMaxExeCount() > 0 && job.getExeCount() == job.getMaxExeCount()) {
+    if (job.getMaxExeCount() > 0 && "true".equalsIgnoreCase(distributedEnable)) {
+      job = this.get(job.getId());
+    }
+    if (job.getMaxExeCount() > 0 && job.getExeCount() >= job.getMaxExeCount()) {
       logger.info("已经达到最大执行次数:" + job.toString());
       deleteFinishJob(job);
       return false;
