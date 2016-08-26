@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import com.caozj.model.constant.ConstantData;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -91,6 +92,8 @@ public class QRCodeUtil {
   public static BitMatrix buildBitMatrix(String text, String format, int height, int width)
       throws WriterException {
     Map<EncodeHintType, String> param = new HashMap<EncodeHintType, String>();
+    // 内容所使用编码
+    param.put(EncodeHintType.CHARACTER_SET, ConstantData.DEFAULT_CHARSET);
     BitMatrix bitMatrix =
         new MultiFormatWriter().encode(text, BarcodeFormat.QR_CODE, width, height, param);
     return bitMatrix;
