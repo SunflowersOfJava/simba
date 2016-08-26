@@ -341,7 +341,7 @@ public class JobServiceImpl implements JobService {
     if (job.getMaxExeCount() > 0 && job.getExeCount() >= job.getMaxExeCount()) {
       logger.info("已经达到最大执行次数:" + job.toString());
       deleteFinishJob(job);
-      return false;
+      return false; 
     }
     return true;
   }
