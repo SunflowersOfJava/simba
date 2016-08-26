@@ -237,4 +237,9 @@ public class TController {
     return "message";
   }
 
+  @RequestMapping
+  public String view(String page) {
+    return page;
+  }
+
 }
