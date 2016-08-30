@@ -19,30 +19,38 @@
 		ref="testTasklet" /> </step> <step id="step_world"> <tasklet ref="testTasklet" 
 		/> </step> </job> -->
 
-	<job id="testJob">
+	<job id="testJob" restartable="true">
 		<listeners>
 			<listener ref="testJobListener" />
 		</listeners>
-		<step id="testStep">
-			<tasklet>
+		<step id="testStep" allow-start-if-complete="true">
+			<tasklet start-limit="5">
 				<listeners>
-					<listener ref="testStepListener"/>
-					<listener ref="testRetryListener"/>
-					<listener ref="testItemReaderListener"/>
-					<listener ref="testItemWriterListener"/>
-					<listener ref="testItemProcessListener"/>
-					<listener ref="testSkipListener"/>
-					<listener ref="testRepeatListener"/>
+					<listener ref="testStepListener" />
+					<listener ref="testRetryListener" />
+					<listener ref="testItemReaderListener" />
+					<listener ref="testItemWriterListener" />
+					<listener ref="testItemProcessListener" />
+					<listener ref="testSkipListener" />
+					<listener ref="testRepeatListener" />
 				</listeners>
-				<chunk reader="reader" writer="writer" commit-interval="2" processor="process"
-					skip-limit="5">
+				<chunk reader="reader" writer="writer" commit-interval="2"
+					processor="process" retry-limit="10" skip-limit="5">
+					<retryable-exception-classes>
+						<include class="org.springframework.dao.TransientDataAccessException" />
+						<exclude
+							class="org.springframework.dao.PessimisticLockingFailureException" />
+					</retryable-exception-classes>
 					<skippable-exception-classes>
 						<include
 							class="org.springframework.batch.item.file.FlatFileParseException" />
 					</skippable-exception-classes>
 					<listeners>
-						<listener ref="testChunkListener"/>	
+						<listener ref="testChunkListener" />
 					</listeners>
+					<retry-listeners>
+
+					</retry-listeners>
 				</chunk>
 			</tasklet>
 		</step>
