@@ -3,7 +3,7 @@
 配置环境变量JAVA_HOME到jdk的安装目录，必须使用jdk1.8
 直接运行Jetty类的main方法，即可启动web服务
 登陆系统的入口: 
-http://localhost:8888/simba/login/toLogin.do 
+http://localhost:8888/simba/login/toLogin.do  
 或者
 http://localhost:8888/simba/
 账号密码是admin admin123 
