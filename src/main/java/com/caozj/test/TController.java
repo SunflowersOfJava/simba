@@ -18,6 +18,7 @@ import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -240,6 +241,12 @@ public class TController {
   @RequestMapping
   public String view(String page) {
     return page;
+  }
+
+  @RequestMapping
+  public String content(@RequestBody String content, ModelMap model) {
+    model.put("message", "receive body:" + content);
+    return "message";
   }
 
 }
