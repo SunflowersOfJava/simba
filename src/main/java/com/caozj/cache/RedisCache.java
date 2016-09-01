@@ -1,5 +1,7 @@
 package com.caozj.cache;
 
+import java.util.concurrent.Callable;
+
 import org.springframework.cache.Cache;
 import org.springframework.cache.support.SimpleValueWrapper;
 import org.springframework.data.redis.connection.RedisConnection;
@@ -98,6 +100,14 @@ public class RedisCache implements Cache {
       connection.flushDb();
       return null;
     });
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T get(Object key, Callable<T> arg1) {
+    final String keyf = (String) key;
+    Object object = getFromRedis(keyf);
+    return (T) object;
   }
 
 }

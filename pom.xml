@@ -2,16 +2,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.caozj</groupId>
-	<artifactId>web</artifactId>
+	<artifactId>simba</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>demoWeb</name>
-	<description>demoWeb</description>
+	<name>simba</name>
+	<description>simba</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jetty.version>9.3.9.M1</jetty.version>
-		<spring.version>4.2.6.RELEASE</spring.version>
+		<spring.version>4.3.2.RELEASE</spring.version>
 		<spring-session.version>1.2.1.RELEASE</spring-session.version>
 		<cglib-nodep.version>2.2</cglib-nodep.version>
 		<aspectjweaver.version>1.7.2</aspectjweaver.version>
@@ -683,7 +683,7 @@
 		<dependency>
 			<groupId>org.springframework.integration</groupId>
 			<artifactId>spring-integration-core</artifactId>
-			<version>${spring.version}</version>
+			<version>4.3.1.RELEASE</version>
 		</dependency>
 
 		<dependency>
@@ -793,7 +793,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>web</finalName>
+		<finalName>simba</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>

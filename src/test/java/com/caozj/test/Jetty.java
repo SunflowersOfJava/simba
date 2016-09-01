@@ -6,7 +6,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
 public class Jetty {
 
 	public static void main(String[] args) throws Exception {
-		Server server = buildNormalServer(8080, "/demo");
+		Server server = buildNormalServer(8888, "/simba");
 		server.start();
 	}
 
