@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016-07-15  星期五 10:39:30                     */
+/* Created on:     2016-07-28  星期四 10:46:08                     */
 /*==============================================================*/
 
 
@@ -9,6 +9,8 @@ drop table if exists buss;
 drop table if exists chatRecord;
 
 drop table if exists installPackage;
+
+drop table if exists job;
 
 drop table if exists menu;
 
@@ -76,6 +78,29 @@ create table installPackage
    publishDate          varchar(32) not null,
    primary key (installVersion)
 );
+
+/*==============================================================*/
+/* Table: job                                                   */
+/*==============================================================*/
+create table job
+(
+   id                   int not null auto_increment,
+   name                 varchar(64) not null comment '名称',
+   description          varchar(256) comment '描述',
+   cronExpression       varchar(128) comment 'cron表达式',
+   startTime            varchar(64) comment '开始执行时间',
+   endTime              varchar(64) comment '结束执行时间',
+   exeCount             int comment '执行次数',
+   maxExeCount          int comment '最大执行次数',
+   status               varchar(16) comment '状态',
+   className            varchar(256) not null comment '完整类路径',
+   methodName           varchar(128) not null comment '执行类方法名',
+   delayTime            int comment '延迟时间',
+   intervalTime         int comment '间隔时间',
+   primary key (id)
+);
+
+alter table job comment '任务';
 
 /*==============================================================*/
 /* Table: menu                                                  */
@@ -251,23 +276,25 @@ create table userRole
    primary key (userAccount, roleName)
 );
 
-insert into menu(text,parentID,url,orderNo) values('机构管理',-1,'/org/list.do',1);
-insert into menu(text,parentID,url,orderNo) values('用户管理',-1,'/user/list.do',2);
-insert into menu(text,parentID,url,orderNo) values('角色管理',-1,'/role/list.do',3);
-insert into menu(text,parentID,url,orderNo) values('权限管理',-1,'/permission/list.do',4);
-insert into menu(text,parentID,url,orderNo) values('菜单管理',-1,'/menu/list.do',5);
-insert into menu(text,parentID,url,orderNo) values('业务管理',-1,'/buss/list.do',6);
-insert into menu(text,parentID,url,orderNo) values('版本管理',-1,'/install/list.do',7);
-insert into menu(text,parentID,url,orderNo) values('注册类型管理',-1,'/registryType/list.do',8);
-insert into menu(text,parentID,url,orderNo) values('注册表管理',-1,'/registryTable/list.do',9);
-insert into menu(text,parentID,url,orderNo) values('流程管理',-1,'/processManagement/list.do',10);
-insert into menu(text,parentID,url,orderNo) values('待办任务',-1,'/processDoing/list.do',11);
-insert into menu(text,parentID,url,orderNo) values('已办任务',-1,'/processDone/list.do',12);
-insert into menu(text,parentID,url,orderNo) values('启动流程',-1,'/processStart/list.do',13);
-insert into menu(text,parentID,url,orderNo) values('流程监控',-1,'/processMonitor/list.do',14);
-insert into menu(text,parentID,url,orderNo) values('代办设置',-1,'/processAgencySet/list.do',15);
-insert into menu(text,parentID,url,orderNo) values('已归档流程',-1,'/processFinish/list.do',16);
-insert into menu(text,parentID,url,orderNo) values('作业管理',-1,'/processJob/list.do',18);
+insert into menu(id,text,parentID,url,orderNo) values(10000,'机构管理',-1,'/org/list.do',1);
+insert into menu(id,text,parentID,url,orderNo) values(10001,'用户管理',-1,'/user/list.do',2);
+insert into menu(id,text,parentID,url,orderNo) values(10002,'角色管理',-1,'/role/list.do',3);
+insert into menu(id,text,parentID,url,orderNo) values(10003,'权限管理',-1,'/permission/list.do',4);
+insert into menu(id,text,parentID,url,orderNo) values(10004,'菜单管理',-1,'/menu/list.do',5);
+insert into menu(id,text,parentID,url,orderNo) values(10005,'业务管理',-1,'/buss/list.do',6);
+insert into menu(id,text,parentID,url,orderNo) values(10006,'版本管理',-1,'/install/list.do',7);
+insert into menu(id,text,parentID,url,orderNo) values(10007,'注册类型管理',-1,'/registryType/list.do',8);
+insert into menu(id,text,parentID,url,orderNo) values(10008,'注册表管理',-1,'/registryTable/list.do',9);
+insert into menu(id,text,parentID,url,orderNo) values(10009,'流程管理',-1,'/processManagement/list.do',10);
+insert into menu(id,text,parentID,url,orderNo) values(10010,'待办任务',-1,'/processDoing/list.do',11);
+insert into menu(id,text,parentID,url,orderNo) values(10011,'已办任务',-1,'/processDone/list.do',12);
+insert into menu(id,text,parentID,url,orderNo) values(10012,'启动流程',-1,'/processStart/list.do',13);
+insert into menu(id,text,parentID,url,orderNo) values(10013,'流程监控',-1,'/processMonitor/list.do',14);
+insert into menu(id,text,parentID,url,orderNo) values(10014,'代办设置',-1,'/processAgencySet/list.do',15);
+insert into menu(id,text,parentID,url,orderNo) values(10015,'已归档流程',-1,'/processFinish/list.do',16);
+insert into menu(id,text,parentID,url,orderNo) values(10016,'作业管理',-1,'/processJob/list.do',18);
+insert into menu(id,text,parentID,url,orderNo) values(10017,'任务管理',-1,'/job/list.do',19);
+
 create table ACT_GE_PROPERTY (
     NAME_ varchar(64),
     VALUE_ varchar(300),
@@ -792,3 +819,104 @@ alter table ACT_ID_MEMBERSHIP
     add constraint ACT_FK_MEMB_USER 
     foreign key (USER_ID_) 
     references ACT_ID_USER (ID_);
+-- Autogenerated: do not edit this file
+
+CREATE TABLE BATCH_JOB_INSTANCE  (
+	JOB_INSTANCE_ID BIGINT  NOT NULL PRIMARY KEY ,
+	VERSION BIGINT ,
+	JOB_NAME VARCHAR(100) NOT NULL,
+	JOB_KEY VARCHAR(32) NOT NULL,
+	constraint JOB_INST_UN unique (JOB_NAME, JOB_KEY)
+) ENGINE=InnoDB;
+
+CREATE TABLE BATCH_JOB_EXECUTION  (
+	JOB_EXECUTION_ID BIGINT  NOT NULL PRIMARY KEY ,
+	VERSION BIGINT  ,
+	JOB_INSTANCE_ID BIGINT NOT NULL,
+	CREATE_TIME DATETIME NOT NULL,
+	START_TIME DATETIME DEFAULT NULL ,
+	END_TIME DATETIME DEFAULT NULL ,
+	STATUS VARCHAR(10) ,
+	EXIT_CODE VARCHAR(2500) ,
+	EXIT_MESSAGE VARCHAR(2500) ,
+	LAST_UPDATED DATETIME,
+	JOB_CONFIGURATION_LOCATION VARCHAR(2500) NULL,
+	constraint JOB_INST_EXEC_FK foreign key (JOB_INSTANCE_ID)
+	references BATCH_JOB_INSTANCE(JOB_INSTANCE_ID)
+) ENGINE=InnoDB;
+
+CREATE TABLE BATCH_JOB_EXECUTION_PARAMS  (
+	JOB_EXECUTION_ID BIGINT NOT NULL ,
+	TYPE_CD VARCHAR(6) NOT NULL ,
+	KEY_NAME VARCHAR(100) NOT NULL ,
+	STRING_VAL VARCHAR(250) ,
+	DATE_VAL DATETIME DEFAULT NULL ,
+	LONG_VAL BIGINT ,
+	DOUBLE_VAL DOUBLE PRECISION ,
+	IDENTIFYING CHAR(1) NOT NULL ,
+	constraint JOB_EXEC_PARAMS_FK foreign key (JOB_EXECUTION_ID)
+	references BATCH_JOB_EXECUTION(JOB_EXECUTION_ID)
+) ENGINE=InnoDB;
+
+CREATE TABLE BATCH_STEP_EXECUTION  (
+	STEP_EXECUTION_ID BIGINT  NOT NULL PRIMARY KEY ,
+	VERSION BIGINT NOT NULL,
+	STEP_NAME VARCHAR(100) NOT NULL,
+	JOB_EXECUTION_ID BIGINT NOT NULL,
+	START_TIME DATETIME NOT NULL ,
+	END_TIME DATETIME DEFAULT NULL ,
+	STATUS VARCHAR(10) ,
+	COMMIT_COUNT BIGINT ,
+	READ_COUNT BIGINT ,
+	FILTER_COUNT BIGINT ,
+	WRITE_COUNT BIGINT ,
+	READ_SKIP_COUNT BIGINT ,
+	WRITE_SKIP_COUNT BIGINT ,
+	PROCESS_SKIP_COUNT BIGINT ,
+	ROLLBACK_COUNT BIGINT ,
+	EXIT_CODE VARCHAR(2500) ,
+	EXIT_MESSAGE VARCHAR(2500) ,
+	LAST_UPDATED DATETIME,
+	constraint JOB_EXEC_STEP_FK foreign key (JOB_EXECUTION_ID)
+	references BATCH_JOB_EXECUTION(JOB_EXECUTION_ID)
+) ENGINE=InnoDB;
+
+CREATE TABLE BATCH_STEP_EXECUTION_CONTEXT  (
+	STEP_EXECUTION_ID BIGINT NOT NULL PRIMARY KEY,
+	SHORT_CONTEXT VARCHAR(2500) NOT NULL,
+	SERIALIZED_CONTEXT TEXT ,
+	constraint STEP_EXEC_CTX_FK foreign key (STEP_EXECUTION_ID)
+	references BATCH_STEP_EXECUTION(STEP_EXECUTION_ID)
+) ENGINE=InnoDB;
+
+CREATE TABLE BATCH_JOB_EXECUTION_CONTEXT  (
+	JOB_EXECUTION_ID BIGINT NOT NULL PRIMARY KEY,
+	SHORT_CONTEXT VARCHAR(2500) NOT NULL,
+	SERIALIZED_CONTEXT TEXT ,
+	constraint JOB_EXEC_CTX_FK foreign key (JOB_EXECUTION_ID)
+	references BATCH_JOB_EXECUTION(JOB_EXECUTION_ID)
+) ENGINE=InnoDB;
+
+CREATE TABLE BATCH_STEP_EXECUTION_SEQ (
+	ID BIGINT NOT NULL,
+	UNIQUE_KEY CHAR(1) NOT NULL,
+	constraint UNIQUE_KEY_UN unique (UNIQUE_KEY)
+) ENGINE=InnoDB;
+
+INSERT INTO BATCH_STEP_EXECUTION_SEQ (ID, UNIQUE_KEY) select * from (select 0 as ID, '0' as UNIQUE_KEY) as tmp where not exists(select * from BATCH_STEP_EXECUTION_SEQ);
+
+CREATE TABLE BATCH_JOB_EXECUTION_SEQ (
+	ID BIGINT NOT NULL,
+	UNIQUE_KEY CHAR(1) NOT NULL,
+	constraint UNIQUE_KEY_UN unique (UNIQUE_KEY)
+) ENGINE=InnoDB;
+
+INSERT INTO BATCH_JOB_EXECUTION_SEQ (ID, UNIQUE_KEY) select * from (select 0 as ID, '0' as UNIQUE_KEY) as tmp where not exists(select * from BATCH_JOB_EXECUTION_SEQ);
+
+CREATE TABLE BATCH_JOB_SEQ (
+	ID BIGINT NOT NULL,
+	UNIQUE_KEY CHAR(1) NOT NULL,
+	constraint UNIQUE_KEY_UN unique (UNIQUE_KEY)
+) ENGINE=InnoDB;
+
+INSERT INTO BATCH_JOB_SEQ (ID, UNIQUE_KEY) select * from (select 0 as ID, '0' as UNIQUE_KEY) as tmp where not exists(select * from BATCH_JOB_SEQ);

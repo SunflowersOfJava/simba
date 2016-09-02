@@ -18,7 +18,7 @@
 	<!-- <job id="helloWorldJob"> <step id="step_hello" next="step_world"> <tasklet 
 		ref="testTasklet" /> </step> <step id="step_world"> <tasklet ref="testTasklet" 
 		/> </step> </job> -->
-
+<!--
 	<job id="testJob" restartable="true">
 		<listeners>
 			<listener ref="testJobListener" />
@@ -55,4 +55,5 @@
 			</tasklet>
 		</step>
 	</job>
+	-->
 </bean:beans>
