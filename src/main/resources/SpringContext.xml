@@ -35,4 +35,7 @@
 	<import resource="classpath:/SpringActiviti.xml" />
 	<!-- Spring Batch -->
 	<import resource="classpath:/SpringBatch.xml" />
+	<!-- Liquibase 数据库持续集成 -->
+	<import resource="classpath:/SpringLiquibase.xml" />
+	
 </beans>
