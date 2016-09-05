@@ -3,9 +3,6 @@ package com.caozj.permission.dao.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import com.caozj.framework.util.jdbc.Jdbc;
@@ -23,7 +20,6 @@ public class UserDaoImpl implements UserDao {
   private static final String table = "systemUser";
 
   @Override
-  @CachePut(value = "default", key = "\"user_\".concat(#user.getAccount())")
   public void add(User user) {
     String sql = "insert into " + table + "(account,name,pwd) values(?,?,?)";
     StatementParameter param = new StatementParameter();
@@ -34,7 +30,6 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
-  @CacheEvict(value = "default", key = "\"user_\".concat(#user.getAccount())")
   public void update(User user) {
     String sql = "update " + table + " set name =? ,pwd=?  where account = ?  ";
     StatementParameter param = new StatementParameter();
@@ -45,14 +40,12 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
-  @CacheEvict(value = "default", key = "\"user_\".concat(#account)")
   public void delete(String account) {
     String sql = "delete from " + table + " where account = ? ";
     jdbc.updateForBoolean(sql, account);
   }
 
   @Override
-  @CacheEvict(value = "default", key = "\"user_\".concat(#account)")
   public void updateName(String account, String name) {
     String sql = "update " + table + " set name =  ? where account = ? ";
     jdbc.updateForBoolean(sql, name, account);
@@ -65,7 +58,6 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
-  @Cacheable(value = "default", key = "\"user_\".concat(#account)")
   public User get(String account) {
     String sql = "select * from " + table + " where account = ? ";
     return jdbc.query(sql, User.class, account);
