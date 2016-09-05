@@ -109,9 +109,10 @@ mycat集成
 异步框架
 1.2.2
 Spring Batch
+Spring Batch Admin
 Spring Mobile可以根据不同的设备跳转到不同的页面
 登陆增加验证码
-生成二维码(Js和java代码都执行)
+生成二维码(Js和java代码都可执行)
 框架取名为simba，辛巴，快速成长成狮子王之意
 增加数据库监控菜单，直接使用druid页面
 TODO
