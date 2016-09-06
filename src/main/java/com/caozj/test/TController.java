@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.caozj.annotation.MobileViewAnnotation;
 import com.caozj.annotation.TimeAnnotation;
 import com.caozj.dubbo.provider.DubboServiceInterface;
+import com.caozj.framework.util.data.ThreadDataUtil;
 import com.caozj.framework.util.jdbc.Jdbc;
 import com.caozj.framework.util.schedule.AsyncUtil;
 
@@ -246,6 +247,13 @@ public class TController {
   @RequestMapping
   public String content(@RequestBody String content, ModelMap model) {
     model.put("message", "receive body:" + content);
+    return "message";
+  }
+
+  @RequestMapping
+  public String thread(String info, ModelMap model) {
+    ThreadDataUtil.set("test", info);
+    model.put("message", "receive info:****" + testService.threadData() + "****");
     return "message";
   }
 

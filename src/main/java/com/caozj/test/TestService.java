@@ -7,6 +7,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.caozj.framework.util.data.ThreadDataUtil;
+
 @Service
 public class TestService {
 
@@ -60,6 +62,10 @@ public class TestService {
   @Async
   public void async() {
     logger.info("async==>async");
+  }
+
+  public String threadData() {
+    return (String) ThreadDataUtil.get("test");
   }
 
 }
