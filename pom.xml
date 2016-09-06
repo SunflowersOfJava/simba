@@ -11,7 +11,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jetty.version>9.3.9.M1</jetty.version>
-		<spring.version>4.3.2.RELEASE</spring.version>
+		<spring.version>4.3.1.RELEASE</spring.version>
 		<spring-session.version>1.2.1.RELEASE</spring-session.version>
 		<cglib-nodep.version>2.2</cglib-nodep.version>
 		<aspectjweaver.version>1.7.2</aspectjweaver.version>
@@ -527,7 +527,6 @@
 			<version>${httpmime.version}</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
@@ -592,7 +591,6 @@
 			<artifactId>ftplet-api</artifactId>
 			<version>1.0.6</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -684,7 +682,13 @@
 		<dependency>
 			<groupId>org.springframework.integration</groupId>
 			<artifactId>spring-integration-core</artifactId>
-			<version>4.3.1.RELEASE</version>
+			<version>${spring.version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework.integration</groupId>
+		    <artifactId>spring-integration-mail</artifactId>
+		    <version>${spring.version}</version>
 		</dependency>
 
 		<dependency>

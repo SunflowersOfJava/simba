@@ -50,7 +50,9 @@
 	</bean>
 
 	<import resource="classpath:/SpringBatchJob.xml" />
-
+	<!--  Spring Batch Admin管理端，目前尚未整理完配置文件修改
+	<import resource="classpath:/SpringBatchAdmin.xml" />
+	 -->
 	<!-- demo -->
 
 	<bean id="reader" class="org.springframework.batch.item.file.FlatFileItemReader">
