@@ -15,7 +15,7 @@ http://localhost:8888/simba/
 以下是每个版本的日志
 1.2.3
 增加AES加解密工具类
-
+生成条形码
 1.2.2
 Spring Batch
 Spring Batch Admin

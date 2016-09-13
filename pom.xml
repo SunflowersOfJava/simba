@@ -684,11 +684,11 @@
 			<artifactId>spring-integration-core</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>org.springframework.integration</groupId>
-		    <artifactId>spring-integration-mail</artifactId>
-		    <version>${spring.version}</version>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-mail</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
@@ -786,13 +786,13 @@
 			<artifactId>core</artifactId>
 			<version>3.2.1</version>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>org.liquibase</groupId>
-		    <artifactId>liquibase-core</artifactId>
-		    <version>3.5.1</version>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>3.5.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.batch</groupId>
 			<artifactId>spring-batch-admin-resources</artifactId>
@@ -803,6 +803,12 @@
 			<groupId>org.springframework.batch</groupId>
 			<artifactId>spring-batch-admin-manager</artifactId>
 			<version>${spring.batch.admin.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.barcode4j</groupId>
+			<artifactId>barcode4j</artifactId>
+			<version>2.1</version>
 		</dependency>
 
 		<dependency>

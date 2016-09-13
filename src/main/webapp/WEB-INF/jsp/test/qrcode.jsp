@@ -10,6 +10,7 @@
 <body style="padding: 0px; margin: 0px">
 	<img alt="" src="<%=request.getContextPath()%>/qrCode/getQRCode.do?text=http://www.baidu.com&height=100&width=100"><br/><br/><br/><br/><br/> 
 	<div id="code"></div> 
+	<img alt="" src="<%=request.getContextPath()%>/barCode/getBarCode.do?text=asklj">
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#code').qrcode({width:500,height:500,correctLevel:0,text:'http://www.sina.com'});  
