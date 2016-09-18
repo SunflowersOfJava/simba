@@ -1,5 +1,7 @@
 package com.caozj.framework.util.sigar;
 
+import org.hyperic.sigar.Sigar;
+
 import com.caozj.framework.util.common.ServerUtil;
 import com.caozj.framework.util.common.SystemUtil;
 
@@ -10,6 +12,10 @@ import com.caozj.framework.util.common.SystemUtil;
  *
  */
 public class SigarUtil {
+
+  int cpuCoreCount = 0;
+
+  Sigar sigar = null;
 
   private SigarUtil() {
     init();
@@ -31,6 +37,9 @@ public class SigarUtil {
       }
       System.setProperty("java.library.path", path);
     }
+
+    // 初始化sigar对象
+    sigar = new Sigar();
   }
 
   private static final class SigarUtilHolder {

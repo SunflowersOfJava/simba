@@ -74,6 +74,15 @@ public class SystemUtil {
     InetAddress address = InetAddress.getLocalHost();
     return address.getHostAddress();
   }
+  
+  /**
+   * 当前机器的正式域名
+   * @return
+   * @throws UnknownHostException
+   */
+  public static String getServerDomain() throws UnknownHostException{
+    return InetAddress.getLocalHost().getCanonicalHostName();
+  }
 
   /**
    * Java 运行时环境版本

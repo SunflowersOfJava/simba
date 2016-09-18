@@ -8,12 +8,20 @@ import org.hyperic.sigar.CpuInfo;
 import org.hyperic.sigar.CpuPerc;
 import org.hyperic.sigar.FileSystem;
 import org.hyperic.sigar.FileSystemUsage;
+import org.hyperic.sigar.Mem;
+import org.hyperic.sigar.NetFlags;
+import org.hyperic.sigar.NetInterfaceConfig;
+import org.hyperic.sigar.NetInterfaceStat;
 import org.hyperic.sigar.OperatingSystem;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
+import org.hyperic.sigar.SigarNotImplementedException;
+import org.hyperic.sigar.Swap;
+import org.hyperic.sigar.Who;
 
 import com.caozj.framework.util.common.ServerUtil;
 import com.caozj.framework.util.common.SystemUtil;
+import com.caozj.framework.util.common.ThreadUtil;
 
 public class TSigar {
 
@@ -74,6 +82,40 @@ public class TSigar {
       // 系统使用率
       System.out.println("Sys :" + CpuPerc.format(cpu.getSys()));
     }
+    System.out.println("============cpu信息============");
+    for (int i = 0; i < 10; i++) {
+      cpu = sigar.getCpuPerc();
+      double used = cpu.getSys() + cpu.getUser();
+      System.out.println("============cpu使用============" + i + "," + used);
+      ThreadUtil.sleep(1000);
+    }
+
+    // 物理内存信息
+    Mem mem = sigar.getMem();
+    // 内存总量
+    System.out.println("Total = " + mem.getTotal() / 1024L / 1024 + "M av");
+    // 当前内存使用量
+    System.out.println("Used = " + mem.getUsed() / 1024L / 1024 + "M used");
+    // 当前内存剩余量
+    System.out.println("Free = " + mem.getFree() / 1024L / 1024 + "M free");
+
+    System.out.println("============memory信息============");
+    for (int i = 0; i < 10; i++) {
+      mem = sigar.getMem();
+      double used = mem.getUsedPercent();
+      System.out.println("============memory使用============" + i + "," + used);
+      ThreadUtil.sleep(1000);
+    }
+
+    // 系统页面文件交换区信息
+    Swap swap = sigar.getSwap();
+    // 交换区总量
+    System.out.println("Total = " + swap.getTotal() / 1024L + "K av");
+    // 当前交换区使用量
+    System.out.println("Used = " + swap.getUsed() / 1024L + "K used");
+    // 当前交换区剩余量
+    System.out.println("Free = " + swap.getFree() / 1024L + "K free");
+
     FileSystem fslist[] = sigar.getFileSystemList();
     System.out.println("长度为什么是:" + fslist.length);
 
@@ -141,5 +183,64 @@ public class TSigar {
     if (dp.isSupported(java.awt.Desktop.Action.BROWSE)) {
       // 获取系统默认浏览器打开链接
     }
+
+    // 取当前系统进程表中的用户信息
+    Who who[] = sigar.getWhoList();
+    if (who != null && who.length > 0) {
+      for (int i = 0; i < who.length; i++) {
+        System.out.println("\n~~~~~~~~~" + String.valueOf(i) + "~~~~~~~~~");
+        Who _who = who[i];
+        System.out.println("getDevice() = " + _who.getDevice());
+        System.out.println("getHost() = " + _who.getHost());
+        System.out.println("getTime() = " + _who.getTime());
+        // 当前系统进程表中的用户名
+        System.out.println("getUser() = " + _who.getUser());
+      }
+    }
+
+    System.out.println(SystemUtil.getServerDomain());
+
+    // 取到当前机器的MAC地址
+    String[] ifaces = sigar.getNetInterfaceList();
+    String hwaddr = null;
+    for (int i = 0; i < ifaces.length; i++) {
+      NetInterfaceConfig cfg = sigar.getNetInterfaceConfig(ifaces[i]);
+      if (NetFlags.LOOPBACK_ADDRESS.equals(cfg.getAddress())
+          || (cfg.getFlags() & NetFlags.IFF_LOOPBACK) != 0
+          || NetFlags.NULL_HWADDR.equals(cfg.getHwaddr())) {
+        continue;
+      }
+      hwaddr = cfg.getHwaddr();
+      System.out.println(hwaddr);
+    }
+
+    // 获取网络流量等信息
+    String ifNames[] = sigar.getNetInterfaceList();
+    for (int i = 0; i < ifNames.length; i++) {
+      String name = ifNames[i];
+      NetInterfaceConfig ifconfig = sigar.getNetInterfaceConfig(name);
+      System.out.println("\nname = " + name);// 网络设备名
+      System.out.println("Address = " + ifconfig.getAddress());// IP地址
+      System.out.println("Netmask = " + ifconfig.getNetmask());// 子网掩码
+      if ((ifconfig.getFlags() & 1L) <= 0L) {
+        System.out.println("!IFF_UP...skipping getNetInterfaceStat");
+        continue;
+      }
+      try {
+        NetInterfaceStat ifstat = sigar.getNetInterfaceStat(name);
+        System.out.println("RxPackets = " + ifstat.getRxPackets());// 接收的总包裹数
+        System.out.println("TxPackets = " + ifstat.getTxPackets());// 发送的总包裹数
+        System.out.println("RxBytes = " + ifstat.getRxBytes());// 接收到的总字节数
+        System.out.println("TxBytes = " + ifstat.getTxBytes());// 发送的总字节数
+        System.out.println("RxErrors = " + ifstat.getRxErrors());// 接收到的错误包数
+        System.out.println("TxErrors = " + ifstat.getTxErrors());// 发送数据包时的错误数
+        System.out.println("RxDropped = " + ifstat.getRxDropped());// 接收时丢弃的包数
+        System.out.println("TxDropped = " + ifstat.getTxDropped());// 发送时丢弃的包数
+      } catch (SigarNotImplementedException e) {} catch (SigarException e) {
+        System.out.println(e.getMessage());
+      }
+    }
+
+
   }
 }
