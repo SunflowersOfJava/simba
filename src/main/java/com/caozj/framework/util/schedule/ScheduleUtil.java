@@ -16,10 +16,10 @@ import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 
 import com.caozj.framework.util.ApplicationContextUtil;
-import com.caozj.model.Job;
+import com.caozj.job.model.Job;
+import com.caozj.job.model.enums.JobStatus;
+import com.caozj.job.service.JobService;
 import com.caozj.model.constant.ConstantData;
-import com.caozj.model.enums.JobStatus;
-import com.caozj.service.JobService;
 
 /**
  * Spring定时器工具类(单例)

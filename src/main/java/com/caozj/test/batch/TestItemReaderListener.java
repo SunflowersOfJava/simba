@@ -3,7 +3,7 @@ package com.caozj.test.batch;
 import org.springframework.batch.core.ItemReadListener;
 import org.springframework.stereotype.Component;
 
-import com.caozj.model.RegistryTable;
+import com.caozj.registry.model.RegistryTable;
 
 @Component
 public class TestItemReaderListener implements ItemReadListener<RegistryTable> {

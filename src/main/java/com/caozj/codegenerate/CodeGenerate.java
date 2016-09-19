@@ -2,7 +2,7 @@ package com.caozj.codegenerate;
 
 import java.io.IOException;
 
-import com.caozj.model.Job;
+import com.caozj.job.model.Job;
 
 import freemarker.template.TemplateException;
 

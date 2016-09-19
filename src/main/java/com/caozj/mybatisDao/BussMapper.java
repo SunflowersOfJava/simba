@@ -2,7 +2,7 @@ package com.caozj.mybatisDao;
 
 import java.util.List;
 
-import com.caozj.model.Buss;
+import com.caozj.buss.model.Buss;
 
 public interface BussMapper {
 

@@ -2,7 +2,7 @@ package com.caozj.cluster.job;
 
 import java.io.Serializable;
 
-import com.caozj.model.Job;
+import com.caozj.job.model.Job;
 
 /**
  * 任务在集群中传递的对象

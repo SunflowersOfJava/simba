@@ -63,6 +63,14 @@ public class TSigar {
 
     System.out.println("==============cpu===================");
     Sigar sigar = new Sigar();
+    CpuPerc[] l = sigar.getCpuPercList();
+    for (CpuPerc cpu : l) {
+      // 用户使用率
+      System.out.println("**User :" + CpuPerc.format(cpu.getUser()));
+      // 系统使用率
+      System.out.println("**Sys :" + CpuPerc.format(cpu.getSys()));
+    }
+
     CpuInfo infos[] = sigar.getCpuInfoList();
     CpuPerc cpu = sigar.getCpuPerc();
     String address = InetAddress.getLocalHost().getHostAddress();
@@ -119,7 +127,7 @@ public class TSigar {
     FileSystem fslist[] = sigar.getFileSystemList();
     System.out.println("长度为什么是:" + fslist.length);
 
-    for (int i = 0; i < fslist.length - 2; i++) {
+    for (int i = 0; i < fslist.length; i++) {
       System.out.println("============硬盘描述============");
       System.out.println("\n~~~~~~~~~~" + i + "~~~~~~~~~~");
       FileSystem fs = fslist[i];
@@ -133,6 +141,9 @@ public class TSigar {
       // 文件系统类型名，比如本地硬盘、光驱、网络文件系统等
       System.out.println("fs.getTypeName() = " + fs.getTypeName());
       // 文件系统类型
+      if (!fs.getTypeName().equals("local")) {
+        continue;
+      }
 
       FileSystemUsage usage = sigar.getFileSystemUsage(fs.getDirName());
       String sub = fs.getDevName().substring(0, 1);

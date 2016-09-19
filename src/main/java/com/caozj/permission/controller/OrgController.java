@@ -15,7 +15,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.caozj.controller.form.EasyUIPageForm;
-import com.caozj.controller.vo.OrgVo;
 import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.model.ext.ExtPageGrid;
 import com.caozj.framework.model.json.JsonResult;
@@ -23,6 +22,7 @@ import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.framework.util.json.FastJsonUtil;
 import com.caozj.framework.util.json.JsonUtil;
 import com.caozj.model.constant.ConstantData;
+import com.caozj.permission.controller.vo.OrgVo;
 import com.caozj.permission.model.Org;
 import com.caozj.permission.model.OrgExt;
 import com.caozj.permission.model.OrgExtDesc;

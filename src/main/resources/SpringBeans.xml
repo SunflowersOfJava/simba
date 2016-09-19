@@ -23,7 +23,13 @@
 	<context:component-scan base-package="com.caozj.cache" />
 	<context:component-scan base-package="com.caozj.activiti" />
 	<context:component-scan base-package="com.caozj.cluster" />
-	
+	<context:component-scan base-package="com.caozj.job" />
+	<context:component-scan base-package="com.caozj.sigar" />
+	<context:component-scan base-package="com.caozj.menu" />
+	<context:component-scan base-package="com.caozj.registry" />
+	<context:component-scan base-package="com.caozj.buss" />
+	<context:component-scan base-package="com.caozj.address" />
+	<context:component-scan base-package="com.caozj.uEditor" />
 	
 	<context:component-scan base-package="com.caozj.test" />
 </beans>

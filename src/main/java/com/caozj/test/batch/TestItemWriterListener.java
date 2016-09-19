@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.batch.core.ItemWriteListener;
 import org.springframework.stereotype.Component;
 
-import com.caozj.model.RegistryTable;
+import com.caozj.registry.model.RegistryTable;
 
 @Component
 public class TestItemWriterListener implements ItemWriteListener<RegistryTable> {

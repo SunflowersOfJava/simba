@@ -9,7 +9,7 @@
 	<cache type="com.caozj.cache.MybatisRedisCache" />
 	 -->
 
-	<resultMap id="BussResultMap" type="com.caozj.model.Buss">
+	<resultMap id="BussResultMap" type="com.caozj.buss.model.Buss">
 		<id column="name" property="name" jdbcType="VARCHAR" />
 		<result column="description" property="description" jdbcType="VARCHAR" />
 		<result column="script" property="script" jdbcType="VARCHAR" />
@@ -22,7 +22,7 @@
 		<include refid="Buss_Column_List" />
 		from buss
 	</select>
-	<insert id="insert" parameterType="com.caozj.model.Buss">
+	<insert id="insert" parameterType="com.caozj.buss.model.Buss">
 		insert into buss (
 		<include refid="Buss_Column_List" />
 		)

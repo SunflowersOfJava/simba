@@ -60,6 +60,7 @@
 		<property name="patterns">
 			<list>
 				<value>com.caozj.service.*</value>
+				<value>com.caozj.*.service.*</value>
 			</list>
 		</property>
 	</bean>

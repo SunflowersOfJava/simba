@@ -2,7 +2,7 @@ package com.caozj.test.batch;
 
 import java.util.List;
 
-import com.caozj.model.RegistryTable;
+import com.caozj.registry.model.RegistryTable;
 
 public class ItemWriter implements org.springframework.batch.item.ItemWriter<RegistryTable> {
 

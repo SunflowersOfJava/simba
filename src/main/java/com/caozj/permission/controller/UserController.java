@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.caozj.controller.form.EasyUIPageForm;
 import com.caozj.controller.form.UserSearchForm;
-import com.caozj.controller.vo.UserVo;
 import com.caozj.framework.model.easyui.PageGrid;
 import com.caozj.framework.model.json.JsonResult;
 import com.caozj.framework.session.SessionUtil;
 import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.framework.util.json.FastJsonUtil;
 import com.caozj.model.constant.ConstantData;
+import com.caozj.permission.controller.vo.UserVo;
 import com.caozj.permission.model.Role;
 import com.caozj.permission.model.User;
 import com.caozj.permission.model.UserExt;
