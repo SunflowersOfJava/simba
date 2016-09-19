@@ -20,7 +20,8 @@ http://localhost:8888/simba/
 增加AES加解密工具类    
 生成条形码    
 字符串增加zip和gzip两个加解压功能，推荐使用gzip，压缩比例更大，只有当字符串达到一定长度才使用压缩    
-用sigar获取服务器相关性能数据	
+用sigar获取服务器相关性能数据		
+服务器性能监控	
 1.2.2    
 Spring Batch    
 Spring Batch Admin    
