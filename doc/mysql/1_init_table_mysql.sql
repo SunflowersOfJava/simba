@@ -1,10 +1,12 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016-07-28  星期四 10:46:08                     */
+/* Created on:     2016-09-19  星期一 17:14:49                     */
 /*==============================================================*/
 
 
 drop table if exists buss;
+
+drop table if exists capability;
 
 drop table if exists chatRecord;
 
@@ -50,6 +52,26 @@ create table buss
    script               text not null,
    primary key (name)
 );
+
+/*==============================================================*/
+/* Table: capability                                            */
+/*==============================================================*/
+create table capability
+(
+   id                   bigint not null,
+   ip                   varchar(64) not null,
+   type                 varchar(16) not null,
+   subType              varchar(64),
+   dateTime             varchar(64) not null,
+   value                double not null,
+   primary key (id),
+   key AK_Key_DateTime (dateTime),
+   key AK_Key_IP (ip),
+   key AK_Key_Type (type),
+   key AK_Key_SubType (subType)
+);
+
+alter table capability comment '性能';
 
 /*==============================================================*/
 /* Table: chatRecord                                            */
