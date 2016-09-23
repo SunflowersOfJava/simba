@@ -2,6 +2,7 @@ package com.caozj.sigar.service.impl;
 
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Map;
 
 import org.hyperic.sigar.SigarException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.framework.util.sigar.SigarUtil;
 import com.caozj.sigar.dao.CapabilityDao;
 import com.caozj.sigar.model.Capability;
+import com.caozj.sigar.model.enums.CapabilityType;
 import com.caozj.sigar.service.CapabilityService;
 
 /**
@@ -159,7 +161,16 @@ public class CapabilityServiceImpl implements CapabilityService {
    * @param ip
    */
   private void collectNetworkData(String now, String ip) throws SigarException {
-
+    Map<String, Double> ioMap = SigarUtil.getInstance().getNetworkIO();
+    ioMap.forEach((key, value) -> {
+      Capability capability = new Capability();
+      capability.setIp(ip);
+      capability.setDateTime(now);
+      capability.setType(CapabilityType.NETWORK.getName());
+      capability.setSubType(key);
+      capability.setValue(value);
+      this.add(capability);
+    });
   }
 
   /**
@@ -169,7 +180,16 @@ public class CapabilityServiceImpl implements CapabilityService {
    * @param ip
    */
   private void collectDiskData(String now, String ip) throws SigarException {
-
+    Map<String, Double> valueMap = SigarUtil.getInstance().getFileSystemUsedPercent();
+    valueMap.forEach((key, value) -> {
+      Capability capability = new Capability();
+      capability.setIp(ip);
+      capability.setDateTime(now);
+      capability.setType(CapabilityType.DISK.getName());
+      capability.setSubType(key);
+      capability.setValue(value);
+      this.add(capability);
+    });
   }
 
   /**
@@ -179,7 +199,13 @@ public class CapabilityServiceImpl implements CapabilityService {
    * @param ip
    */
   private void collectMemoryData(String now, String ip) throws SigarException {
-
+    double value = SigarUtil.getInstance().getMemoryUsedPercent();
+    Capability capability = new Capability();
+    capability.setIp(ip);
+    capability.setDateTime(now);
+    capability.setType(CapabilityType.MEMORY.getName());
+    capability.setValue(value);
+    this.add(capability);
   }
 
   /**
@@ -191,6 +217,12 @@ public class CapabilityServiceImpl implements CapabilityService {
    */
   private void collectCpuData(String now, String ip) throws SigarException {
     double value = SigarUtil.getInstance().getCpuUsedPercent();
+    Capability capability = new Capability();
+    capability.setIp(ip);
+    capability.setDateTime(now);
+    capability.setType(CapabilityType.CPU.getName());
+    capability.setValue(value);
+    this.add(capability);
   }
 
 }
