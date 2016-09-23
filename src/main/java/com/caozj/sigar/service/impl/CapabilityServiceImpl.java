@@ -4,12 +4,14 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hyperic.sigar.SigarException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.caozj.framework.util.common.SystemUtil;
+import com.caozj.framework.util.data.MathUtil;
 import com.caozj.framework.util.date.DateUtil;
 import com.caozj.framework.util.jdbc.Pager;
 import com.caozj.framework.util.sigar.SigarUtil;
@@ -182,6 +184,7 @@ public class CapabilityServiceImpl implements CapabilityService {
   private void collectDiskData(String now, String ip) throws SigarException {
     Map<String, Double> valueMap = SigarUtil.getInstance().getFileSystemUsedPercent();
     valueMap.forEach((key, value) -> {
+      value = MathUtil.scale(value, 2);
       Capability capability = new Capability();
       capability.setIp(ip);
       capability.setDateTime(now);
@@ -200,11 +203,13 @@ public class CapabilityServiceImpl implements CapabilityService {
    */
   private void collectMemoryData(String now, String ip) throws SigarException {
     double value = SigarUtil.getInstance().getMemoryUsedPercent();
+    value = MathUtil.scale(value, 2);
     Capability capability = new Capability();
     capability.setIp(ip);
     capability.setDateTime(now);
     capability.setType(CapabilityType.MEMORY.getName());
     capability.setValue(value);
+    capability.setSubType(StringUtils.EMPTY);
     this.add(capability);
   }
 
@@ -217,11 +222,13 @@ public class CapabilityServiceImpl implements CapabilityService {
    */
   private void collectCpuData(String now, String ip) throws SigarException {
     double value = SigarUtil.getInstance().getCpuUsedPercent();
+    value = MathUtil.scale(value, 2);
     Capability capability = new Capability();
     capability.setIp(ip);
     capability.setDateTime(now);
     capability.setType(CapabilityType.CPU.getName());
     capability.setValue(value);
+    capability.setSubType(StringUtils.EMPTY);
     this.add(capability);
   }
 

@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2016-09-19  星期一 17:14:49                     */
+/* Created on:     2016-09-23  星期五 14:26:00                     */
 /*==============================================================*/
 
 
@@ -58,7 +58,7 @@ create table buss
 /*==============================================================*/
 create table capability
 (
-   id                   bigint not null,
+   id                   bigint not null auto_increment,
    ip                   varchar(64) not null,
    type                 varchar(16) not null,
    subType              varchar(64),
