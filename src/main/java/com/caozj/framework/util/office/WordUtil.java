@@ -1,10 +1,15 @@
 package com.caozj.framework.util.office;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.util.IOUtils;
+import org.apache.xerces.impl.dv.util.Base64;
 
 import com.caozj.framework.util.freemarker.FreemarkerUtil;
 import com.caozj.model.constant.ConstantData;
@@ -62,6 +67,45 @@ public class WordUtil {
     String content = FileUtils.readFileToString(inWord, ConstantData.DEFAULT_CHARSET);
     String word = parseByFreemarker(content, param);
     FileUtils.writeStringToFile(outWord, word);
+  }
+
+  /**
+   * 获取图片要插入到word的数据
+   * 
+   * @param file 图片文件地址
+   * @return
+   * @throws FileNotFoundException
+   * @throws IOException
+   */
+  public static String getImageForWord(String file) throws FileNotFoundException, IOException {
+    byte[] data = IOUtils.toByteArray(new FileInputStream(file));
+    return Base64.encode(data);
+  }
+
+  /**
+   * 获取图片要插入到word的数据
+   * 
+   * @param in 图片输入流
+   * @return
+   * @throws FileNotFoundException
+   * @throws IOException
+   */
+  public static String getImageForWord(InputStream in) throws FileNotFoundException, IOException {
+    byte[] data = IOUtils.toByteArray(in);
+    return Base64.encode(data);
+  }
+
+  /**
+   * 替换word里的图片占位符
+   * 
+   * @param wordContent word内容
+   * @param key 占位符，在word中为@{image_key}
+   * @param imageContent 图片内容
+   * @return
+   */
+  public static String replaceImage(String wordContent, String key, String imageContent) {
+    wordContent = wordContent.replace("@{image_" + key + "}", imageContent);
+    return wordContent;
   }
 
 }
