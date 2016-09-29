@@ -5,12 +5,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.util.IOUtils;
 import org.apache.xerces.impl.dv.util.Base64;
 
+import com.caozj.framework.util.common.BatchReplaceUtil;
 import com.caozj.framework.util.freemarker.FreemarkerUtil;
 import com.caozj.model.constant.ConstantData;
 
@@ -67,6 +69,21 @@ public class WordUtil {
     String content = FileUtils.readFileToString(inWord, ConstantData.DEFAULT_CHARSET);
     String word = parseByFreemarker(content, param);
     FileUtils.writeStringToFile(outWord, word);
+  }
+
+  /**
+   * 使用普通字符串替换word的xml内容
+   * 
+   * @param content xml格式的输入word内容
+   * @param params 替换参数
+   * @return
+   */
+  public static String replaceText(String content, Map<String, String> params) {
+    Map<String, String> replaceMap = new HashMap<String, String>(params.size());
+    params.forEach((key, value) -> {
+      replaceMap.put("${" + key + "}", value);
+    });
+    return BatchReplaceUtil.batchreplace(content, replaceMap);
   }
 
   /**
