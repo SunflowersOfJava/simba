@@ -8,7 +8,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -59,7 +61,7 @@ public class TWordXML {
     // WordUtil.getImageForWord(getLineChartImage()));
     // FileUtils.writeStringToFile(new File("D:/image_content_2.xml"), content,
     // ConstantData.DEFAULT_CHARSET);
-    String xml = "D:/t1.xml";
+    String xml = "D:/image.xml";
     Map<String, String> param = new HashMap<String, String>();
     param.put("test", "线型图");
     String word = FileUtils.readFileToString(new File(xml), ConstantData.DEFAULT_CHARSET);
@@ -78,6 +80,24 @@ public class TWordXML {
     word = WordUtil.replaceText(word, param);
     word = WordUtil.replaceImage(word, "s", WordUtil.getImageForWord(getPieChartImage()));
     FileUtils.writeStringToFile(new File("D:/pie.xml"), word, ConstantData.DEFAULT_CHARSET);
+
+    xml = "D:/table.xml";
+    param.put("test", "表格");
+    word = FileUtils.readFileToString(new File(xml), ConstantData.DEFAULT_CHARSET);
+    word = WordUtil.replaceText(word, param);
+    List<List<String>> rows = new ArrayList<>();
+    List<String> row = new ArrayList<>();
+    row.add("第一行我11");
+    row.add("第一行你21");
+    row.add("第一行他31");
+    List<String> row2 = new ArrayList<>();
+    row2.add("第二行我12");
+    row2.add("第二行你22");
+    row2.add("第二行他32");
+    rows.add(row);
+    rows.add(row2);
+    word = WordUtil.replaceTable(word, "1", rows);
+    FileUtils.writeStringToFile(new File("D:/table_gen.xml"), word, ConstantData.DEFAULT_CHARSET);
   }
 
 

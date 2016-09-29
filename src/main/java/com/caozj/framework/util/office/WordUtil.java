@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -44,10 +45,10 @@ public class WordUtil {
   public static String parseByFreemarker(String content, Map<String, Object> param)
       throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException,
       TemplateException {
-    content = content.replaceAll("<", "&1lt;").replaceAll(">", "&1gt;");
+    content = content.replaceAll("<", "@lt;").replaceAll(">", "@gt;");
     content = content.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
     String word = FreemarkerUtil.parseContent(content, param);
-    word = word.replaceAll("&1lt;", "<").replaceAll("&1gt;", ">");
+    word = word.replaceAll("@lt;", "<").replaceAll("@gt;", ">");
     return word;
   }
 
@@ -122,6 +123,29 @@ public class WordUtil {
    */
   public static String replaceImage(String wordContent, String key, String imageContent) {
     wordContent = wordContent.replace("@{image_" + key + "}", imageContent);
+    return wordContent;
+  }
+
+  /**
+   * 替换word里的表格占位符
+   * 
+   * @param wordContent word内容
+   * @param key 占位符，在word中为@{table_key}
+   * @param rows
+   * @return
+   * @throws TemplateNotFoundException
+   * @throws MalformedTemplateNameException
+   * @throws ParseException
+   * @throws IOException
+   * @throws TemplateException
+   */
+  public static String replaceTable(String wordContent, String key, List<List<String>> rows)
+      throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException,
+      TemplateException {
+    Map<String, Object> param = new HashMap<>();
+    param.put("rows", rows);
+    String tableContent = FreemarkerUtil.parseFile("word/table.ftl", param);
+    wordContent = wordContent.replace("@{table_" + key + "}", tableContent);
     return wordContent;
   }
 
