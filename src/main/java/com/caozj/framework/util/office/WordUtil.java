@@ -13,7 +13,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.poi.util.IOUtils;
 import org.apache.xerces.impl.dv.util.Base64;
 
-import com.caozj.framework.util.common.BatchReplaceUtil;
 import com.caozj.framework.util.freemarker.FreemarkerUtil;
 import com.caozj.model.constant.ConstantData;
 
@@ -80,11 +79,10 @@ public class WordUtil {
    * @return
    */
   public static String replaceText(String content, Map<String, String> params) {
-    Map<String, String> replaceMap = new HashMap<String, String>(params.size());
-    params.forEach((key, value) -> {
-      replaceMap.put("${" + key + "}", value);
-    });
-    return BatchReplaceUtil.batchreplace(content, replaceMap);
+    for (Map.Entry<String, String> entry : params.entrySet()) {
+      content = content.replace("${" + entry.getKey() + "}", entry.getValue());
+    }
+    return content;
   }
 
   /**
