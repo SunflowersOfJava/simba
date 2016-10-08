@@ -129,7 +129,8 @@ public class WordUtil {
    * 
    * @param wordContent word内容
    * @param key 占位符，在word中为@{table_key}
-   * @param rows
+   * @param rows 行数据
+   * @param header 表头
    * @return
    * @throws TemplateNotFoundException
    * @throws MalformedTemplateNameException
@@ -137,11 +138,12 @@ public class WordUtil {
    * @throws IOException
    * @throws TemplateException
    */
-  public static String replaceTable(String wordContent, String key, List<List<String>> rows)
-      throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException,
-      TemplateException {
+  public static String replaceTable(String wordContent, String key, List<List<String>> rows,
+      List<String> header) throws TemplateNotFoundException, MalformedTemplateNameException,
+      ParseException, IOException, TemplateException {
     Map<String, Object> param = new HashMap<>();
     param.put("rows", rows);
+    param.put("header", header);
     String tableContent = FreemarkerUtil.parseFile("word/table.ftl", param);
     wordContent = wordContent.replace("@{table_" + key + "}", tableContent);
     return wordContent;

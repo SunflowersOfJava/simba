@@ -46,21 +46,6 @@ public class TWordXML {
 
   public static void main(String[] args) throws TemplateNotFoundException,
       MalformedTemplateNameException, ParseException, IOException, TemplateException {
-    // String file = "D:/t1.xml";
-    // Map<String, String> param = new HashMap<String, String>();
-    // param.put("pageType", "a");
-    // String word = FileUtils.readFileToString(new File(file), ConstantData.DEFAULT_CHARSET);
-    // word = WordUtil.replaceText(word, param);
-    // String content = FileUtils.readFileToString(new File("D:/image_content.xml"));
-    // content = WordUtil.replaceImage(content, "test", WordUtil.getImageForWord("D:/bs2.png"));
-    // content = WordUtil.replaceImage(content, "pie",
-    // WordUtil.getImageForWord(getPieChartImage()));
-    // content = WordUtil.replaceImage(content, "bar",
-    // WordUtil.getImageForWord(getBarChartImage()));
-    // content = WordUtil.replaceImage(content, "line",
-    // WordUtil.getImageForWord(getLineChartImage()));
-    // FileUtils.writeStringToFile(new File("D:/image_content_2.xml"), content,
-    // ConstantData.DEFAULT_CHARSET);
     String xml = "D:/image.xml";
     Map<String, String> param = new HashMap<String, String>();
     param.put("test", "线型图");
@@ -96,8 +81,29 @@ public class TWordXML {
     row2.add("第二行他32");
     rows.add(row);
     rows.add(row2);
-    word = WordUtil.replaceTable(word, "1", rows);
+    List<String> header = new ArrayList<>();
+    header.add("列1");
+    header.add("列2");
+    header.add("列3");
+    word = WordUtil.replaceTable(word, "1", rows, header);
     FileUtils.writeStringToFile(new File("D:/table_gen.xml"), word, ConstantData.DEFAULT_CHARSET);
+
+    xml = "D:/template/1.xml";
+    word = FileUtils.readFileToString(new File(xml), ConstantData.DEFAULT_CHARSET);
+    param.put("title", "大当家1" + System.currentTimeMillis());
+    param.put("publishDate", "2000-01-04");
+    for (int i = 1; i <= 100; i++) {
+      param.put("num" + i, "测试字符串" + i);
+    }
+    word = WordUtil.replaceText(word, param);
+    for (int i = 1; i <= 20; i++) {
+      word = WordUtil.replaceImage(word, "image" + i, WordUtil.getImageForWord(getBarChartImage()));
+    }
+    for (int i = 1; i <= 10; i++) {
+      word = WordUtil.replaceTable(word, "table" + i, rows, header);
+    }
+    FileUtils.writeStringToFile(new File("D:/template/zhu.xml"), word,
+        ConstantData.DEFAULT_CHARSET);
   }
 
 
