@@ -30,7 +30,6 @@ import com.caozj.framework.util.data.ThreadDataUtil;
 import com.caozj.framework.util.jdbc.Jdbc;
 import com.caozj.framework.util.schedule.AsyncUtil;
 
-
 @Controller
 @RequestMapping("/test")
 public class TController {
