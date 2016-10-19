@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.caozj.echarts.model.line.PileArea;
+import com.caozj.echarts.model.Chart;
 import com.caozj.framework.util.json.FastJsonUtil;
 
 @Controller
@@ -15,15 +15,16 @@ import com.caozj.framework.util.json.FastJsonUtil;
 public class TEController {
 
   /**
-   * 获取堆叠区域图的数据
+   * 获取数据
    * 
    * @param model
    * @return
    */
   @RequestMapping
-  public String pileArea(ModelMap model) {
-    PileArea p = new PileArea();
-    p.setTitle("堆叠区域图");
+  public String data(ModelMap model) {
+    Chart p = new Chart();
+    p.setTitle("测试图");
+//    p.setSubtext("二级标题");
     List<String> legendList = new ArrayList<>();
     legendList.add("邮件营销");
     legendList.add("联盟广告");

@@ -1,7 +1,7 @@
-var PileAreaUtil = {
+var LineUtil = {
 
 	/**
-	 * 初始化堆叠区域图
+	 * 初始化折线图
 	 * 
 	 * @param id
 	 *            dom元素的id
@@ -26,28 +26,34 @@ var PileAreaUtil = {
 				data : []
 			},
 			toolbox : {
+				show : true,
 				feature : {
+					dataZoom : {
+						yAxisIndex : 'none'
+					},
+					dataView : {
+						readOnly : false
+					},
+					magicType : {
+						type : [ 'line', 'bar' ]
+					},
+					restore : {},
 					saveAsImage : {}
 				}
 			},
-			grid : {
-				left : '3%',
-				right : '4%',
-				bottom : '3%',
-				containLabel : true
-			},
-			xAxis : [ {
+			xAxis : {
 				type : 'category',
 				boundaryGap : false,
 				data : []
-			} ],
-			yAxis : [ {
+			},
+			yAxis : {
 				type : 'value'
-			} ],
+			},
 			series : [
 
 			]
 		};
+
 		$.ajax({
 			"url" : url,
 			"data" : data,
@@ -69,10 +75,6 @@ var PileAreaUtil = {
 					var value = {
 						name : json.legendList[i],
 						type : 'line',
-						stack : '总量',
-						areaStyle : {
-							normal : {}
-						},
 						data : json.valueList[i]
 					};
 					values.push(value);

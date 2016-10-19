@@ -1,19 +1,24 @@
-package com.caozj.echarts.model.line;
+package com.caozj.echarts.model;
 
 import java.util.List;
 
 /**
- * 堆叠区域图
+ * 常用ECharts图的对象
  * 
  * @author caozj
  *
  */
-public class PileArea {
+public class Chart {
 
   /**
    * 标题
    */
   private String title;
+
+  /**
+   * 二级标题
+   */
+  private String subtext;
 
   /**
    * 图例说明列表
@@ -36,6 +41,14 @@ public class PileArea {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public String getSubtext() {
+    return subtext;
+  }
+
+  public void setSubtext(String subtext) {
+    this.subtext = subtext;
   }
 
   public List<String> getLegendList() {
