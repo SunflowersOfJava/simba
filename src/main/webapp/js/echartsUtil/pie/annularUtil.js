@@ -15,7 +15,7 @@ var AnnularUtil = {
 		// 基于准备好的dom，初始化echarts实例
 		var chart = echarts.init(document.getElementById(id));
 		// 指定图表的配置项和数据
-		option = {
+		var option = {
 			title : {
 				text : '',
 				subtext : '',

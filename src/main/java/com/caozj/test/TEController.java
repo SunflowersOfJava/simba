@@ -8,6 +8,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.caozj.echarts.model.Chart;
+import com.caozj.echarts.model.Gauge;
 import com.caozj.echarts.model.Pie;
 import com.caozj.framework.util.json.FastJsonUtil;
 
@@ -123,4 +124,21 @@ public class TEController {
     return "message";
   }
 
+  /**
+   * 获取仪表盘数据
+   * 
+   * @param model
+   * @return
+   */
+  @RequestMapping
+  public String gauge(ModelMap model) {
+    Gauge p = new Gauge();
+    p.setTitle("测试图");
+    p.setSubtext("二级标题");
+    p.setName("业务指标");
+    p.setValue(58D);
+    p.setValueName("完成率");
+    model.put("message", FastJsonUtil.toJson(p));
+    return "message";
+  }
 }

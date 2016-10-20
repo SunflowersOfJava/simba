@@ -23,7 +23,7 @@ http://localhost:8888/simba/
 用sigar获取服务器相关性能数据		
 服务器性能监控		
 word模板工具类，可以在xml形式word文件中，插入图片，饼图，线型图，柱形图，表格，使用freemarker语法标签解析	
-集成Echarts(堆叠区域图、折线图、柱形图、饼图、环形图)
+集成Echarts(堆叠区域图、折线图、柱形图、饼图、环形图、仪表盘)
 1.2.2    
 Spring Batch    
 Spring Batch Admin    
