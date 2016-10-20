@@ -3,12 +3,13 @@ package com.caozj.echarts.model;
 import java.util.List;
 
 /**
- * 常用ECharts图的对象(可用于折线图、柱形图)
+ * 饼图
  * 
  * @author caozj
  *
  */
-public class Chart {
+public class Pie {
+
 
   /**
    * 标题
@@ -26,14 +27,22 @@ public class Chart {
   private List<String> legendList;
 
   /**
-   * X轴列表
-   */
-  private List<String> xAxisList;
-
-  /**
    * 值列表
    */
-  private List<List<Double>> valueList;
+  private List<Double> valueList;
+
+  /**
+   * 饼图名称
+   */
+  private String name;
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
 
   public String getTitle() {
     return title;
@@ -59,19 +68,11 @@ public class Chart {
     this.legendList = legendList;
   }
 
-  public List<String> getxAxisList() {
-    return xAxisList;
-  }
-
-  public void setxAxisList(List<String> xAxisList) {
-    this.xAxisList = xAxisList;
-  }
-
-  public List<List<Double>> getValueList() {
+  public List<Double> getValueList() {
     return valueList;
   }
 
-  public void setValueList(List<List<Double>> valueList) {
+  public void setValueList(List<Double> valueList) {
     this.valueList = valueList;
   }
 

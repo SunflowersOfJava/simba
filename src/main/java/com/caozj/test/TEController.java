@@ -8,6 +8,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.caozj.echarts.model.Chart;
+import com.caozj.echarts.model.Pie;
 import com.caozj.framework.util.json.FastJsonUtil;
 
 @Controller
@@ -24,7 +25,7 @@ public class TEController {
   public String data(ModelMap model) {
     Chart p = new Chart();
     p.setTitle("测试图");
-//    p.setSubtext("二级标题");
+    p.setSubtext("二级标题");
     List<String> legendList = new ArrayList<>();
     legendList.add("邮件营销");
     legendList.add("联盟广告");
@@ -88,6 +89,36 @@ public class TEController {
     valueList.add(v4);
     valueList.add(v5);
     p.setValueList(valueList);
+    model.put("message", FastJsonUtil.toJson(p));
+    return "message";
+  }
+
+  /**
+   * 获取饼图数据
+   * 
+   * @param model
+   * @return
+   */
+  @RequestMapping
+  public String pie(ModelMap model) {
+    Pie p = new Pie();
+    p.setTitle("测试图");
+    p.setSubtext("二级标题");
+    p.setName("访问来源");
+    List<String> legendList = new ArrayList<>();
+    legendList.add("邮件营销");
+    legendList.add("联盟广告");
+    legendList.add("视频广告");
+    legendList.add("直接访问");
+    legendList.add("搜索引擎");
+    p.setLegendList(legendList);
+    List<Double> v1 = new ArrayList<>();
+    v1.add(1.0D);
+    v1.add(2.0D);
+    v1.add(3.0D);
+    v1.add(4.0D);
+    v1.add(5.0D);
+    p.setValueList(v1);
     model.put("message", FastJsonUtil.toJson(p));
     return "message";
   }
